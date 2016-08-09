@@ -1,0 +1,2 @@
+http://www.w3schools.com/js/js_hoisting.asp
+https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Details_of_the_Object_Model
