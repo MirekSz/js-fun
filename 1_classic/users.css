@@ -1,0 +1,33 @@
+.page-header {
+    text-align: center;
+    border-color: #444444;
+    color: #444444;
+}
+
+thead {
+    background-color: #cccccc;
+    font-size: 18px;
+}
+
+tbody {
+    font-size: 15px;
+}
+
+#extendedView {
+    margin-top: 70px;
+    font-size: 18px;
+}
+
+table {
+    margin-top: 15px;
+}
+
+.evLabel {
+    text-align: center;
+    font-weight: bold;
+}
+
+.evValue {
+    text-align: left;
+
+}
