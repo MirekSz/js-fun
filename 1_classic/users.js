@@ -1,19 +1,47 @@
+var users = [["Jacek", "Doe", "43", "Mężczyzna"],["Marzanna", "Uss", "54", "Kobieta"],["Julia", "Dolej", "22", "Kobieta"]];
+
+var selectedRow = -1;
+var isAnyRowSelected = false;
+
 function createTable(users) {
 
     var tHeadHtml = '<thead><tr><th>Imię</th><th>Nazwisko</th><th>Wiek</th><th>Płeć</th></tr></thead>';
 
     var rowsHtml = '';
-    for(i = 0; i < users.length; i++) {
-        rowsHtml += createRow(users[i]);
+    for(var i = 0; i < users.length; i++) {
+        rowsHtml += createRow(users[i], i);
     }
-    var tableHtml = '<table class="table table-bordered table-hover">' + tHeadHtml
+    var tableHtml = '<table class="table table-bordered">' + tHeadHtml
         + '<tbody>' + rowsHtml + '</tbody></table>';
     $("#workspace").html(tableHtml + '<div id="extendedView"></div>');
 }
 
-function createRow(user) {
-    return '<tr onclick="showExtendedView(' + i +
-        ')"><td>' + user[0] + '</td><td>' + user[1] + '</td><td>' + user[2] + '</td><td>' + user[3] + '</td></tr>';
+function createRow(user, rowNumber) {
+    return '<tr onclick="onRowClick(' + rowNumber +
+        ')" id="tableRow' + rowNumber + '"><td>' + user[0] + '</td><td>' + user[1] + '</td><td>' + user[2] + '</td><td>' + user[3] + '</td></tr>';
+}
+
+function onRowClick(rowNumber) {
+
+    if(rowNumber == selectedRow) return;
+    else {
+        selectRow(rowNumber);
+        selectedRow = rowNumber;
+        showExtendedView(rowNumber);
+    }
+    if (!isAnyRowSelected) {
+        $("#editBtn").attr("disabled", false);
+        $("#deleteBtn").attr("disabled", false);
+    }
+    isAnyRowSelected = true;
+
+    function selectRow(rowNumber) {
+        if(isAnyRowSelected) {
+            $("#tableRow" + selectedRow).removeClass("activeRow");
+        }
+        $("#tableRow" + rowNumber).addClass("activeRow");
+    }
+
 }
 
 function showExtendedView(rowNumber) {
@@ -30,7 +58,6 @@ var extViewHtml =
         '</div></div></div>'];
 
 function getData() {
-    var users = [["Jacek", "Doe", "43", "Mężczyzna"],["Marzanna", "Uss", "54", "Kobieta"],["Julia", "Dolej", "22", "Kobieta"]];
     setTimeout(createTable(users), 300);
 }
 $(document).ready(getData);

@@ -4,6 +4,10 @@
     color: #444444;
 }
 
+.activeRow {
+    background-color: dodgerblue;
+}
+
 thead {
     background-color: #cccccc;
     font-size: 18px;
@@ -28,6 +32,6 @@ table {
 }
 
 .evValue {
-    text-align: left;
+    text-align: center;
 
 }
