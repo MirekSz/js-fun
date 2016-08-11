@@ -1,14 +1,16 @@
-var users = [["Jacek", "Doe", "43", "Mężczyzna"],["Marzanna", "Uss", "54", "Kobieta"],["Julia", "Dolej", "22", "Kobieta"]];
+var users = [["Jacek", "Doe", "43", "Mężczyzna"],
+    ["Marzanna", "Uss", "54", "Kobieta"], ["Julia", "Dolej", "22", "Kobieta"]];
 
 var selectedRow = -1;
 var isAnyRowSelected = false;
 
 function createTable(users) {
 
-    var tHeadHtml = '<thead><tr><th>Imię</th><th>Nazwisko</th><th>Wiek</th><th>Płeć</th></tr></thead>';
+    var tHeadHtml = '<thead><tr><th class="col-md-3">Imię</th><th class="col-md-5">Nazwisko</th>' +
+        '<th class="col-md-2">Wiek</th><th class="col-md-2">Płeć</th></tr></thead>';
 
     var rowsHtml = '';
-    for(var i = 0; i < users.length; i++) {
+    for (var i = 0; i < users.length; i++) {
         rowsHtml += createRow(users[i], i);
     }
     var tableHtml = '<table class="table table-bordered">' + tHeadHtml
@@ -18,12 +20,13 @@ function createTable(users) {
 
 function createRow(user, rowNumber) {
     return '<tr onclick="onRowClick(' + rowNumber +
-        ')" id="tableRow' + rowNumber + '"><td>' + user[0] + '</td><td>' + user[1] + '</td><td>' + user[2] + '</td><td>' + user[3] + '</td></tr>';
+        ')" id="tableRow' + rowNumber + '"><td>' + user[0] + '</td><td>' + user[1] + '</td><td>' +
+        user[2] + '</td><td>' + user[3] + '</td></tr>';
 }
 
 function onRowClick(rowNumber) {
 
-    if(rowNumber == selectedRow) return;
+    if (rowNumber == selectedRow) return;
     else {
         selectRow(rowNumber);
         selectedRow = rowNumber;
@@ -36,12 +39,11 @@ function onRowClick(rowNumber) {
     isAnyRowSelected = true;
 
     function selectRow(rowNumber) {
-        if(isAnyRowSelected) {
+        if (isAnyRowSelected) {
             $("#tableRow" + selectedRow).removeClass("activeRow");
         }
         $("#tableRow" + rowNumber).addClass("activeRow");
     }
-
 }
 
 function showExtendedView(rowNumber) {
@@ -57,7 +59,25 @@ var extViewHtml =
         '</div></div><div class="row"><div class="col-md-2 evLabel">Płeć:</div><div class="col-md-2 evValue">',
         '</div></div></div>'];
 
+function deleteUser() {
+    users.splice(selectedRow, 1);
+    selectedRow = -1;
+    isAnyRowSelected = false;
+    createTable(users);
+}
+
+function initialize() {
+    $("#deleteBtn").click(function () {
+        var answer = confirm("Czy chcesz usunąć tego użytkownika?");
+        if (answer) {
+            deleteUser(); //imitacja
+        }
+    });
+    getData();
+}
+
 function getData() {
     setTimeout(createTable(users), 300);
 }
-$(document).ready(getData);
+
+$(document).ready(initialize);
