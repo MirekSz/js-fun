@@ -4,15 +4,14 @@ function createTable(users) {
 
     var rowsHtml = '';
     for(i = 0; i < users.length; i++) {
-        rowsHtml += createRow(i);
+        rowsHtml += createRow(users[i]);
     }
     var tableHtml = '<table class="table table-bordered table-hover">' + tHeadHtml
         + '<tbody>' + rowsHtml + '</tbody></table>';
     $("#workspace").html(tableHtml + '<div id="extendedView"></div>');
 }
 
-function createRow(i) {
-    var user = users[i];
+function createRow(user) {
     return '<tr onclick="showExtendedView(' + i +
         ')"><td>' + user[0] + '</td><td>' + user[1] + '</td><td>' + user[2] + '</td><td>' + user[3] + '</td></tr>';
 }
