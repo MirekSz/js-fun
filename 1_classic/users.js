@@ -6,6 +6,11 @@ var isAnyRowSelected = false;
 
 function createTable(users) {
 
+    var buttonHtml = "<button type=\"button\" class=\"btn btn-primary\" id=\"addBtn\">Dodaj<\/button> " +
+        "<button type=\"button\" class=\"btn btn-primary\" id=\"editBtn\" disabled>Popraw<\/button> " +
+        "<button type=\"button\" class=\"btn btn-primary\" id=\"deleteBtn\" disabled>Usuń<\/button>";
+
+
     var tHeadHtml = '<thead><tr><th class="col-md-3">Imię</th><th class="col-md-5">Nazwisko</th>' +
         '<th class="col-md-2">Wiek</th><th class="col-md-2">Płeć</th></tr></thead>';
 
@@ -15,7 +20,7 @@ function createTable(users) {
     }
     var tableHtml = '<table class="table table-bordered">' + tHeadHtml
         + '<tbody>' + rowsHtml + '</tbody></table>';
-    $("#workspace").html(tableHtml + '<div id="extendedView"></div>');
+    $("#workspace").html(buttonHtml + tableHtml + '<div id="extendedView"></div>');
 }
 
 function createRow(user, rowNumber) {
@@ -67,13 +72,13 @@ function deleteUser() {
 }
 
 function initialize() {
+    getData();
     $("#deleteBtn").click(function () {
         var answer = confirm("Czy chcesz usunąć tego użytkownika?");
         if (answer) {
             deleteUser(); //imitacja
         }
     });
-    getData();
 }
 
 function getData() {
@@ -81,3 +86,16 @@ function getData() {
 }
 
 $(document).ready(initialize);
+
+
+var formHtml = ["<div class=\"row\"><div class=\"col-md-4\">&nbsp;<\/div><div class=\"col-md-4\">" +
+"<h3>Dodaj użytkownika<\/h3><form name=\"form\" id=\"form\" onsubmit=\"on",
+    "FormSubmit()\"><div class=\"form-group\"><label for=\"name\">Imie:<\/label>" +
+    "<input id=\"name\" class=\"form-control\" type=\"text\"><\/div><div class=\"form-group\">" +
+    "<label for=\"surname\">Nazwisko:<\/label><input id=\"surname\" class=\"form-control\" type=\"text\"><\/div>" +
+    "<div class=\"form-group\"><label for=\"age\">Wiek:<\/label><input id=\"age\" class=\"form-control\" type=\"text\"><\/div>" +
+    "<div class=\"form-group\"><label for=\"sex\">Płeć:<\/label><select class=\"form-control\" id=\"sex\">" +
+    "<option>Mężczyzna<\/option><option>Kobieta<\/option><\/select><\/div><div class=\"form-group\">" +
+    "<input type=\"submit\" class=\"btn btn-primary\" value=\"Dodaj\">" +
+    "<button type=\"button\" id=\"cancelBtn\" class=\"btn btn-warning\">Cofnij<\/button><\/div><\/form><\/div>" +
+    "<div class=\"col-md-4\">&nbsp;<\/div><\/div>"];

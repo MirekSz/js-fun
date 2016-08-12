@@ -4,6 +4,11 @@
     color: #444444;
 }
 
+h3, h4 {
+    text-align: center;
+    font-weight: bold;
+}
+
 .activeRow {
     background-color: dodgerblue;
 }
@@ -34,4 +39,8 @@ table {
 .evValue {
     text-align: center;
 
+}
+
+#cancelBtn {
+    alignment: right;
 }
