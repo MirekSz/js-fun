@@ -4,29 +4,33 @@ var users = [["Jacek", "Doe", "43", "Mężczyzna"],
 var selectedRow = -1;
 var isAnyRowSelected = false;
 
-function createTable(users) {
+
+function createTableView(users) {
 
     var buttonHtml = "<button type=\"button\" class=\"btn btn-primary\" id=\"addBtn\">Dodaj<\/button> " +
         "<button type=\"button\" class=\"btn btn-primary\" id=\"editBtn\" disabled>Popraw<\/button> " +
         "<button type=\"button\" class=\"btn btn-primary\" id=\"deleteBtn\" disabled>Usuń<\/button>";
 
+    $("#workspace").html(buttonHtml + prepareTableHtml(users) + '<div id="extendedView"></div>');
+}
 
+function prepareTableHtml(users) {
     var tHeadHtml = '<thead><tr><th class="col-md-3">Imię</th><th class="col-md-5">Nazwisko</th>' +
         '<th class="col-md-2">Wiek</th><th class="col-md-2">Płeć</th></tr></thead>';
 
+    function createRow(user, rowNumber) {
+        return '<tr onclick="onRowClick(' + rowNumber +
+            ')" id="tableRow' + rowNumber + '"><td>' + user[0] + '</td><td>' + user[1] + '</td><td>' +
+            user[2] + '</td><td>' + user[3] + '</td></tr>';
+    }
+
     var rowsHtml = '';
-    for (var i = 0; i < users.length; i++) {
+    var i;
+    for (i = 0; i < users.length; i++) {
         rowsHtml += createRow(users[i], i);
     }
-    var tableHtml = '<table class="table table-bordered">' + tHeadHtml
+    return '<table class="table table-bordered">' + tHeadHtml
         + '<tbody>' + rowsHtml + '</tbody></table>';
-    $("#workspace").html(buttonHtml + tableHtml + '<div id="extendedView"></div>');
-}
-
-function createRow(user, rowNumber) {
-    return '<tr onclick="onRowClick(' + rowNumber +
-        ')" id="tableRow' + rowNumber + '"><td>' + user[0] + '</td><td>' + user[1] + '</td><td>' +
-        user[2] + '</td><td>' + user[3] + '</td></tr>';
 }
 
 function onRowClick(rowNumber) {
@@ -73,6 +77,7 @@ function deleteUser() {
 
 function initialize() {
     getData();
+
     $("#deleteBtn").click(function () {
         var answer = confirm("Czy chcesz usunąć tego użytkownika?");
         if (answer) {
@@ -80,9 +85,8 @@ function initialize() {
         }
     });
 }
-
 function getData() {
-    setTimeout(createTable(users), 300);
+    setTimeout(createTableView(users), 300);
 }
 
 $(document).ready(initialize);
