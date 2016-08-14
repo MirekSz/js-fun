@@ -9,8 +9,8 @@ var formHtml = ["<div class=\"row\"><div class=\"col-md-4\">&nbsp;<\/div><div cl
     "<button type=\"button\" id=\"cancelBtn\" class=\"btn btn-warning\">Cofnij<\/button><\/div><\/form><\/div>" +
     "<div class=\"col-md-4\">&nbsp;<\/div><\/div>"];
 
-var users = [["Jacek", "Doe", "43", "Mężczyzna"],
-    ["Marzanna", "Uss", "54", "Kobieta"], ["Julia", "Dolej", "22", "Kobieta"]];
+var users = [{name:'Jacek', surname:'Doe', age:'43', sex:'Mężczyzna'},
+    {name:'Marzanna', surname:'Uss', age:'54', sex:'Kobieta'}, {name:'Julia', surname:'Dolej', age:'22', sex:'Kobieta'}];
 var isAnyRowSelected;
 var selectedRow;
 
@@ -43,8 +43,8 @@ function prepareTableHtml(users) {
 
     function createRow(user, rowNumber) {
         return '<tr onclick="onRowClick(' + rowNumber +
-            ')" id="tableRow' + rowNumber + '"><td>' + user[0] + '</td><td>' + user[1] + '</td><td>' +
-            user[2] + '</td><td>' + user[3] + '</td></tr>';
+            ')" id="tableRow' + rowNumber + '"><td>' + user.name + '</td><td>' + user.surname + '</td><td>' +
+            user.age + '</td><td>' + user.sex + '</td></tr>';
     }
 
     var rowsHtml = '';
@@ -86,8 +86,8 @@ function showExtendedView(rowNumber) {
             '</div></div></div>'];
 
     var user = users[rowNumber];
-    $("#extendedView").html(extViewHtml[0] + user[0]
-        + extViewHtml[1] + user[1] + extViewHtml[2] + user[2] + extViewHtml[3] + user[3] + extViewHtml[4]);
+    $("#extendedView").html(extViewHtml[0] + user.name
+        + extViewHtml[1] + user.surname + extViewHtml[2] + user.age + extViewHtml[3] + user.sex + extViewHtml[4]);
 }
 
 function setOnClickForTableViewButtons() {
@@ -115,10 +115,10 @@ function createFormView(mode) {
     $("#workspace").html(formHtml[0] + mode + " Użytkownika" + formHtml[1]);
     if (mode == "Edytuj") {
         var user = users[selectedRow];
-        $("#name").val(user[0]);
-        $("#surname").val(user[1]);
-        $("#age").val(user[2]);
-        $("#sex").val(user[3]);
+        $("#name").val(user.name);
+        $("#surname").val(user.surname);
+        $("#age").val(user.age);
+        $("#sex").val(user.sex);
         $("#form").on("submit", onEditFormSubmit);
     } else {
         $("#form").on("submit", onAddFormSubmit);
@@ -130,20 +130,20 @@ function createFormView(mode) {
 
 function onEditFormSubmit() {
     var i = selectedRow;
-    users[i][0] = $("#name").val();
-    users[i][1] = $("#surname").val();
-    users[i][2] = $("#age").val();
-    users[i][3] = $("#sex").val();
+    users[i].name = $("#name").val();
+    users[i].surname = $("#surname").val();
+    users[i].age = $("#age").val();
+    users[i].sex = $("#sex").val();
     createTableView(users);
     return false;
 }
 
 function onAddFormSubmit() {
-    var user = [];
-    user[0] = $("#name").val();
-    user[1] = $("#surname").val();
-    user[2] = $("#age").val();
-    user[3] = $("#sex").val();
+    var user = {};
+    user.name = $("#name").val();
+    user.surname = $("#surname").val();
+    user.age = $("#age").val();
+    user.sex = $("#sex").val();
     users.push(user);
     createTableView(users);
     return false;
