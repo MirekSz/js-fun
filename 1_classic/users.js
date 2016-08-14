@@ -1,16 +1,18 @@
 var formHtml = ["<div class=\"row\"><div class=\"col-md-4\">&nbsp;<\/div><div class=\"col-md-4\"><h3>",
     "<\/h3><form name=\"form\" id=\"form\"><div class=\"form-group\"><label for=\"name\">Imie:<\/label>" +
-    "<input id=\"name\" class=\"form-control\" type=\"text\"><\/div><div class=\"form-group\">" +
-    "<label for=\"surname\">Nazwisko:<\/label><input id=\"surname\" class=\"form-control\" type=\"text\"><\/div>" +
-    "<div class=\"form-group\"><label for=\"age\">Wiek:<\/label><input id=\"age\" class=\"form-control\" type=\"text\"><\/div>" +
-    "<div class=\"form-group\"><label for=\"sex\">Płeć:<\/label><select class=\"form-control\" id=\"sex\">" +
+    "<input id=\"name\" class=\"form-control\" type=\"text\" required><\/div><div class=\"form-group\">" +
+    "<label for=\"surname\">Nazwisko:<\/label><input id=\"surname\" class=\"form-control\" type=\"text\" required><\/div>" +
+    "<div class=\"form-group\"><label for=\"age\">Wiek:<\/label>" +
+    "<input id=\"age\" class=\"form-control\" type=\"number\" min=\"18\" max=\"99\" required>" +
+    "<\/div><div class=\"form-group\"><label for=\"sex\">Płeć:<\/label><select class=\"form-control\" id=\"sex\">" +
     "<option>Mężczyzna<\/option><option>Kobieta<\/option><\/select><\/div><div class=\"form-group\">" +
     "<input type=\"submit\" class=\"btn btn-primary\" value=\"Zapisz\">" +
     "<button type=\"button\" id=\"cancelBtn\" class=\"btn btn-warning\">Cofnij<\/button><\/div><\/form><\/div>" +
     "<div class=\"col-md-4\">&nbsp;<\/div><\/div>"];
 
-var users = [{name:'Jacek', surname:'Doe', age:'43', sex:'Mężczyzna'},
-    {name:'Marzanna', surname:'Uss', age:'54', sex:'Kobieta'}, {name:'Julia', surname:'Dolej', age:'22', sex:'Kobieta'}];
+var users = [{name: 'Jacek', surname: 'Doe', age: '43', sex: 'Mężczyzna'},
+    {name: 'Marzanna', surname: 'Uss', age: '54', sex: 'Kobieta'},
+    {name: 'Julia', surname: 'Dolej', age: '22', sex: 'Kobieta'}];
 var isAnyRowSelected;
 var selectedRow;
 
