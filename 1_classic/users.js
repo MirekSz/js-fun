@@ -114,11 +114,7 @@ function clearWorkspace() {
 function createFormView(mode) {
     $("#workspace").html(formHtml[0] + mode + " Użytkownika" + formHtml[1]);
     if (mode == "Edytuj") {
-        var user = users[selectedRow];
-        $("#name").val(user.name);
-        $("#surname").val(user.surname);
-        $("#age").val(user.age);
-        $("#sex").val(user.sex);
+        fillFormInputs($, users[selectedRow]);
         $("#form").on("submit", onEditFormSubmit);
     } else {
         $("#form").on("submit", onAddFormSubmit);
@@ -128,25 +124,32 @@ function createFormView(mode) {
     });
 }
 
-function onEditFormSubmit() {
-    var i = selectedRow;
-    users[i].name = $("#name").val();
-    users[i].surname = $("#surname").val();
-    users[i].age = $("#age").val();
-    users[i].sex = $("#sex").val();
-    createTableView(users);
-    return false;
+function fillFormInputs($, user) {
+    $("#name").val(user.name);
+    $("#surname").val(user.surname);
+    $("#age").val(user.age);
+    $("#sex").val(user.sex);
 }
 
-function onAddFormSubmit() {
+function onEditFormSubmit(e) {
+    e.preventDefault();
+    users[selectedRow] = serialize($);
+    createTableView(users);
+}
+
+function onAddFormSubmit(e) {
+    e.preventDefault();
+    users.push(serialize($));
+    createTableView(users);
+}
+
+function serialize($) {
     var user = {};
     user.name = $("#name").val();
     user.surname = $("#surname").val();
     user.age = $("#age").val();
     user.sex = $("#sex").val();
-    users.push(user);
-    createTableView(users);
-    return false;
+    return user;
 }
 
 function deleteUser() {
