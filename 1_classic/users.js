@@ -52,7 +52,7 @@ function prepareTableHtml(users) {
     for (i = 0; i < users.length; i++) {
         rowsHtml += createRow(users[i], i);
     }
-    return '<table class="table table-bordered">' + tHeadHtml
+    return '<table class="table table-bordered table-strped table-hover">' + tHeadHtml
         + '<tbody>' + rowsHtml + '</tbody></table>';
 }
 
