@@ -1,12 +1,12 @@
 var formHtml = ["<div class=\"row\"><div class=\"col-md-4\">&nbsp;<\/div><div class=\"col-md-4\"><h3>",
     "<\/h3><form name=\"form\" id=\"form\"><div class=\"form-group\"><label for=\"name\">Imie:<\/label>" +
-    "<input id=\"name\" class=\"form-control\" type=\"text\" required><\/div><div class=\"form-group\">" +
-    "<label for=\"surname\">Nazwisko:<\/label><input id=\"surname\" class=\"form-control\" type=\"text\" required><\/div>" +
+    "<input id=\"name\" name=\"name\" class=\"form-control\" type=\"text\" required><\/div><div class=\"form-group\">" +
+    "<label for=\"surname\">Nazwisko:<\/label><input id=\"surname\" name=\"surname\" class=\"form-control\" type=\"text\" required><\/div>" +
     "<div class=\"form-group\"><label for=\"age\">Wiek:<\/label>" +
-    "<input id=\"age\" class=\"form-control\" type=\"number\" min=\"18\" max=\"99\" required>" +
-    "<\/div><div class=\"form-group\"><label for=\"sex\">Płeć:<\/label><select class=\"form-control\" id=\"sex\">" +
+    "<input id=\"age\" name=\"age\" class=\"form-control\" type=\"number\" min=\"18\" max=\"99\" required>" +
+    "<\/div><div class=\"form-group\"><label for=\"sex\">Płeć:<\/label><select class=\"form-control\" name=\"sex\" id=\"sex\">" +
     "<option>Mężczyzna<\/option><option>Kobieta<\/option><\/select><\/div><div class=\"form-group\">" +
-    "<input type=\"submit\" class=\"btn btn-primary\" value=\"Zapisz\">" +
+    "<button type=\"submit\" class=\"btn btn-primary\">Zapisz<\/button>" +
     "<button type=\"button\" id=\"cancelBtn\" class=\"btn btn-warning\">Cofnij<\/button><\/div><\/form><\/div>" +
     "<div class=\"col-md-4\">&nbsp;<\/div><\/div>"];
 
@@ -18,7 +18,9 @@ var selectedRow;
 
 $(document).ready(initialize);
 
+
 function initialize() {
+    var ee = new EventEmitter();
     getData();
 }
 
@@ -79,7 +81,14 @@ function onRowClick(rowNumber) {
     }
 }
 
+
 function showExtendedView(rowNumber) {
+    var user = users[rowNumber];
+    $("#extendedView").html(showExtendedViewPure(user));
+}
+
+
+function showExtendedViewPure(user) {
     var extViewHtml =
         ['<div class="container"><div class="row"><div class="col-md-2 evLabel">Imie:</div><div class="col-md-2 evValue">',
             '</div></div><div class="row"><div class="col-md-2 evLabel">Nazwisko:</div><div class="col-md-2 evValue">',
@@ -87,9 +96,8 @@ function showExtendedView(rowNumber) {
             '</div></div><div class="row"><div class="col-md-2 evLabel">Płeć:</div><div class="col-md-2 evValue">',
             '</div></div></div>'];
 
-    var user = users[rowNumber];
-    $("#extendedView").html(extViewHtml[0] + user.name
-        + extViewHtml[1] + user.surname + extViewHtml[2] + user.age + extViewHtml[3] + user.sex + extViewHtml[4]);
+    return extViewHtml[0] + user.name
+        + extViewHtml[1] + user.surname + extViewHtml[2] + user.age + extViewHtml[3] + user.sex + extViewHtml[4];
 }
 
 function setOnClickForTableViewButtons() {
@@ -115,43 +123,49 @@ function clearWorkspace() {
 
 function createFormView(mode) {
     $("#workspace").html(formHtml[0] + mode + " Użytkownika" + formHtml[1]);
+    var $form = $("#form");
     if (mode == "Edytuj") {
-        fillFormInputs($, users[selectedRow]);
-        $("#form").on("submit", onEditFormSubmit);
+        deserializeForm($form, users[selectedRow]);
+        form.on("submit", function (e) {
+            e.preventDefault();
+            onEditFormSubmit(users[selectedRow])
+        });
     } else {
-        $("#form").on("submit", onAddFormSubmit);
+        form.on("submit", onAddFormSubmit);
     }
     $("#cancelBtn").click(function () {
         createTableView(users);
     });
 }
 
-function fillFormInputs($, user) {
-    $("#name").val(user.name);
-    $("#surname").val(user.surname);
-    $("#age").val(user.age);
-    $("#sex").val(user.sex);
-}
 
-function onEditFormSubmit(e) {
-    e.preventDefault();
-    users[selectedRow] = serialize($);
+function onEditFormSubmit(user) {
+    users[selectedRow] = serializeForm($, user);
     createTableView(users);
 }
 
 function onAddFormSubmit(e) {
     e.preventDefault();
-    users.push(serialize($));
+    users.push(serializeForm($("#form")), {});
     createTableView(users);
 }
 
-function serialize($) {
-    var user = {};
-    user.name = $("#name").val();
-    user.surname = $("#surname").val();
-    user.age = $("#age").val();
-    user.sex = $("#sex").val();
+function serializeForm($form, user) {
+    var inputs = $form.find("input");
+    $.each(inputs, function (index,element) {
+        var name = element.name;
+        user[name] = element.value;
+    });
     return user;
+}
+
+function deserializeForm($form, user) {
+    var inputs = $form.find("input");
+    $.each(inputs, function (index, element) {
+        // debugger;
+        var name = element.name;
+        element.value = user[name];
+    });
 }
 
 function deleteUser() {
