@@ -22,7 +22,6 @@ function getData(ee) {
 
 // DetailsView
 function DetailsView(ee) {
-    var that = this;
     this.setUpListeners(ee, this);
 }
 
@@ -157,7 +156,6 @@ function setOnClickForButtons(ee) {
 function FormView(ee) {
     this.ee = ee;
     this.setUpListeners(ee, this);
-    var that = this;
 }
 
 FormView.prototype.setUpListeners = function (ee, that) {
