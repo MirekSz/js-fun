@@ -1,11 +1,13 @@
 function FormView(ee) {
     this.ee = ee;
-    this.setUpListeners(ee, this);
+    this.setUpListeners();
 }
 
-FormView.prototype.setUpListeners = function (ee, that) {
+FormView.prototype.setUpListeners = function () {
+    let that = this;
+    let ee = this.ee;
     ee.addListener('editUser', function (user) {
-        that.renderTo('#workspace', ee, "Edytuj");
+        that.renderTo('#workspace', "Edytuj");
         var $form = $("#form");
         deserializeForm($form, user);
         $form.on("submit", function (e) {
@@ -15,8 +17,8 @@ FormView.prototype.setUpListeners = function (ee, that) {
             ee.emitEvent('userEdited', [user]);
         });
     });
-    ee.addListener('addButtonClick', function () {
-        that.renderTo('#workspace', ee, "Dodaj");
+    ee.addListener('add-new-user', function () {
+        that.renderTo('#workspace', "Dodaj");
         var $form = $("#form");
         $form.on("submit", function (e) {
             e.preventDefault();
@@ -27,7 +29,8 @@ FormView.prototype.setUpListeners = function (ee, that) {
     });
 };
 
-FormView.prototype.renderTo = function (divID, ee, mode) {
+FormView.prototype.renderTo = function (divID, mode) {
+    let ee = this.ee
     $("#workspace").html(prepareFormHtml(mode));
     $("#cancelBtn").click(function () {
         ee.emitEvent('formCanceled');

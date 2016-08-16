@@ -1,29 +1,31 @@
 function ButtonView(ee) {
     this.ee = ee;
-    this.setUpListeners(ee, this);
+    this.setUpListeners();
 }
 
-ButtonView.prototype.setUpListeners = function (ee, that) {
+ButtonView.prototype.setUpListeners = function () {
+    let that = this;
+    let ee = this.ee;
     ee.addListener('onRowSelectionChange', function () {
         $("#editBtn").prop("disabled", false);
         $("#deleteBtn").prop("disabled", false);
     });
-    ee.addListener('addButtonClick', that.hideButtonView);
-    ee.addListener('addButtonClick', that.hideButtonView);
+    ee.addListener('add-new-user', that.hideButtonView);
+    ee.addListener('edit-current-user', that.hideButtonView);
     ee.addListener('userEdited', function () {
-        that.renderTo("#buttonView", ee);
+        that.renderTo("#buttonView");
     });
     ee.addListener('userAdded', function () {
-        that.renderTo("#buttonView", ee);
+        that.renderTo("#buttonView");
     });
     ee.addListener('formCanceled', function () {
-        that.renderTo("#buttonView", ee);
+        that.renderTo("#buttonView");
     });
 };
 
-ButtonView.prototype.renderTo = function (divID, ee) {
+ButtonView.prototype.renderTo = function (divID) {
     $(divID).html(prepareButtonHtml());
-    setOnClickForButtons(ee);
+    setOnClickForButtons(this.ee);
 };
 
 ButtonView.prototype.hideButtonView = function () {
@@ -32,15 +34,15 @@ ButtonView.prototype.hideButtonView = function () {
 
 function setOnClickForButtons(ee) {
     $("#addBtn").click(function () {
-        ee.emitEvent('addButtonClick');
+        ee.emitEvent('add-new-user');
     });
     $("#editBtn").click(function () {
-        ee.emitEvent('editButtonClick');
+        ee.emitEvent('edit-current-user');
     });
     $("#deleteBtn").click(function () {
         var answer = confirm("Czy chcesz usunąć tego użytkownika?");
         if (answer) {
-            ee.emitEvent('deleteButtonClick');
+            ee.emitEvent('delete-user');
         }
     });
 }

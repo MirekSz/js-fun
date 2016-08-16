@@ -1,14 +1,17 @@
 function DetailsView(ee) {
-    this.setUpListeners(ee, this);
+    this.ee = ee;
+    this.setUpListeners();
 }
 
-DetailsView.prototype.setUpListeners = function(ee, that){
+DetailsView.prototype.setUpListeners = function(){
+    let that = this;
+    let ee = this.ee;
     ee.addListener('onRowSelectionChange', function (user) {
         that.renderTo("#detailsView", user);
     });
-    ee.addListener('editButtonClick', that.hideDetailsView);
-    ee.addListener('addButtonClick', that.hideDetailsView);
-    ee.addListener('deleteButtonClick', that.hideDetailsView);
+    ee.addListener('edit-current-user', that.hideDetailsView);
+    ee.addListener('add-new-user', that.hideDetailsView);
+    ee.addListener('delete-user', that.hideDetailsView);
 };
 
 DetailsView.prototype.renderTo = function (divID, user) {
