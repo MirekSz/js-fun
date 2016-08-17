@@ -1,0 +1,3 @@
+https://github.com/lukehoban/es6features
+https://www.youtube.com/playlist?list=PLoYCgNOIyGACDQLaThEEKBAlgs4OIUGif
+https://remysharp.com/2010/10/08/what-is-a-polyfill
