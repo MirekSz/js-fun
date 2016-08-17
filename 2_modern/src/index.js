@@ -1,9 +1,9 @@
-import people from './people.js';
+import User from './user.js';
 import $ from 'jquery';
 $(document).ready(initialize);
 
 function initialize() {
-    var [ person, person2 ] = people;
-    console.log(person);
-    document.getElementById('workspace').innerHTML = `${person} and ${person2}`;
+    let marek = new User('Marek', 'Jasiński', 54, "M");
+    console.log(marek.name);
+    document.getElementById('workspace').innerHTML = marek.name;
 }

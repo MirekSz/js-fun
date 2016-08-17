@@ -45,12 +45,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-	
-	var _people2 = __webpack_require__(1);
-	
-	var _people3 = _interopRequireDefault(_people2);
+
+        var _people = __webpack_require__(1);
+
+        var _people2 = _interopRequireDefault(_people);
 	
 	var _jquery = __webpack_require__(2);
 	
@@ -61,23 +59,33 @@
 	(0, _jquery2.default)(document).ready(initialize);
 	
 	function initialize() {
-	    var _people = _slicedToArray(_people3.default, 2);
-	
-	    var person = _people[0];
-	    var person2 = _people[1];
-	
-	    console.log(person);
-	    document.getElementById('workspace').innerHTML = person + ' and ' + person2;
+        var marek = new _people2.default('Marek', 'Jasiński', 54, "M");
+        console.log(marek.name);
+        document.getElementById('workspace').innerHTML = marek.name;
 	}
 
 /***/ },
 /* 1 */
 /***/ function(module, exports) {
 
-	'use strict';
-	
-	var people = ['Mary', 'Jacek', 'Placek'];
-	module.exports = people;
+        "use strict";
+
+        function _classCallCheck(instance, Constructor) {
+            if (!(instance instanceof Constructor)) {
+                throw new TypeError("Cannot call a class as a function");
+            }
+        }
+
+        var User = function User(name, surname, age, sex) {
+            _classCallCheck(this, User);
+
+            this.name = name;
+            this.surname = surname;
+            this.age = age;
+            this.sex = sex;
+        };
+
+        module.exports = User;
 
 /***/ },
 /* 2 */
