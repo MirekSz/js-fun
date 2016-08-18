@@ -19,10 +19,10 @@ TableView.prototype.setUpListeners = function () {
         that.renderTo("#workspace");
     });
     ee.addListener('edit-current-user', function () {
-        that.hideTableView();
+        TableView.hideTableView();
         ee.emitEvent('editUser', [that.users[that.selectedRow]]);
     });
-    ee.addListener('add-new-user', that.hideTableView);
+    ee.addListener('add-new-user', TableView.hideTableView);
     ee.addListener('userEdited', function (user) {
         that.users[that.selectedRow] = user;
         that.renderTo("#workspace")
@@ -46,7 +46,7 @@ TableView.prototype.renderTo = function (divID) {
     });
 };
 
-TableView.prototype.hideTableView = function () {
+TableView.hideTableView = function () {
     $("#workspace").html("");
 };
 

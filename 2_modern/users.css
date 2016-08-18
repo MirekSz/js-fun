@@ -1,0 +1,47 @@
+.page-header {
+    text-align: center;
+    border-color: #444444;
+    color: #444444;
+}
+
+h3, h4 {
+    text-align: center;
+    font-weight: bold;
+}
+
+.activeRow {
+    background-color: dodgerblue;
+}
+
+thead {
+    background-color: #cccccc;
+    font-size: 18px;
+}
+
+tbody {
+    font-size: 15px;
+}
+
+#detailsView {
+    margin-top: 70px;
+    font-size: 18px;
+}
+
+table {
+    margin-top: 15px;
+}
+
+.evLabel {
+    text-align: center;
+    font-weight: bold;
+}
+
+.evValue {
+    text-align: center;
+
+}
+
+#cancelBtn {
+    alignment: right;
+    margin-left: 15px;
+}

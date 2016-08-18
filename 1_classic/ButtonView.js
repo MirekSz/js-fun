@@ -10,8 +10,8 @@ ButtonView.prototype.setUpListeners = function () {
         $("#editBtn").prop("disabled", false);
         $("#deleteBtn").prop("disabled", false);
     });
-    ee.addListener('add-new-user', that.hideButtonView);
-    ee.addListener('edit-current-user', that.hideButtonView);
+    ee.addListener('add-new-user', ButtonView.hideButtonView);
+    ee.addListener('edit-current-user', ButtonView.hideButtonView);
     ee.addListener('userEdited', function () {
         that.renderTo("#buttonView");
     });
@@ -28,7 +28,7 @@ ButtonView.prototype.renderTo = function (divID) {
     setOnClickForButtons(this.ee);
 };
 
-ButtonView.prototype.hideButtonView = function () {
+ButtonView.hideButtonView = function () {
     $("#buttonView").html("");
 };
 

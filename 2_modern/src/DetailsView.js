@@ -1,29 +1,31 @@
-function DetailsView(ee) {
-    this.ee = ee;
-    this.setUpListeners();
-}
+import $ from 'jquery';
 
-DetailsView.prototype.setUpListeners = function(){
-    let that = this;
-    let ee = this.ee;
-    ee.addListener('onRowSelectionChange', function (user) {
-        DetailsView.renderTo("#detailsView", user);
-    });
-    ee.addListener('edit-current-user', DetailsView.hideDetailsView);
-    ee.addListener('add-new-user', DetailsView.hideDetailsView);
-    ee.addListener('delete-user', DetailsView.hideDetailsView);
-};
+class DetailsView {
+    constructor(ee) {
+        this.ee = ee;
+        this.setUpListeners();
+    }
 
-DetailsView.renderTo = function (divID, user) {
-    $(divID).html(prepareDetailsHtml(user));
-};
+    setUpListeners () {
+        let ee = this.ee;
+        ee.on('onRowSelectionChange', function (user) {
+            DetailsView.renderTo("#detailsView", user);
+        });
+        ee.on('edit-current-user', DetailsView.hideDetailsView);
+        ee.on('add-new-user', DetailsView.hideDetailsView);
+        ee.on('delete-user', DetailsView.hideDetailsView);
+    }
 
-DetailsView.hideDetailsView = function () {
-    $("#detailsView").html("");
-};
+    static renderTo (divID, user) {
+        $(divID).html(DetailsView.prepareDetailsHtml(user));
+    }
 
-function prepareDetailsHtml(user) {
-    return `<div class="container">
+    static hideDetailsView () {
+        $("#detailsView").html("");
+    };
+
+    static prepareDetailsHtml(user) {
+        return `<div class="container">
                 <div class="row">
                     <div class="col-md-2 evLabel">Imie:</div>
                     <div class="col-md-2 evValue">${user.name}</div>
@@ -41,4 +43,7 @@ function prepareDetailsHtml(user) {
                     <div class="col-md-2 evValue">${user.sex}</div>
                 </div>
             </div>`;
+    }
 }
+
+export default DetailsView;

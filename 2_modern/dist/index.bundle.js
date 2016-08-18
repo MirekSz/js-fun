@@ -45,50 +45,53 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
-        var _people = __webpack_require__(1);
-
-        var _people2 = _interopRequireDefault(_people);
 	
-	var _jquery = __webpack_require__(2);
+	var _jquery = __webpack_require__(1);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _eventEmitter = __webpack_require__(2);
+	
+	var _eventEmitter2 = _interopRequireDefault(_eventEmitter);
+	
+	var _user = __webpack_require__(17);
+	
+	var _user2 = _interopRequireDefault(_user);
+	
+	var _ButtonView = __webpack_require__(18);
+	
+	var _ButtonView2 = _interopRequireDefault(_ButtonView);
+	
+	var _TableView = __webpack_require__(19);
+	
+	var _TableView2 = _interopRequireDefault(_TableView);
+	
+	var _DetailsView = __webpack_require__(20);
+	
+	var _DetailsView2 = _interopRequireDefault(_DetailsView);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	(0, _jquery2.default)(document).ready(initialize);
 	
 	function initialize() {
-        var marek = new _people2.default('Marek', 'Jasiński', 54, "M");
-        console.log(marek.name);
-        document.getElementById('workspace').innerHTML = marek.name;
+	    var ee = new _eventEmitter2.default();
+	    new _TableView2.default(ee);
+	    new _DetailsView2.default(ee);
+	    new _ButtonView2.default(ee).renderTo("#buttonView");
+	    //new FormView(ee);
+	    getData(ee);
+	}
+	
+	function getData(ee) {
+	    var users = [new _user2.default('Jacek', 'Doe', '43', 'Mężczyzna'), new _user2.default('Marzanna', 'Uss', '54', 'Kobieta'), new _user2.default('Julia', 'Dolej', '22', 'Kobieta')];
+	    setTimeout(function () {
+	        ee.emit('users-new-data', users);
+	    }, 30);
 	}
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
-
-        "use strict";
-
-        function _classCallCheck(instance, Constructor) {
-            if (!(instance instanceof Constructor)) {
-                throw new TypeError("Cannot call a class as a function");
-            }
-        }
-
-        var User = function User(name, surname, age, sex) {
-            _classCallCheck(this, User);
-
-            this.name = name;
-            this.surname = surname;
-            this.age = age;
-            this.sex = sex;
-        };
-
-        module.exports = User;
-
-/***/ },
-/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*eslint-disable no-unused-vars*/
@@ -10166,6 +10169,713 @@
 	return jQuery;
 	} );
 
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var d        = __webpack_require__(3)
+	  , callable = __webpack_require__(16)
+	
+	  , apply = Function.prototype.apply, call = Function.prototype.call
+	  , create = Object.create, defineProperty = Object.defineProperty
+	  , defineProperties = Object.defineProperties
+	  , hasOwnProperty = Object.prototype.hasOwnProperty
+	  , descriptor = { configurable: true, enumerable: false, writable: true }
+	
+	  , on, once, off, emit, methods, descriptors, base;
+	
+	on = function (type, listener) {
+		var data;
+	
+		callable(listener);
+	
+		if (!hasOwnProperty.call(this, '__ee__')) {
+			data = descriptor.value = create(null);
+			defineProperty(this, '__ee__', descriptor);
+			descriptor.value = null;
+		} else {
+			data = this.__ee__;
+		}
+		if (!data[type]) data[type] = listener;
+		else if (typeof data[type] === 'object') data[type].push(listener);
+		else data[type] = [data[type], listener];
+	
+		return this;
+	};
+	
+	once = function (type, listener) {
+		var once, self;
+	
+		callable(listener);
+		self = this;
+		on.call(this, type, once = function () {
+			off.call(self, type, once);
+			apply.call(listener, this, arguments);
+		});
+	
+		once.__eeOnceListener__ = listener;
+		return this;
+	};
+	
+	off = function (type, listener) {
+		var data, listeners, candidate, i;
+	
+		callable(listener);
+	
+		if (!hasOwnProperty.call(this, '__ee__')) return this;
+		data = this.__ee__;
+		if (!data[type]) return this;
+		listeners = data[type];
+	
+		if (typeof listeners === 'object') {
+			for (i = 0; (candidate = listeners[i]); ++i) {
+				if ((candidate === listener) ||
+						(candidate.__eeOnceListener__ === listener)) {
+					if (listeners.length === 2) data[type] = listeners[i ? 0 : 1];
+					else listeners.splice(i, 1);
+				}
+			}
+		} else {
+			if ((listeners === listener) ||
+					(listeners.__eeOnceListener__ === listener)) {
+				delete data[type];
+			}
+		}
+	
+		return this;
+	};
+	
+	emit = function (type) {
+		var i, l, listener, listeners, args;
+	
+		if (!hasOwnProperty.call(this, '__ee__')) return;
+		listeners = this.__ee__[type];
+		if (!listeners) return;
+	
+		if (typeof listeners === 'object') {
+			l = arguments.length;
+			args = new Array(l - 1);
+			for (i = 1; i < l; ++i) args[i - 1] = arguments[i];
+	
+			listeners = listeners.slice();
+			for (i = 0; (listener = listeners[i]); ++i) {
+				apply.call(listener, this, args);
+			}
+		} else {
+			switch (arguments.length) {
+			case 1:
+				call.call(listeners, this);
+				break;
+			case 2:
+				call.call(listeners, this, arguments[1]);
+				break;
+			case 3:
+				call.call(listeners, this, arguments[1], arguments[2]);
+				break;
+			default:
+				l = arguments.length;
+				args = new Array(l - 1);
+				for (i = 1; i < l; ++i) {
+					args[i - 1] = arguments[i];
+				}
+				apply.call(listeners, this, args);
+			}
+		}
+	};
+	
+	methods = {
+		on: on,
+		once: once,
+		off: off,
+		emit: emit
+	};
+	
+	descriptors = {
+		on: d(on),
+		once: d(once),
+		off: d(off),
+		emit: d(emit)
+	};
+	
+	base = defineProperties({}, descriptors);
+	
+	module.exports = exports = function (o) {
+		return (o == null) ? create(base) : defineProperties(Object(o), descriptors);
+	};
+	exports.methods = methods;
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var assign        = __webpack_require__(4)
+	  , normalizeOpts = __webpack_require__(11)
+	  , isCallable    = __webpack_require__(12)
+	  , contains      = __webpack_require__(13)
+	
+	  , d;
+	
+	d = module.exports = function (dscr, value/*, options*/) {
+		var c, e, w, options, desc;
+		if ((arguments.length < 2) || (typeof dscr !== 'string')) {
+			options = value;
+			value = dscr;
+			dscr = null;
+		} else {
+			options = arguments[2];
+		}
+		if (dscr == null) {
+			c = w = true;
+			e = false;
+		} else {
+			c = contains.call(dscr, 'c');
+			e = contains.call(dscr, 'e');
+			w = contains.call(dscr, 'w');
+		}
+	
+		desc = { value: value, configurable: c, enumerable: e, writable: w };
+		return !options ? desc : assign(normalizeOpts(options), desc);
+	};
+	
+	d.gs = function (dscr, get, set/*, options*/) {
+		var c, e, options, desc;
+		if (typeof dscr !== 'string') {
+			options = set;
+			set = get;
+			get = dscr;
+			dscr = null;
+		} else {
+			options = arguments[3];
+		}
+		if (get == null) {
+			get = undefined;
+		} else if (!isCallable(get)) {
+			options = get;
+			get = set = undefined;
+		} else if (set == null) {
+			set = undefined;
+		} else if (!isCallable(set)) {
+			options = set;
+			set = undefined;
+		}
+		if (dscr == null) {
+			c = true;
+			e = false;
+		} else {
+			c = contains.call(dscr, 'c');
+			e = contains.call(dscr, 'e');
+		}
+	
+		desc = { get: get, set: set, configurable: c, enumerable: e };
+		return !options ? desc : assign(normalizeOpts(options), desc);
+	};
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = __webpack_require__(5)()
+		? Object.assign
+		: __webpack_require__(6);
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = function () {
+		var assign = Object.assign, obj;
+		if (typeof assign !== 'function') return false;
+		obj = { foo: 'raz' };
+		assign(obj, { bar: 'dwa' }, { trzy: 'trzy' });
+		return (obj.foo + obj.bar + obj.trzy) === 'razdwatrzy';
+	};
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var keys  = __webpack_require__(7)
+	  , value = __webpack_require__(10)
+	
+	  , max = Math.max;
+	
+	module.exports = function (dest, src/*, …srcn*/) {
+		var error, i, l = max(arguments.length, 2), assign;
+		dest = Object(value(dest));
+		assign = function (key) {
+			try { dest[key] = src[key]; } catch (e) {
+				if (!error) error = e;
+			}
+		};
+		for (i = 1; i < l; ++i) {
+			src = arguments[i];
+			keys(src).forEach(assign);
+		}
+		if (error !== undefined) throw error;
+		return dest;
+	};
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = __webpack_require__(8)()
+		? Object.keys
+		: __webpack_require__(9);
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = function () {
+		try {
+			Object.keys('primitive');
+			return true;
+		} catch (e) { return false; }
+	};
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var keys = Object.keys;
+	
+	module.exports = function (object) {
+		return keys(object == null ? object : Object(object));
+	};
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = function (value) {
+		if (value == null) throw new TypeError("Cannot use null or undefined");
+		return value;
+	};
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var forEach = Array.prototype.forEach, create = Object.create;
+	
+	var process = function (src, obj) {
+		var key;
+		for (key in src) obj[key] = src[key];
+	};
+	
+	module.exports = function (options/*, …options*/) {
+		var result = create(null);
+		forEach.call(arguments, function (options) {
+			if (options == null) return;
+			process(Object(options), result);
+		});
+		return result;
+	};
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	// Deprecated
+	
+	'use strict';
+	
+	module.exports = function (obj) { return typeof obj === 'function'; };
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = __webpack_require__(14)()
+		? String.prototype.contains
+		: __webpack_require__(15);
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var str = 'razdwatrzy';
+	
+	module.exports = function () {
+		if (typeof str.contains !== 'function') return false;
+		return ((str.contains('dwa') === true) && (str.contains('foo') === false));
+	};
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var indexOf = String.prototype.indexOf;
+	
+	module.exports = function (searchString/*, position*/) {
+		return indexOf.call(this, searchString, arguments[1]) > -1;
+	};
+
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = function (fn) {
+		if (typeof fn !== 'function') throw new TypeError(fn + " is not a function");
+		return fn;
+	};
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var User = function () {
+	    function User(name, surname, age, sex) {
+	        _classCallCheck(this, User);
+	
+	        this.name = name;
+	        this.surname = surname;
+	        this.age = age;
+	        this.sex = sex;
+	    }
+	
+	    _createClass(User, [{
+	        key: "getName",
+	        value: function getName() {
+	            return this.name;
+	        }
+	    }, {
+	        key: "getSurname",
+	        value: function getSurname() {
+	            return this.surname;
+	        }
+	    }, {
+	        key: "getAge",
+	        value: function getAge() {
+	            return this.age;
+	        }
+	    }, {
+	        key: "getSex",
+	        value: function getSex() {
+	            return this.sex;
+	        }
+	    }]);
+	
+	    return User;
+	}();
+	
+	module.exports = User;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var ButtonView = function () {
+	    function ButtonView(ee) {
+	        _classCallCheck(this, ButtonView);
+	
+	        this.ee = ee;
+	        this.setUpListeners();
+	    }
+	
+	    _createClass(ButtonView, [{
+	        key: 'setUpListeners',
+	        value: function setUpListeners() {
+	            var that = this;
+	            var ee = this.ee;
+	            ee.on('onRowSelectionChange', function () {
+	                (0, _jquery2.default)("#editBtn").prop("disabled", false);
+	                (0, _jquery2.default)("#deleteBtn").prop("disabled", false);
+	            });
+	            ee.on('add-new-user', ButtonView.hideButtonView);
+	            ee.on('edit-current-user', ButtonView.hideButtonView);
+	            ee.on('userEdited', function () {
+	                that.renderTo("#buttonView");
+	            });
+	            ee.on('userAdded', function () {
+	                that.renderTo("#buttonView");
+	            });
+	            ee.on('formCanceled', function () {
+	                that.renderTo("#buttonView");
+	            });
+	        }
+	    }, {
+	        key: 'renderTo',
+	        value: function renderTo(divID) {
+	            (0, _jquery2.default)(divID).html(ButtonView.prepareButtonHtml());
+	            this.setOnClickForButtons(this.ee);
+	        }
+	    }, {
+	        key: 'setOnClickForButtons',
+	        value: function setOnClickForButtons(ee) {
+	            (0, _jquery2.default)("#addBtn").click(function () {
+	                ee.emit('add-new-user');
+	            });
+	            (0, _jquery2.default)("#editBtn").click(function () {
+	                ee.emit('edit-current-user');
+	            });
+	            (0, _jquery2.default)("#deleteBtn").click(function () {
+	                var answer = confirm("Czy chcesz usunąć tego użytkownika?");
+	                if (answer) {
+	                    ee.emit('delete-user');
+	                }
+	            });
+	        }
+	    }], [{
+	        key: 'hideButtonView',
+	        value: function hideButtonView() {
+	            (0, _jquery2.default)("#buttonView").html("");
+	        }
+	    }, {
+	        key: 'prepareButtonHtml',
+	        value: function prepareButtonHtml() {
+	            return '<button type="button" class="btn btn-primary" id="addBtn">Dodaj</button>\n            <button type="button" class="btn btn-primary" id="editBtn" disabled>Popraw</button>\n            <button type="button" class="btn btn-primary" id="deleteBtn" disabled>Usuń</button>';
+	        }
+	    }]);
+	
+	    return ButtonView;
+	}();
+	
+	exports.default = ButtonView;
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var TableView = function () {
+	    function TableView(ee) {
+	        _classCallCheck(this, TableView);
+	
+	        this.ee = ee;
+	        this.users = [];
+	        this.setUpListeners();
+	    }
+	
+	    _createClass(TableView, [{
+	        key: 'setUpListeners',
+	        value: function setUpListeners() {
+	            var that = this;
+	            var ee = that.ee;
+	            ee.on('users-new-data', function (users) {
+	                that.users = users;
+	                that.renderTo("#workspace");
+	            });
+	            ee.on('onRowClick', function (rowNumber) {
+	                that.onRowClick(rowNumber);
+	            });
+	            ee.on('delete-user', function () {
+	                that.users.splice(that.selectedRow, 1);
+	                that.renderTo("#workspace");
+	            });
+	            ee.on('edit-current-user', function () {
+	                TableView.hideTableView();
+	                ee.emit('editUser', [that.users[that.selectedRow]]);
+	            });
+	            ee.on('add-new-user', TableView.hideTableView);
+	            ee.on('userEdited', function (user) {
+	                that.users[that.selectedRow] = user;
+	                that.renderTo("#workspace");
+	            });
+	            ee.on('userAdded', function (user) {
+	                that.users.push(user);
+	                that.renderTo("#workspace");
+	            });
+	            ee.on('formCanceled', function () {
+	                that.renderTo("#workspace");
+	            });
+	        }
+	    }, {
+	        key: 'renderTo',
+	        value: function renderTo(divID) {
+	            this.selectedRow = -1;
+	            var that = this;
+	            (0, _jquery2.default)(divID).html(TableView.prepareTableHtml(that.users));
+	            (0, _jquery2.default)(divID).find("table tbody tr").on('click', function (event) {
+	                var userId = parseInt(event.target.parentElement.id.substring(8));
+	                that.ee.emit('onRowClick', [userId]);
+	            });
+	        }
+	    }, {
+	        key: 'onRowClick',
+	        value: function onRowClick(rowNumber) {
+	            var that = this;
+	            var selected = that.selectedRow;
+	            if (selected != -1) {
+	                (0, _jquery2.default)("#tableRow" + selected).removeClass("activeRow");
+	            }
+	            (0, _jquery2.default)("#tableRow" + rowNumber).addClass("activeRow");
+	            that.selectedRow = rowNumber;
+	            if (selected !== rowNumber) {
+	                var user = that.users[rowNumber];
+	                that.ee.emit('onRowSelectionChange', [user]);
+	            }
+	        }
+	    }], [{
+	        key: 'hideTableView',
+	        value: function hideTableView() {
+	            (0, _jquery2.default)("#workspace").html("");
+	        }
+	    }, {
+	        key: 'prepareTableHtml',
+	        value: function prepareTableHtml(users) {
+	            var tHeadHtml = '<thead>\n                        <tr>\n                            <th class="col-md-3">Imię</th>\n                            <th class="col-md-5">Nazwisko</th>\n                            <th class="col-md-2">Wiek</th>\n                            <th class="col-md-2">Płeć</th>\n                        </tr>\n                     </thead>';
+	
+	            var rowsHtml = '';
+	            var i;
+	            for (i = 0; i < users.length; i++) {
+	                rowsHtml += createRow(users[i], i);
+	            }
+	            return '<table class="table table-bordered">' + tHeadHtml + '<tbody>' + rowsHtml + '</tbody></table>';
+	
+	            function createRow(user, rowNumber) {
+	                return '<tr id="tableRow' + rowNumber + '">\n                    <td>' + user.name + '</td>\n                    <td>' + user.surname + '</td>\n                    <td>' + user.age + '</td>\n                    <td>' + user.sex + '</td>\n                </tr>';
+	            }
+	        }
+	    }]);
+	
+	    return TableView;
+	}();
+	
+	exports.default = TableView;
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var DetailsView = function () {
+	    function DetailsView(ee) {
+	        _classCallCheck(this, DetailsView);
+	
+	        this.ee = ee;
+	        this.setUpListeners();
+	    }
+	
+	    _createClass(DetailsView, [{
+	        key: 'setUpListeners',
+	        value: function setUpListeners() {
+	            var ee = this.ee;
+	            ee.on('onRowSelectionChange', function (user) {
+	                DetailsView.renderTo("#detailsView", user);
+	            });
+	            ee.on('edit-current-user', DetailsView.hideDetailsView);
+	            ee.on('add-new-user', DetailsView.hideDetailsView);
+	            ee.on('delete-user', DetailsView.hideDetailsView);
+	        }
+	    }], [{
+	        key: 'renderTo',
+	        value: function renderTo(divID, user) {
+	            (0, _jquery2.default)(divID).html(DetailsView.prepareDetailsHtml(user));
+	        }
+	    }, {
+	        key: 'hideDetailsView',
+	        value: function hideDetailsView() {
+	            (0, _jquery2.default)("#detailsView").html("");
+	        }
+	    }, {
+	        key: 'prepareDetailsHtml',
+	        value: function prepareDetailsHtml(user) {
+	            return '<div class="container">\n                <div class="row">\n                    <div class="col-md-2 evLabel">Imie:</div>\n                    <div class="col-md-2 evValue">' + user.name + '</div>\n                </div>\n                <div class="row">\n                    <div class="col-md-2 evLabel">Nazwisko:</div>\n                    <div class="col-md-2 evValue">' + user.surname + '</div>\n                </div>\n                <div class="row">\n                    <div class="col-md-2 evLabel">Wiek:</div>\n                    <div class="col-md-2 evValue">' + user.age + '</div>\n                </div>\n                <div class="row">\n                    <div class="col-md-2 evLabel">Płeć:</div>\n                    <div class="col-md-2 evValue">' + user.sex + '</div>\n                </div>\n            </div>';
+	        }
+	    }]);
+	
+	    return DetailsView;
+	}();
+	
+	exports.default = DetailsView;
 
 /***/ }
 /******/ ]);

@@ -27,18 +27,18 @@ function DetailsView(ee) {
 
 DetailsView.prototype.setUpListeners = function(ee, that){
     ee.addListener('onRowSelectionChange', function (user) {
-        that.renderTo("#extendedView", user);
+        DetailsView.renderTo("#extendedView", user);
     });
-    ee.addListener('editButtonClick', that.hideDetailsView);
-    ee.addListener('addButtonClick', that.hideDetailsView);
-    ee.addListener('deleteButtonClick', that.hideDetailsView);
+    ee.addListener('editButtonClick', DetailsView.hideDetailsView);
+    ee.addListener('addButtonClick', DetailsView.hideDetailsView);
+    ee.addListener('deleteButtonClick', DetailsView.hideDetailsView);
 };
 
-DetailsView.prototype.renderTo = function (divID, user) {
+DetailsView.renderTo = function (divID, user) {
     $(divID).html(prepareExtendedView(user));
 };
 
-DetailsView.prototype.hideDetailsView = function () {
+DetailsView.hideDetailsView = function () {
     $("#extendedView").html("");
 };
 
@@ -52,30 +52,30 @@ function TableView(ee) {
 TableView.prototype.setUpListeners = function (ee, that) {
     ee.addListener('users-new-data', function (users) {
         that.users = users;
-        that.renderTo("#workspace", that);
+        DetailsView.renderTo("#workspace", that);
     });
     ee.addListener('onRowClick', function (rowNumber) {
         that.onRowClick(rowNumber, that);
     });
     ee.addListener('deleteButtonClick', function () {
         that.users.splice(that.selectedRow, 1);
-        that.renderTo("#workspace", that);
+        DetailsView.renderTo("#workspace", that);
     });
     ee.addListener('editButtonClick', function () {
-        that.hideTableView();
+        TableView.hideTableView();
         ee.emitEvent('editUser', [that.users[that.selectedRow]]);
     });
-    ee.addListener('addButtonClick', that.hideTableView);
+    ee.addListener('addButtonClick', TableView.hideTableView);
     ee.addListener('userEdited', function (user) {
         that.users[that.selectedRow] = user;
-        that.renderTo("#workspace", that)
+        DetailsView.renderTo("#workspace", that)
     });
     ee.addListener('userAdded', function (user) {
         that.users.push(user);
-        that.renderTo("#workspace", that)
+        DetailsView.renderTo("#workspace", that)
     });
     ee.addListener('formCanceled', function () {
-        that.renderTo("#workspace", that);
+        DetailsView.renderTo("#workspace", that);
     });
 };
 
@@ -84,7 +84,7 @@ TableView.prototype.renderTo = function (divID, tableView) {
     $(divID).html(prepareTableHtml(tableView.users));
 };
 
-TableView.prototype.hideTableView = function () {
+TableView.hideTableView = function () {
     $("#workspace").html("");
 };
 
@@ -115,16 +115,16 @@ ButtonView.prototype.setUpListeners = function (ee, that) {
         $("#editBtn").prop("disabled", false);
         $("#deleteBtn").prop("disabled", false);
     });
-    ee.addListener('addButtonClick', that.hideButtonView);
-    ee.addListener('addButtonClick', that.hideButtonView);
+    ee.addListener('addButtonClick', ButtonView.hideButtonView);
+    ee.addListener('addButtonClick', ButtonView.hideButtonView);
     ee.addListener('userEdited', function () {
-        that.renderTo("#buttonView", ee);
+        DetailsView.renderTo("#buttonView", ee);
     });
     ee.addListener('userAdded', function () {
-        that.renderTo("#buttonView", ee);
+        DetailsView.renderTo("#buttonView", ee);
     });
     ee.addListener('formCanceled', function () {
-        that.renderTo("#buttonView", ee);
+        DetailsView.renderTo("#buttonView", ee);
     });
 };
 
@@ -133,7 +133,7 @@ ButtonView.prototype.renderTo = function (divID, ee) {
     setOnClickForButtons(ee);
 };
 
-ButtonView.prototype.hideButtonView = function () {
+ButtonView.hideButtonView = function () {
     $("#buttonView").html("");
 };
 
@@ -160,7 +160,7 @@ function FormView(ee) {
 
 FormView.prototype.setUpListeners = function (ee, that) {
     ee.addListener('editUser', function (user) {
-        that.renderTo('#workspace', ee, "Edytuj");
+        DetailsView.renderTo('#workspace', ee, "Edytuj");
         var $form = $("#form");
         deserializeForm($form, user);
         $form.on("submit", function (e) {
@@ -171,7 +171,7 @@ FormView.prototype.setUpListeners = function (ee, that) {
         });
     });
     ee.addListener('addButtonClick', function () {
-        that.renderTo('#workspace', ee, "Dodaj");
+        DetailsView.renderTo('#workspace', ee, "Dodaj");
         var $form = $("#form");
         $form.on("submit", function (e) {
             e.preventDefault();

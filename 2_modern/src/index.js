@@ -1,9 +1,27 @@
-import User from './user.js';
 import $ from 'jquery';
+import EventEmitter from "event-emitter";
+
+import User from './user.js';
+import ButtonView from "./ButtonView.js";
+import TableView from "./TableView.js";
+import DetailsView from "./DetailsView.js";
+
 $(document).ready(initialize);
 
 function initialize() {
-    let marek = new User('Marek', 'Jasiński', 54, "M");
-    console.log(marek.name);
-    document.getElementById('workspace').innerHTML = marek.name;
+    var ee = new EventEmitter();
+    new TableView(ee);
+    new DetailsView(ee);
+    new ButtonView(ee).renderTo("#buttonView");
+    //new FormView(ee);
+    getData(ee);
+}
+
+function getData(ee) {
+    var users = [new User('Jacek', 'Doe', '43', 'Mężczyzna'),
+                new User('Marzanna', 'Uss', '54', 'Kobieta'),
+                new User('Julia', 'Dolej', '22', 'Kobieta')];
+    setTimeout(function () {
+        ee.emit('users-new-data', users);
+    }, 30);
 }
