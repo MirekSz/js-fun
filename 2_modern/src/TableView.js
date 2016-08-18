@@ -23,7 +23,7 @@ class TableView {
         });
         ee.on('edit-current-user', function () {
             TableView.hideTableView();
-            ee.emit('editUser', [that.users[that.selectedRow]]);
+            ee.emit('editUser', that.users[that.selectedRow]);
         });
         ee.on('add-new-user', TableView.hideTableView);
         ee.on('userEdited', function (user) {
@@ -45,21 +45,20 @@ class TableView {
         $(divID).html(TableView.prepareTableHtml(that.users));
         $(divID).find("table tbody tr").on('click', function (event) {
             var userId = parseInt((event.target.parentElement.id).substring(8));
-            that.ee.emit('onRowClick', [userId]);
+            that.ee.emit('onRowClick', userId);
         });
     };
 
     onRowClick (rowNumber) {
         let that = this;
-        var selected = that.selectedRow;
+        let selected = that.selectedRow;
         if (selected != -1) {
             $("#tableRow" + selected).removeClass("activeRow");
         }
         $("#tableRow" + rowNumber).addClass("activeRow");
         that.selectedRow = rowNumber;
         if (selected !== rowNumber) {
-            let user = that.users[rowNumber];
-            that.ee.emit('onRowSelectionChange', [user]);
+            that.ee.emit('onRowSelectionChange', that.users[rowNumber]);
         }
     };
 

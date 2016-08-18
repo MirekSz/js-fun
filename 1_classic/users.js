@@ -166,7 +166,7 @@ FormView.prototype.setUpListeners = function (ee, that) {
         $form.on("submit", function (e) {
             e.preventDefault();
             var user = serializeForm($form, {});
-            that.hideFormView();
+            FormView.hideFormView();
             ee.emitEvent('userEdited', [user]);
         });
     });
@@ -176,7 +176,7 @@ FormView.prototype.setUpListeners = function (ee, that) {
         $form.on("submit", function (e) {
             e.preventDefault();
             var user = serializeForm($form, {});
-            that.hideFormView();
+            FormView.hideFormView();
             ee.emitEvent('userAdded', [user]);
         });
     });
@@ -189,7 +189,7 @@ FormView.prototype.renderTo = function (divID, ee, mode) {
     });
 };
 
-FormView.prototype.hideFormView = function () {
+FormView.hideFormView = function () {
     $("#workspace").html("");
 };
 

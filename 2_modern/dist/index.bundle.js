@@ -70,6 +70,10 @@
 	
 	var _DetailsView2 = _interopRequireDefault(_DetailsView);
 	
+	var _FormView = __webpack_require__(21);
+	
+	var _FormView2 = _interopRequireDefault(_FormView);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	(0, _jquery2.default)(document).ready(initialize);
@@ -79,7 +83,7 @@
 	    new _TableView2.default(ee);
 	    new _DetailsView2.default(ee);
 	    new _ButtonView2.default(ee).renderTo("#buttonView");
-	    //new FormView(ee);
+	    new _FormView2.default(ee);
 	    getData(ee);
 	}
 	
@@ -10747,7 +10751,7 @@
 	            });
 	            ee.on('edit-current-user', function () {
 	                TableView.hideTableView();
-	                ee.emit('editUser', [that.users[that.selectedRow]]);
+	                ee.emit('editUser', that.users[that.selectedRow]);
 	            });
 	            ee.on('add-new-user', TableView.hideTableView);
 	            ee.on('userEdited', function (user) {
@@ -10770,7 +10774,7 @@
 	            (0, _jquery2.default)(divID).html(TableView.prepareTableHtml(that.users));
 	            (0, _jquery2.default)(divID).find("table tbody tr").on('click', function (event) {
 	                var userId = parseInt(event.target.parentElement.id.substring(8));
-	                that.ee.emit('onRowClick', [userId]);
+	                that.ee.emit('onRowClick', userId);
 	            });
 	        }
 	    }, {
@@ -10784,8 +10788,7 @@
 	            (0, _jquery2.default)("#tableRow" + rowNumber).addClass("activeRow");
 	            that.selectedRow = rowNumber;
 	            if (selected !== rowNumber) {
-	                var user = that.users[rowNumber];
-	                that.ee.emit('onRowSelectionChange', [user]);
+	                that.ee.emit('onRowSelectionChange', that.users[rowNumber]);
 	            }
 	        }
 	    }], [{
@@ -10876,6 +10879,118 @@
 	}();
 	
 	exports.default = DetailsView;
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var FormView = function () {
+	    function FormView(ee) {
+	        _classCallCheck(this, FormView);
+	
+	        this.ee = ee;
+	        this.setUpListeners();
+	    }
+	
+	    _createClass(FormView, [{
+	        key: 'setUpListeners',
+	        value: function setUpListeners() {
+	            var that = this;
+	            var ee = this.ee;
+	            ee.on('editUser', function (user) {
+	                that.renderTo('#workspace', "Edytuj");
+	                var $form = (0, _jquery2.default)("#form");
+	                that.deserializeForm($form, user);
+	
+	                $form.on("submit", function (e) {
+	                    e.preventDefault();
+	                    var user = that.serializeForm($form, {});
+	                    FormView.hideFormView();
+	                    ee.emit('userEdited', user);
+	                });
+	            });
+	            ee.on('add-new-user', function () {
+	                that.renderTo('#workspace', "Dodaj");
+	                var $form = (0, _jquery2.default)("#form");
+	
+	                $form.on("submit", function (e) {
+	                    e.preventDefault();
+	                    var user = that.serializeForm($form, {});
+	                    FormView.hideFormView();
+	                    ee.emit('userAdded', user);
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'renderTo',
+	        value: function renderTo(divID, mode) {
+	            var ee = this.ee;
+	            (0, _jquery2.default)(divID).html(FormView.prepareFormHtml(mode));
+	            (0, _jquery2.default)("#cancelBtn").click(function () {
+	                ee.emit('formCanceled');
+	            });
+	        }
+	    }, {
+	        key: 'serializeForm',
+	        value: function serializeForm($form, user) {
+	            var inputs = $form.find("input");
+	            _jquery2.default.each(inputs, function (index, element) {
+	                console.log(element);
+	                user[element.name] = element.value;
+	            });
+	            var selects = $form.find("select");
+	            _jquery2.default.each(selects, function (index, element) {
+	                console.log(element);
+	                user[element.name] = element.value;
+	            });
+	            return user;
+	        }
+	    }, {
+	        key: 'deserializeForm',
+	        value: function deserializeForm($form, user) {
+	            var inputs = $form.find("input");
+	            _jquery2.default.each(inputs, function (index, element) {
+	                var name = element.name;
+	                element.value = user[name];
+	            });
+	            var selects = $form.find("select");
+	            _jquery2.default.each(selects, function (index, element) {
+	                console.log(element);
+	                element.value = user[element.name];
+	            });
+	        }
+	    }], [{
+	        key: 'hideFormView',
+	        value: function hideFormView() {
+	            (0, _jquery2.default)("#workspace").html("");
+	        }
+	    }, {
+	        key: 'prepareFormHtml',
+	        value: function prepareFormHtml(mode) {
+	            return '<div class="row">\n                <div class="col-md-4">&nbsp;</div>\n                <div class="col-md-4">\n                    <h3>' + (mode + " Użytkownika") + '</h3>\n                    <form name="form" id="form">\n                        <div class="form-group">\n                            <label for="name">Imie:</label>\n                            <input id="name" name="name" class="form-control" type="text" required>\n                        </div>\n                        <div class="form-group">\n                            <label for="surname">Nazwisko:</label>\n                            <input id="surname" name="surname" class="form-control" type="text" required>\n                        </div>\n                        <div class="form-group">\n                            <label for="age">Wiek:</label>\n                            <input id="age" name="age" class="form-control" type="number" min="18" max="99" required>\n                        </div>\n                        <div class="form-group">\n                            <label for="sex">Płeć:</label>\n                            <select class="form-control" name="sex" id="sex">\n                                <option>Mężczyzna</option>\n                                <option>Kobieta</option>\n                            </select>\n                        </div>\n                        <div class="form-group">\n                            <button type="submit" class="btn btn-primary">Zapisz</button>\n                            <button type="button" id="cancelBtn" class="btn btn-warning">Cofnij</button>\n                        </div>\n                    </form>\n                </div>\n            <div class="col-md-4">&nbsp;</div></div>';
+	        }
+	    }]);
+	
+	    return FormView;
+	}();
+	
+	exports.default = FormView;
 
 /***/ }
 /******/ ]);

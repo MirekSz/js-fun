@@ -5,6 +5,7 @@ import User from './user.js';
 import ButtonView from "./ButtonView.js";
 import TableView from "./TableView.js";
 import DetailsView from "./DetailsView.js";
+import FormView from "./FormView.js";
 
 $(document).ready(initialize);
 
@@ -13,7 +14,7 @@ function initialize() {
     new TableView(ee);
     new DetailsView(ee);
     new ButtonView(ee).renderTo("#buttonView");
-    //new FormView(ee);
+    new FormView(ee);
     getData(ee);
 }
 
