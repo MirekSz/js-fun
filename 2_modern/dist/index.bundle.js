@@ -82,7 +82,7 @@
 	    var ee = new _eventEmitter2.default();
 	    new _TableView2.default(ee, '#workspace');
 	    new _DetailsView2.default(ee, '#detailsView');
-	    new _ButtonView2.default(ee).renderTo("#buttonView");
+	    new _ButtonView2.default(ee, "#buttonView").render();
 	    new _FormView2.default(ee, '#workspace');
 	    getData(ee);
 	}
@@ -10609,49 +10609,44 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var ButtonView = function () {
-	    function ButtonView(ee) {
+	    /**
+	     *
+	     * @param {EventEmitter} ee
+	     * @param {string} divID
+	     */
+	    function ButtonView(ee, divID) {
 	        _classCallCheck(this, ButtonView);
 	
 	        this.ee = ee;
+	        this.divID = divID;
 	        this.setUpListeners();
 	    }
 	
 	    _createClass(ButtonView, [{
 	        key: 'setUpListeners',
 	        value: function setUpListeners() {
-	            var that = this;
 	            var ee = this.ee;
-	            ee.on('onRowSelectionChange', function () {
-	                (0, _jquery2.default)("#editBtn").prop("disabled", false);
-	                (0, _jquery2.default)("#deleteBtn").prop("disabled", false);
-	            });
-	            ee.on('add-new-user', ButtonView.hideButtonView);
-	            ee.on('edit-current-user', ButtonView.hideButtonView);
-	            ee.on('userEdited', function () {
-	                that.renderTo("#buttonView");
-	            });
-	            ee.on('userAdded', function () {
-	                that.renderTo("#buttonView");
-	            });
-	            ee.on('formCanceled', function () {
-	                that.renderTo("#buttonView");
-	            });
+	
+	            ee.on('onRowSelectionChange', ButtonView.enableButtons);
+	            ee.on('add-new-user', this.hideButtonView);
+	            ee.on('edit-current-user', this.hideButtonView);
+	            ee.on('userEdited', this.render);
+	            ee.on('userAdded', this.render);
+	            ee.on('formCanceled', this.render);
 	        }
 	    }, {
-	        key: 'renderTo',
-	        value: function renderTo(divID) {
-	            (0, _jquery2.default)(divID).html(ButtonView.prepareButtonHtml());
-	            this.setOnClickForButtons(this.ee);
+	        key: 'render',
+	        value: function render() {
+	            (0, _jquery2.default)(this.divID).html(ButtonView.prepareButtonHtml());
+	            this.setOnClickForButtons();
 	        }
 	    }, {
 	        key: 'setOnClickForButtons',
-	        value: function setOnClickForButtons(ee) {
-	            (0, _jquery2.default)("#addBtn").click(function () {
-	                ee.emit('add-new-user');
-	            });
-	            (0, _jquery2.default)("#editBtn").click(function () {
-	                ee.emit('edit-current-user');
-	            });
+	        value: function setOnClickForButtons() {
+	            var ee = this.ee;
+	
+	            (0, _jquery2.default)("#addBtn").click(ee.emit('add-new-user'));
+	            (0, _jquery2.default)("#editBtn").click(ee.emit('edit-current-user'));
 	            (0, _jquery2.default)("#deleteBtn").click(function () {
 	                var answer = confirm("Czy chcesz usunąć tego użytkownika?");
 	                if (answer) {
@@ -10659,10 +10654,16 @@
 	                }
 	            });
 	        }
-	    }], [{
+	    }, {
 	        key: 'hideButtonView',
 	        value: function hideButtonView() {
-	            (0, _jquery2.default)("#buttonView").html("");
+	            (0, _jquery2.default)(this.divID).html("");
+	        }
+	    }], [{
+	        key: 'enableButtons',
+	        value: function enableButtons() {
+	            (0, _jquery2.default)("#editBtn").prop("disabled", false);
+	            (0, _jquery2.default)("#deleteBtn").prop("disabled", false);
 	        }
 	    }, {
 	        key: 'prepareButtonHtml',

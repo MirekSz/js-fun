@@ -13,7 +13,7 @@ function initialize() {
     let ee = new EventEmitter();
     new TableView(ee, '#workspace');
     new DetailsView(ee, '#detailsView');
-    new ButtonView(ee).renderTo("#buttonView");
+    new ButtonView(ee, "#buttonView").render();
     new FormView(ee, '#workspace');
     getData(ee);
 }
