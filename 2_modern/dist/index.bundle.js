@@ -80,10 +80,10 @@
 	
 	function initialize() {
 	    var ee = new _eventEmitter2.default();
-	    new _TableView2.default(ee);
+	    new _TableView2.default(ee, '#workspace');
 	    new _DetailsView2.default(ee);
 	    new _ButtonView2.default(ee).renderTo("#buttonView");
-	    new _FormView2.default(ee);
+	    new _FormView2.default(ee, '#workspace');
 	    getData(ee);
 	}
 	
@@ -10575,44 +10575,16 @@
 
 	"use strict";
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var User = function () {
-	    function User(name, surname, age, sex) {
-	        _classCallCheck(this, User);
+	var User = function User(name, surname, age, sex) {
+	    _classCallCheck(this, User);
 	
-	        this.name = name;
-	        this.surname = surname;
-	        this.age = age;
-	        this.sex = sex;
-	    }
-	
-	    _createClass(User, [{
-	        key: "getName",
-	        value: function getName() {
-	            return this.name;
-	        }
-	    }, {
-	        key: "getSurname",
-	        value: function getSurname() {
-	            return this.surname;
-	        }
-	    }, {
-	        key: "getAge",
-	        value: function getAge() {
-	            return this.age;
-	        }
-	    }, {
-	        key: "getSex",
-	        value: function getSex() {
-	            return this.sex;
-	        }
-	    }]);
-	
-	    return User;
-	}();
+	    this.name = name;
+	    this.surname = surname;
+	    this.age = age;
+	    this.sex = sex;
+	};
 	
 	module.exports = User;
 
@@ -10725,10 +10697,16 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var TableView = function () {
-	    function TableView(ee) {
+	    /**
+	     *
+	     * @param {EventEmitter} ee
+	     * @param {string} divID
+	     */
+	    function TableView(ee, divID) {
 	        _classCallCheck(this, TableView);
 	
 	        this.ee = ee;
+	        this.divID = divID;
 	        this.users = [];
 	        this.setUpListeners();
 	    }
@@ -10736,78 +10714,93 @@
 	    _createClass(TableView, [{
 	        key: 'setUpListeners',
 	        value: function setUpListeners() {
-	            var that = this;
-	            var ee = that.ee;
+	            var _this = this;
+	
+	            var ee = this.ee;
+	
 	            ee.on('users-new-data', function (users) {
-	                that.users = users;
-	                that.renderTo("#workspace");
-	            });
-	            ee.on('onRowClick', function (rowNumber) {
-	                that.onRowClick(rowNumber);
+	                _this.users = users;
+	                _this.render();
 	            });
 	            ee.on('delete-user', function () {
-	                that.users.splice(that.selectedRow, 1);
-	                that.renderTo("#workspace");
+	                _this.users.splice(_this.selectedRow, 1);
+	                _this.render();
 	            });
 	            ee.on('edit-current-user', function () {
-	                TableView.hideTableView();
-	                ee.emit('editUser', that.users[that.selectedRow]);
+	                _this.hideTableView();
+	                ee.emit('editUser', _this.users[_this.selectedRow]);
 	            });
-	            ee.on('add-new-user', TableView.hideTableView);
+	            ee.on('add-new-user', this.hideTableView);
 	            ee.on('userEdited', function (user) {
-	                that.users[that.selectedRow] = user;
-	                that.renderTo("#workspace");
+	                _this.users[_this.selectedRow] = user;
+	                _this.render();
 	            });
 	            ee.on('userAdded', function (user) {
-	                that.users.push(user);
-	                that.renderTo("#workspace");
+	                _this.users.push(user);
+	                _this.render();
 	            });
 	            ee.on('formCanceled', function () {
-	                that.renderTo("#workspace");
+	                _this.render();
 	            });
 	        }
 	    }, {
-	        key: 'renderTo',
-	        value: function renderTo(divID) {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+	
 	            this.selectedRow = -1;
-	            var that = this;
-	            (0, _jquery2.default)(divID).html(TableView.prepareTableHtml(that.users));
-	            (0, _jquery2.default)(divID).find("table tbody tr").on('click', function (event) {
+	            (0, _jquery2.default)(this.divID).html(TableView.prepareTableHtml(this.users));
+	            (0, _jquery2.default)(this.divID).find("table tbody tr").on('click', function (event) {
 	                var userId = parseInt(event.target.parentElement.id.substring(8));
-	                that.ee.emit('onRowClick', userId);
+	                _this2.onRowClick(userId);
 	            });
 	        }
 	    }, {
 	        key: 'onRowClick',
+	
+	
+	        /**
+	         *
+	         * @param {number} rowNumber
+	         */
 	        value: function onRowClick(rowNumber) {
-	            var that = this;
-	            var selected = that.selectedRow;
+	            var selected = this.selectedRow;
 	            if (selected != -1) {
 	                (0, _jquery2.default)("#tableRow" + selected).removeClass("activeRow");
 	            }
 	            (0, _jquery2.default)("#tableRow" + rowNumber).addClass("activeRow");
-	            that.selectedRow = rowNumber;
+	            this.selectedRow = rowNumber;
 	            if (selected !== rowNumber) {
-	                that.ee.emit('onRowSelectionChange', that.users[rowNumber]);
+	                this.ee.emit('onRowSelectionChange', this.users[rowNumber]);
 	            }
 	        }
-	    }], [{
+	    }, {
 	        key: 'hideTableView',
 	        value: function hideTableView() {
-	            (0, _jquery2.default)("#workspace").html("");
+	            (0, _jquery2.default)(this.divID).html("");
 	        }
-	    }, {
+	    }], [{
 	        key: 'prepareTableHtml',
+	
+	
+	        /**
+	         *
+	         * @param {Array} users
+	         * @returns {string}
+	         */
 	        value: function prepareTableHtml(users) {
 	            var tHeadHtml = '<thead>\n                        <tr>\n                            <th class="col-md-3">Imię</th>\n                            <th class="col-md-5">Nazwisko</th>\n                            <th class="col-md-2">Wiek</th>\n                            <th class="col-md-2">Płeć</th>\n                        </tr>\n                     </thead>';
 	
-	            var rowsHtml = '';
-	            var i;
-	            for (i = 0; i < users.length; i++) {
-	                rowsHtml += createRow(users[i], i);
-	            }
-	            return '<table class="table table-bordered">' + tHeadHtml + '<tbody>' + rowsHtml + '</tbody></table>';
+	            var rowsHtml = users.map(createRow).join('');
 	
+	            return '<table class="table table-bordered">\n                    ' + tHeadHtml + '\n                    <tbody>\n                        ' + rowsHtml + '\n                    </tbody>\n                </table>';
+	
+	            /**
+	             *
+	             * @param  {User} user
+	             * @param {number} rowNumber
+	             * @returns {string}
+	             */
 	            function createRow(user, rowNumber) {
 	                return '<tr id="tableRow' + rowNumber + '">\n                    <td>' + user.name + '</td>\n                    <td>' + user.surname + '</td>\n                    <td>' + user.age + '</td>\n                    <td>' + user.sex + '</td>\n                </tr>';
 	            }
@@ -10901,53 +10894,84 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var FormView = function () {
-	    function FormView(ee) {
+	    /**
+	     *
+	     * @param {EventEmitter} ee
+	     * @param {string} divID
+	     */
+	    function FormView(ee, divID) {
 	        _classCallCheck(this, FormView);
 	
 	        this.ee = ee;
+	        this.divID = divID;
 	        this.setUpListeners();
 	    }
 	
 	    _createClass(FormView, [{
 	        key: 'setUpListeners',
 	        value: function setUpListeners() {
-	            var that = this;
+	            var _this = this;
+	
 	            var ee = this.ee;
+	
 	            ee.on('editUser', function (user) {
-	                that.renderTo('#workspace', "Edytuj");
+	                _this.renderWithMode("Edytuj");
 	                var $form = (0, _jquery2.default)("#form");
-	                that.deserializeForm($form, user);
+	                _this.deserializeForm($form, user);
 	
 	                $form.on("submit", function (e) {
 	                    e.preventDefault();
-	                    var user = that.serializeForm($form, {});
-	                    FormView.hideFormView();
+	                    var user = _this.serializeForm($form, {});
+	                    _this.hideFormView();
 	                    ee.emit('userEdited', user);
 	                });
 	            });
 	            ee.on('add-new-user', function () {
-	                that.renderTo('#workspace', "Dodaj");
+	                _this.renderWithMode("Dodaj");
 	                var $form = (0, _jquery2.default)("#form");
 	
 	                $form.on("submit", function (e) {
 	                    e.preventDefault();
-	                    var user = that.serializeForm($form, {});
-	                    FormView.hideFormView();
+	                    var user = _this.serializeForm($form, {});
+	                    _this.hideFormView();
 	                    ee.emit('userAdded', user);
 	                });
 	            });
 	        }
 	    }, {
-	        key: 'renderTo',
-	        value: function renderTo(divID, mode) {
+	        key: 'renderWithMode',
+	
+	
+	        /**
+	         *
+	         * @param {string} mode
+	         */
+	        value: function renderWithMode(mode) {
+	            var _this2 = this;
+	
 	            var ee = this.ee;
-	            (0, _jquery2.default)(divID).html(FormView.prepareFormHtml(mode));
+	
+	            (0, _jquery2.default)(this.divID).html(FormView.prepareFormHtml(mode));
 	            (0, _jquery2.default)("#cancelBtn").click(function () {
+	                _this2.hideFormView();
 	                ee.emit('formCanceled');
 	            });
 	        }
 	    }, {
+	        key: 'hideFormView',
+	        value: function hideFormView() {
+	            (0, _jquery2.default)(this.divID).html("");
+	        }
+	    }, {
 	        key: 'serializeForm',
+	
+	
+	        /**
+	         *
+	         * @param $form
+	         * @param {User} user
+	         * @returns {User}
+	         */
 	        value: function serializeForm($form, user) {
 	            var inputs = $form.find("input");
 	            _jquery2.default.each(inputs, function (index, element) {
@@ -10961,13 +10985,19 @@
 	            });
 	            return user;
 	        }
+	
+	        /**
+	         *
+	         * @param $form
+	         * @param {User} user
+	         */
+	
 	    }, {
 	        key: 'deserializeForm',
 	        value: function deserializeForm($form, user) {
 	            var inputs = $form.find("input");
 	            _jquery2.default.each(inputs, function (index, element) {
-	                var name = element.name;
-	                element.value = user[name];
+	                element.value = user[element.name];
 	            });
 	            var selects = $form.find("select");
 	            _jquery2.default.each(selects, function (index, element) {
@@ -10975,12 +11005,14 @@
 	                element.value = user[element.name];
 	            });
 	        }
+	
+	        /**
+	         *
+	         * @param {string} mode
+	         * @returns {string}
+	         */
+	
 	    }], [{
-	        key: 'hideFormView',
-	        value: function hideFormView() {
-	            (0, _jquery2.default)("#workspace").html("");
-	        }
-	    }, {
 	        key: 'prepareFormHtml',
 	        value: function prepareFormHtml(mode) {
 	            return '<div class="row">\n                <div class="col-md-4">&nbsp;</div>\n                <div class="col-md-4">\n                    <h3>' + (mode + " Użytkownika") + '</h3>\n                    <form name="form" id="form">\n                        <div class="form-group">\n                            <label for="name">Imie:</label>\n                            <input id="name" name="name" class="form-control" type="text" required>\n                        </div>\n                        <div class="form-group">\n                            <label for="surname">Nazwisko:</label>\n                            <input id="surname" name="surname" class="form-control" type="text" required>\n                        </div>\n                        <div class="form-group">\n                            <label for="age">Wiek:</label>\n                            <input id="age" name="age" class="form-control" type="number" min="18" max="99" required>\n                        </div>\n                        <div class="form-group">\n                            <label for="sex">Płeć:</label>\n                            <select class="form-control" name="sex" id="sex">\n                                <option>Mężczyzna</option>\n                                <option>Kobieta</option>\n                            </select>\n                        </div>\n                        <div class="form-group">\n                            <button type="submit" class="btn btn-primary">Zapisz</button>\n                            <button type="button" id="cancelBtn" class="btn btn-warning">Cofnij</button>\n                        </div>\n                    </form>\n                </div>\n            <div class="col-md-4">&nbsp;</div></div>';

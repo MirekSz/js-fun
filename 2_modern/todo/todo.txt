@@ -1,3 +1,14 @@
 https://github.com/lukehoban/es6features
 https://www.youtube.com/playlist?list=PLoYCgNOIyGACDQLaThEEKBAlgs4OIUGif
 https://remysharp.com/2010/10/08/what-is-a-polyfill
+
+1. div
+2. =>
+3. JSDOC
+4. eventy
+5. users jako mapa
+5. Handlebars
+6. skrypty
+7. backnd axios/promise
+8. less
+

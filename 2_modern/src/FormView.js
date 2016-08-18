@@ -1,51 +1,67 @@
 import $ from 'jquery';
 
 class FormView {
-    constructor(ee) {
+    /**
+     *
+     * @param {EventEmitter} ee
+     * @param {string} divID
+     */
+    constructor(ee, divID) {
         this.ee = ee;
+        this.divID = divID;
         this.setUpListeners();
     }
 
     setUpListeners() {
-        let that = this;
-        let ee = this.ee;
-        ee.on('editUser', function (user) {
-            that.renderTo('#workspace', "Edytuj");
-            var $form = $("#form");
-            that.deserializeForm($form, user);
+        let {ee} = this;
+        ee.on('editUser', (user) => {
+            this.renderWithMode("Edytuj");
+            let $form = $("#form");
+            this.deserializeForm($form, user);
 
-            $form.on("submit", function (e) {
+            $form.on("submit", (e) => {
                 e.preventDefault();
-                var user = that.serializeForm($form, {});
-                FormView.hideFormView();
+                var user = this.serializeForm($form, {});
+                this.hideFormView();
                 ee.emit('userEdited', user);
             });
         });
-        ee.on('add-new-user', function () {
-            that.renderTo('#workspace', "Dodaj");
+        ee.on('add-new-user', () => {
+            this.renderWithMode("Dodaj");
             var $form = $("#form");
 
-            $form.on("submit", function (e) {
+            $form.on("submit", (e) => {
                 e.preventDefault();
-                var user = that.serializeForm($form, {});
-                FormView.hideFormView();
+                var user = this.serializeForm($form, {});
+                this.hideFormView();
                 ee.emit('userAdded', user);
             });
         });
     };
 
-    renderTo(divID, mode) {
-        let ee = this.ee;
-        $(divID).html(FormView.prepareFormHtml(mode));
-        $("#cancelBtn").click(function () {
+    /**
+     *
+     * @param {string} mode
+     */
+    renderWithMode(mode) {
+        let {ee} = this;
+        $(this.divID).html(FormView.prepareFormHtml(mode));
+        $("#cancelBtn").click(() => {
+            this.hideFormView();
             ee.emit('formCanceled');
         });
     };
 
-    static hideFormView () {
-        $("#workspace").html("");
+    hideFormView () {
+        $(this.divID).html("");
     };
 
+    /**
+     *
+     * @param $form
+     * @param {User} user
+     * @returns {User}
+     */
     serializeForm($form, user) {
         var inputs = $form.find("input");
         $.each(inputs, function (index, element) {
@@ -60,19 +76,28 @@ class FormView {
         return user;
     }
 
+    /**
+     *
+     * @param $form
+     * @param {User} user
+     */
     deserializeForm($form, user) {
-        var inputs = $form.find("input");
+        let inputs = $form.find("input");
         $.each(inputs, function (index, element) {
-            var name = element.name;
-            element.value = user[name];
+            element.value = user[element.name];
         });
-        var selects = $form.find("select");
+        let selects = $form.find("select");
         $.each(selects, function (index, element) {
             console.log(element);
             element.value = user[element.name];
         });
     }
 
+    /**
+     *
+     * @param {string} mode
+     * @returns {string}
+     */
     static prepareFormHtml(mode) {
         return `<div class=\"row\">
                 <div class=\"col-md-4\">&nbsp;<\/div>
@@ -107,5 +132,4 @@ class FormView {
             <div class=\"col-md-4\">&nbsp;<\/div><\/div>`;
     }
 }
-
 export default FormView;

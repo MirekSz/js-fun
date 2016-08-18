@@ -1,73 +1,82 @@
 import $ from 'jquery';
 
 class TableView {
-    constructor(ee) {
+    /**
+     *
+     * @param {EventEmitter} ee
+     * @param {string} divID
+     */
+    constructor(ee, divID) {
         this.ee = ee;
+        this.divID = divID;
         this.users = [];
         this.setUpListeners();
     }
 
-    setUpListeners () {
-        let that = this;
-        let ee = that.ee;
-        ee.on('users-new-data', function (users) {
-            that.users = users;
-            that.renderTo("#workspace");
+    setUpListeners() {
+        let {ee} = this;
+        ee.on('users-new-data', (users) => {
+            this.users = users;
+            this.render();
         });
-        ee.on('onRowClick', function (rowNumber) {
-            that.onRowClick(rowNumber);
+        ee.on('delete-user', () => {
+            this.users.splice(this.selectedRow, 1);
+            this.render();
         });
-        ee.on('delete-user', function () {
-            that.users.splice(that.selectedRow, 1);
-            that.renderTo("#workspace");
+        ee.on('edit-current-user', () => {
+            this.hideTableView();
+            ee.emit('editUser', this.users[this.selectedRow]);
         });
-        ee.on('edit-current-user', function () {
-            TableView.hideTableView();
-            ee.emit('editUser', that.users[that.selectedRow]);
+        ee.on('add-new-user', this.hideTableView);
+        ee.on('userEdited', (user) => {
+            this.users[this.selectedRow] = user;
+            this.render()
         });
-        ee.on('add-new-user', TableView.hideTableView);
-        ee.on('userEdited', function (user) {
-            that.users[that.selectedRow] = user;
-            that.renderTo("#workspace")
+        ee.on('userAdded', (user) => {
+            this.users.push(user);
+            this.render()
         });
-        ee.on('userAdded', function (user) {
-            that.users.push(user);
-            that.renderTo("#workspace")
-        });
-        ee.on('formCanceled', function () {
-            that.renderTo("#workspace");
+        ee.on('formCanceled', () => {
+            this.render();
         });
     };
 
-    renderTo (divID) {
+    render() {
         this.selectedRow = -1;
-        var that = this;
-        $(divID).html(TableView.prepareTableHtml(that.users));
-        $(divID).find("table tbody tr").on('click', function (event) {
-            var userId = parseInt((event.target.parentElement.id).substring(8));
-            that.ee.emit('onRowClick', userId);
+        $(this.divID).html(TableView.prepareTableHtml(this.users));
+        $(this.divID).find("table tbody tr").on('click', (event) => {
+            let userId = parseInt((event.target.parentElement.id).substring(8));
+            this.onRowClick(userId);
         });
     };
 
-    onRowClick (rowNumber) {
-        let that = this;
-        let selected = that.selectedRow;
+    /**
+     *
+     * @param {number} rowNumber
+     */
+    onRowClick(rowNumber) {
+        let selected = this.selectedRow;
         if (selected != -1) {
             $("#tableRow" + selected).removeClass("activeRow");
         }
         $("#tableRow" + rowNumber).addClass("activeRow");
-        that.selectedRow = rowNumber;
+        this.selectedRow = rowNumber;
         if (selected !== rowNumber) {
-            that.ee.emit('onRowSelectionChange', that.users[rowNumber]);
+            this.ee.emit('onRowSelectionChange', this.users[rowNumber]);
         }
     };
 
-    static hideTableView () {
-        $("#workspace").html("");
+    hideTableView() {
+        $(this.divID).html("");
     };
 
+    /**
+     *
+     * @param {Array} users
+     * @returns {string}
+     */
     static prepareTableHtml(users) {
-        var tHeadHtml = `<thead>
+        let tHeadHtml = `<thead>
                         <tr>
                             <th class="col-md-3">Imię</th>
                             <th class="col-md-5">Nazwisko</th>
@@ -76,14 +85,21 @@ class TableView {
                         </tr>
                      </thead>`;
 
-        var rowsHtml = '';
-        var i;
-        for (i = 0; i < users.length; i++) {
-            rowsHtml += createRow(users[i], i);
-        }
-        return '<table class="table table-bordered">' + tHeadHtml
-            + '<tbody>' + rowsHtml + '</tbody></table>';
+        let rowsHtml = users.map(createRow).join('');
 
+        return `<table class="table table-bordered">
+                    ${tHeadHtml}
+                    <tbody>
+                        ${rowsHtml}
+                    </tbody>
+                </table>`;
+
+        /**
+         *
+         * @param  {User} user
+         * @param {number} rowNumber
+         * @returns {string}
+         */
         function createRow(user, rowNumber) {
             return `<tr id="tableRow${rowNumber}">
                     <td>${user.name}</td>
