@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-backend": "node src/backend.js",
+    "start-front": "regedit",
+    "start-all": "npm run start-backend | npm run start-front"
   },
   "author": "",
   "license": "ISC",
