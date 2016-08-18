@@ -12,7 +12,7 @@ $(document).ready(initialize);
 function initialize() {
     let ee = new EventEmitter();
     new TableView(ee, '#workspace');
-    new DetailsView(ee);
+    new DetailsView(ee, '#detailsView');
     new ButtonView(ee).renderTo("#buttonView");
     new FormView(ee, '#workspace');
     getData(ee);

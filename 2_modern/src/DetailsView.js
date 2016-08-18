@@ -1,29 +1,44 @@
 import $ from 'jquery';
 
 class DetailsView {
-    constructor(ee) {
+    /**
+     *
+     * @param {EventEmitter} ee
+     * @param {string} divID
+     */
+    constructor(ee, divID) {
         this.ee = ee;
+        this.divID = divID;
         this.setUpListeners();
     }
 
     setUpListeners () {
-        let ee = this.ee;
-        ee.on('onRowSelectionChange', function (user) {
-            DetailsView.renderTo("#detailsView", user);
+        let {ee} = this;
+        ee.on('onRowSelectionChange', (user) => {
+            this.render(user);
         });
-        ee.on('edit-current-user', DetailsView.hideDetailsView);
-        ee.on('add-new-user', DetailsView.hideDetailsView);
-        ee.on('delete-user', DetailsView.hideDetailsView);
+        ee.on('edit-current-user', this.hideDetailsView);
+        ee.on('add-new-user', this.hideDetailsView);
+        ee.on('delete-user', this.hideDetailsView);
     }
 
-    static renderTo (divID, user) {
-        $(divID).html(DetailsView.prepareDetailsHtml(user));
+    /**
+     *
+     * @param {User} user
+     */
+    render(user) {
+        $(this.divID).html(DetailsView.prepareDetailsHtml(user));
     }
 
-    static hideDetailsView () {
-        $("#detailsView").html("");
+    hideDetailsView() {
+        $(this.divID).html("");
     };
 
+    /**
+     *
+     * @param {User} user
+     * @returns {string}
+     */
     static prepareDetailsHtml(user) {
         return `<div class="container">
                 <div class="row">

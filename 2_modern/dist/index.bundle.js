@@ -81,7 +81,7 @@
 	function initialize() {
 	    var ee = new _eventEmitter2.default();
 	    new _TableView2.default(ee, '#workspace');
-	    new _DetailsView2.default(ee);
+	    new _DetailsView2.default(ee, '#detailsView');
 	    new _ButtonView2.default(ee).renderTo("#buttonView");
 	    new _FormView2.default(ee, '#workspace');
 	    getData(ee);
@@ -10833,36 +10833,58 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var DetailsView = function () {
-	    function DetailsView(ee) {
+	    /**
+	     *
+	     * @param {EventEmitter} ee
+	     * @param {string} divID
+	     */
+	    function DetailsView(ee, divID) {
 	        _classCallCheck(this, DetailsView);
 	
 	        this.ee = ee;
+	        this.divID = divID;
 	        this.setUpListeners();
 	    }
 	
 	    _createClass(DetailsView, [{
 	        key: 'setUpListeners',
 	        value: function setUpListeners() {
+	            var _this = this;
+	
 	            var ee = this.ee;
+	
 	            ee.on('onRowSelectionChange', function (user) {
-	                DetailsView.renderTo("#detailsView", user);
+	                _this.render(user);
 	            });
-	            ee.on('edit-current-user', DetailsView.hideDetailsView);
-	            ee.on('add-new-user', DetailsView.hideDetailsView);
-	            ee.on('delete-user', DetailsView.hideDetailsView);
+	            ee.on('edit-current-user', this.hideDetailsView);
+	            ee.on('add-new-user', this.hideDetailsView);
+	            ee.on('delete-user', this.hideDetailsView);
 	        }
-	    }], [{
-	        key: 'renderTo',
-	        value: function renderTo(divID, user) {
-	            (0, _jquery2.default)(divID).html(DetailsView.prepareDetailsHtml(user));
+	
+	        /**
+	         *
+	         * @param {User} user
+	         */
+	
+	    }, {
+	        key: 'render',
+	        value: function render(user) {
+	            (0, _jquery2.default)(this.divID).html(DetailsView.prepareDetailsHtml(user));
 	        }
 	    }, {
 	        key: 'hideDetailsView',
 	        value: function hideDetailsView() {
-	            (0, _jquery2.default)("#detailsView").html("");
+	            (0, _jquery2.default)(this.divID).html("");
 	        }
-	    }, {
+	    }], [{
 	        key: 'prepareDetailsHtml',
+	
+	
+	        /**
+	         *
+	         * @param {User} user
+	         * @returns {string}
+	         */
 	        value: function prepareDetailsHtml(user) {
 	            return '<div class="container">\n                <div class="row">\n                    <div class="col-md-2 evLabel">Imie:</div>\n                    <div class="col-md-2 evValue">' + user.name + '</div>\n                </div>\n                <div class="row">\n                    <div class="col-md-2 evLabel">Nazwisko:</div>\n                    <div class="col-md-2 evValue">' + user.surname + '</div>\n                </div>\n                <div class="row">\n                    <div class="col-md-2 evLabel">Wiek:</div>\n                    <div class="col-md-2 evValue">' + user.age + '</div>\n                </div>\n                <div class="row">\n                    <div class="col-md-2 evLabel">Płeć:</div>\n                    <div class="col-md-2 evValue">' + user.sex + '</div>\n                </div>\n            </div>';
 	        }
