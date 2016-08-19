@@ -10832,21 +10832,43 @@
 	         * @returns {string}
 	         */
 	        value: function prepareTableHtml(users) {
-	            var tHeadHtml = '<thead>\n                        <tr>\n                            <th class="col-md-3">Imię</th>\n                            <th class="col-md-5">Nazwisko</th>\n                            <th class="col-md-2">Wiek</th>\n                            <th class="col-md-2">Płeć</th>\n                        </tr>\n                     </thead>';
+	            var compiledTemplate = Handlebars.getTemplate('tableView'); // import Handlebars in this file?
+	            // from 'handlebars' or './templates/templates.js'?
 	
-	            var rowsHtml = [].concat(_toConsumableArray(users.values())).map(createRow).join('');
+	            return compiledTemplate([].concat(_toConsumableArray(users.entries())));
 	
-	            return '<table class="table table-bordered">\n                    ' + tHeadHtml + '\n                    <tbody>\n                        ' + rowsHtml + '\n                    </tbody>\n                </table>';
-	
-	            /**
-	             *
-	             * @param {User} user
-	             * @param {number} id
-	             * @returns {string}
-	             */
-	            function createRow(user, id) {
-	                return '<tr id="tableRow' + id + '">\n                        <td>' + user.name + '</td>\n                        <td>' + user.surname + '</td>\n                        <td>' + user.age + '</td>\n                        <td>' + user.sex + '</td>\n                    </tr>';
-	            }
+	            // let tHeadHtml = `<thead>
+	            //                 <tr>
+	            //                     <th class="col-md-3">Imię</th>
+	            //                     <th class="col-md-5">Nazwisko</th>
+	            //                     <th class="col-md-2">Wiek</th>
+	            //                     <th class="col-md-2">Płeć</th>
+	            //                 </tr>
+	            //              </thead>`;
+	            //
+	            // let rowsHtml = [...users.values()].map(createRow).join('');
+	            //
+	            // return `<table class="table table-bordered">
+	            //             ${tHeadHtml}
+	            //             <tbody>
+	            //                 ${rowsHtml}
+	            //             </tbody>
+	            //         </table>`;
+	            //
+	            // /**
+	            //  *
+	            //  * @param {User} user
+	            //  * @param {number} id
+	            //  * @returns {string}
+	            //  */
+	            // function createRow(user, id) {
+	            //     return `<tr id="tableRow${id}">
+	            //                 <td>${user.name}</td>
+	            //                 <td>${user.surname}</td>
+	            //                 <td>${user.age}</td>
+	            //                 <td>${user.sex}</td>
+	            //             </tr>`;
+	            // }
 	        }
 	    }]);
 	

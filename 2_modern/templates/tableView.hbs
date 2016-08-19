@@ -1,0 +1,22 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th class="col-md-3">Imię</th>
+        <th class="col-md-5">Nazwisko</th>
+        <th class="col-md-2">Wiek</th>
+        <th class="col-md-2">Płeć</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each users as |user id|}} 
+    <tr id="tableRow{{id}}">
+        {{#with user}}
+            <td>{{name}}</td>
+            <td>{{surname}}</td>
+            <td>{{age}}</td>
+            <td>{{sex}}</td>
+        {{/with}}
+    </tr>
+    {{/each}}
+    </tbody>
+</table>

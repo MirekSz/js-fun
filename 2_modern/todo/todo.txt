@@ -7,8 +7,8 @@ https://remysharp.com/2010/10/08/what-is-a-polyfill
 3. JSDOC
 4. eventy
 5. users jako mapa
-5. Handlebars
-6. skrypty
-7. backnd axios/promise
-8. less
+6. Handlebars
+7. skrypty
+8. backnd axios/promise
+9. less
 
