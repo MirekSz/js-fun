@@ -9,7 +9,7 @@ class TableView {
     constructor(ee, divID) {
         this.ee = ee;
         this.divID = divID;
-        this.users = [];
+        this.users = new Map([]);
         this.setUpListeners();
     }
 
@@ -20,20 +20,20 @@ class TableView {
             this.render();
         });
         ee.on('delete-user', () => {
-            this.users.splice(this.selectedRow, 1);
+            this.users.delete(this.selectedRow);
             this.render();
         });
         ee.on('edit-current-user', () => {
             this.hideTableView();
-            ee.emit('editUser', this.users[this.selectedRow]);
+            ee.emit('editUser', this.users.get(this.selectedRow));
         });
         ee.on('add-new-user', this.hideTableView);
         ee.on('userEdited', (user) => {
-            this.users[this.selectedRow] = user;
+            this.users.set(this.selectedRow, user);
             this.render()
         });
         ee.on('userAdded', (user) => {
-            this.users.push(user);
+            this.users.set(this.users.size, user);
             this.render()
         });
         ee.on('formCanceled', () => {
@@ -62,7 +62,7 @@ class TableView {
         $("#tableRow" + rowNumber).addClass("activeRow");
         this.selectedRow = rowNumber;
         if (selected !== rowNumber) {
-            this.ee.emit('onRowSelectionChange', this.users[rowNumber]);
+            this.ee.emit('onRowSelectionChange', this.users.get(rowNumber));
         }
     };
 
@@ -72,7 +72,7 @@ class TableView {
 
     /**
      *
-     * @param {Array} users
+     * @param {Map} users
      * @returns {string}
      */
     static prepareTableHtml(users) {
@@ -85,7 +85,7 @@ class TableView {
                         </tr>
                      </thead>`;
 
-        let rowsHtml = users.map(createRow).join('');
+        let rowsHtml = [...users.values()].map(createRow).join('');
 
         return `<table class="table table-bordered">
                     ${tHeadHtml}
@@ -96,17 +96,17 @@ class TableView {
 
         /**
          *
-         * @param  {User} user
-         * @param {number} rowNumber
+         * @param {User} user
+         * @param {number} id
          * @returns {string}
          */
-        function createRow(user, rowNumber) {
-            return `<tr id="tableRow${rowNumber}">
-                    <td>${user.name}</td>
-                    <td>${user.surname}</td>
-                    <td>${user.age}</td>
-                    <td>${user.sex}</td>
-                </tr>`;
+        function createRow(user, id) {
+            return `<tr id="tableRow${id}">
+                        <td>${user.name}</td>
+                        <td>${user.surname}</td>
+                        <td>${user.age}</td>
+                        <td>${user.sex}</td>
+                    </tr>`;
         }
     }
 }

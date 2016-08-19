@@ -99,7 +99,7 @@
 	 * @param {EventEmitter} ee
 	 */
 	function getData(ee) {
-	    var users = [new _user2.default('Jacek', 'Doe', '43', 'Mężczyzna'), new _user2.default('Marzanna', 'Uss', '54', 'Kobieta'), new _user2.default('Julia', 'Dolej', '22', 'Kobieta')];
+	    var users = new Map([[0, new _user2.default('Jacek', 'Doe', '43', 'Mężczyzna')], [1, new _user2.default('Marzanna', 'Uss', '54', 'Kobieta')], [2, new _user2.default('Julia', 'Dolej', '22', 'Kobieta')]]);
 	    setTimeout(function () {
 	        ee.emit('users-new-data', users);
 	    }, 30);
@@ -10735,6 +10735,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var TableView = function () {
@@ -10748,7 +10750,7 @@
 	
 	        this.ee = ee;
 	        this.divID = divID;
-	        this.users = [];
+	        this.users = new Map([]);
 	        this.setUpListeners();
 	    }
 	
@@ -10764,20 +10766,20 @@
 	                _this.render();
 	            });
 	            ee.on('delete-user', function () {
-	                _this.users.splice(_this.selectedRow, 1);
+	                _this.users.delete(_this.selectedRow);
 	                _this.render();
 	            });
 	            ee.on('edit-current-user', function () {
 	                _this.hideTableView();
-	                ee.emit('editUser', _this.users[_this.selectedRow]);
+	                ee.emit('editUser', _this.users.get(_this.selectedRow));
 	            });
 	            ee.on('add-new-user', this.hideTableView);
 	            ee.on('userEdited', function (user) {
-	                _this.users[_this.selectedRow] = user;
+	                _this.users.set(_this.selectedRow, user);
 	                _this.render();
 	            });
 	            ee.on('userAdded', function (user) {
-	                _this.users.push(user);
+	                _this.users.set(_this.users.size, user);
 	                _this.render();
 	            });
 	            ee.on('formCanceled', function () {
@@ -10812,7 +10814,7 @@
 	            (0, _jquery2.default)("#tableRow" + rowNumber).addClass("activeRow");
 	            this.selectedRow = rowNumber;
 	            if (selected !== rowNumber) {
-	                this.ee.emit('onRowSelectionChange', this.users[rowNumber]);
+	                this.ee.emit('onRowSelectionChange', this.users.get(rowNumber));
 	            }
 	        }
 	    }, {
@@ -10826,24 +10828,24 @@
 	
 	        /**
 	         *
-	         * @param {Array} users
+	         * @param {Map} users
 	         * @returns {string}
 	         */
 	        value: function prepareTableHtml(users) {
 	            var tHeadHtml = '<thead>\n                        <tr>\n                            <th class="col-md-3">Imię</th>\n                            <th class="col-md-5">Nazwisko</th>\n                            <th class="col-md-2">Wiek</th>\n                            <th class="col-md-2">Płeć</th>\n                        </tr>\n                     </thead>';
 	
-	            var rowsHtml = users.map(createRow).join('');
+	            var rowsHtml = [].concat(_toConsumableArray(users.values())).map(createRow).join('');
 	
 	            return '<table class="table table-bordered">\n                    ' + tHeadHtml + '\n                    <tbody>\n                        ' + rowsHtml + '\n                    </tbody>\n                </table>';
 	
 	            /**
 	             *
-	             * @param  {User} user
-	             * @param {number} rowNumber
+	             * @param {User} user
+	             * @param {number} id
 	             * @returns {string}
 	             */
-	            function createRow(user, rowNumber) {
-	                return '<tr id="tableRow' + rowNumber + '">\n                    <td>' + user.name + '</td>\n                    <td>' + user.surname + '</td>\n                    <td>' + user.age + '</td>\n                    <td>' + user.sex + '</td>\n                </tr>';
+	            function createRow(user, id) {
+	                return '<tr id="tableRow' + id + '">\n                        <td>' + user.name + '</td>\n                        <td>' + user.surname + '</td>\n                        <td>' + user.age + '</td>\n                        <td>' + user.sex + '</td>\n                    </tr>';
 	            }
 	        }
 	    }]);
@@ -10946,7 +10948,7 @@
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -10977,7 +10979,7 @@
 	    }
 	
 	    _createClass(FormView, [{
-	        key: 'setUpListeners',
+	        key: "setUpListeners",
 	        value: function setUpListeners() {
 	            var _this = this;
 	
@@ -11008,7 +11010,7 @@
 	            });
 	        }
 	    }, {
-	        key: 'renderWithMode',
+	        key: "renderWithMode",
 	
 	
 	        /**
@@ -11027,12 +11029,12 @@
 	            });
 	        }
 	    }, {
-	        key: 'hideFormView',
+	        key: "hideFormView",
 	        value: function hideFormView() {
 	            (0, _jquery2.default)(this.divID).html("");
 	        }
 	    }, {
-	        key: 'serializeForm',
+	        key: "serializeForm",
 	
 	
 	        /**
@@ -11060,7 +11062,7 @@
 	         */
 	
 	    }, {
-	        key: 'deserializeForm',
+	        key: "deserializeForm",
 	        value: function deserializeForm($form, user) {
 	            var inputs = $form.find("input");
 	            _jquery2.default.each(inputs, function (index, element) {
@@ -11080,9 +11082,9 @@
 	         */
 	
 	    }], [{
-	        key: 'prepareFormHtml',
+	        key: "prepareFormHtml",
 	        value: function prepareFormHtml(mode) {
-	            return '<div class="row">\n                <div class="col-md-4">&nbsp;</div>\n                <div class="col-md-4">\n                    <h3>' + (mode + " Użytkownika") + '</h3>\n                    <form name="form" id="form">\n                        <div class="form-group">\n                            <label for="name">Imie:</label>\n                            <input id="name" name="name" class="form-control" type="text" required>\n                        </div>\n                        <div class="form-group">\n                            <label for="surname">Nazwisko:</label>\n                            <input id="surname" name="surname" class="form-control" type="text" required>\n                        </div>\n                        <div class="form-group">\n                            <label for="age">Wiek:</label>\n                            <input id="age" name="age" class="form-control" type="number" min="18" max="99" required>\n                        </div>\n                        <div class="form-group">\n                            <label for="sex">Płeć:</label>\n                            <select class="form-control" name="sex" id="sex">\n                                <option>Mężczyzna</option>\n                                <option>Kobieta</option>\n                            </select>\n                        </div>\n                        <div class="form-group">\n                            <button type="submit" class="btn btn-primary">Zapisz</button>\n                            <button type="button" id="cancelBtn" class="btn btn-warning">Cofnij</button>\n                        </div>\n                    </form>\n                </div>\n            <div class="col-md-4">&nbsp;</div></div>';
+	            return "<div class=\"row\">\n                <div class=\"col-md-4\">&nbsp;</div>\n                <div class=\"col-md-4\">\n                    <h3>" + (mode + " Użytkownika") + "</h3>\n                    <form name=\"form\" id=\"form\">\n                        <div class=\"form-group\">\n                            <label for=\"name\">Imie:</label>\n                            <input id=\"name\" name=\"name\" class=\"form-control\" type=\"text\" required>\n                        </div>\n                        <div class=\"form-group\">\n                            <label for=\"surname\">Nazwisko:</label>\n                            <input id=\"surname\" name=\"surname\" class=\"form-control\" type=\"text\" required>\n                        </div>\n                        <div class=\"form-group\">\n                            <label for=\"age\">Wiek:</label>\n                            <input id=\"age\" name=\"age\" class=\"form-control\" type=\"number\" min=\"18\" max=\"99\" required>\n                        </div>\n                        <div class=\"form-group\">\n                            <label for=\"sex\">Płeć:</label>\n                            <select class=\"form-control\" name=\"sex\" id=\"sex\">\n                                <option>Mężczyzna</option>\n                                <option>Kobieta</option>\n                            </select>\n                        </div>\n                        <div class=\"form-group\">\n                            <button type=\"submit\" class=\"btn btn-primary\">Zapisz</button>\n                            <button type=\"button\" id=\"cancelBtn\" class=\"btn btn-warning\">Cofnij</button>\n                        </div>\n                    </form>\n                </div>\n            <div class=\"col-md-4\">&nbsp;</div></div>";
 	        }
 	    }]);
 	

@@ -22,9 +22,11 @@ function initialize() {
  * @param {EventEmitter} ee
  */
 function getData(ee) {
-    let users = [new User('Jacek', 'Doe', '43', 'Mężczyzna'),
-        new User('Marzanna', 'Uss', '54', 'Kobieta'),
-        new User('Julia', 'Dolej', '22', 'Kobieta')];
+    let users = new Map([
+        [0, new User('Jacek', 'Doe', '43', 'Mężczyzna')],
+        [1, new User('Marzanna', 'Uss', '54', 'Kobieta')],
+        [2, new User('Julia', 'Dolej', '22', 'Kobieta')]
+    ]);
     setTimeout(function () {
         ee.emit('users-new-data', users);
     }, 30);
