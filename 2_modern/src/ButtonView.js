@@ -14,17 +14,27 @@ class ButtonView {
 
     setUpListeners() {
         let {ee} = this;
-        ee.on('onRowSelectionChange', ButtonView.enableButtons);
-        ee.on('add-new-user', this.hideButtonView);
-        ee.on('edit-current-user', this.hideButtonView);
-        ee.on('userEdited', this.render);
-        ee.on('userAdded', this.render);
-        ee.on('formCanceled', this.render);
+        ee.on('onRowSelectionChange', () => {
+            ButtonView.setButtonsDisabled(false);
+        });
+        ee.on('userEdited', () => {
+            this.render();
+        });
+        ee.on('userAdded', () => {
+            this.render();
+        });
+        ee.on('formCanceled', () => {
+            this.render();
+        });
     }
 
-    static enableButtons() {
-        $("#editBtn").prop("disabled", false);
-        $("#deleteBtn").prop("disabled", false);
+    /**
+     *
+     * @param {boolean} val
+     */
+    static setButtonsDisabled(val) {
+        $("#editBtn").prop("disabled", val);
+        $("#deleteBtn").prop("disabled", val);
     }
 
     render() {
@@ -34,11 +44,18 @@ class ButtonView {
 
     setOnClickForButtons() {
         let {ee} = this;
-        $("#addBtn").click(ee.emit('add-new-user'));
-        $("#editBtn").click(ee.emit('edit-current-user'));
-        $("#deleteBtn").click(function () {
+        $("#addBtn").click(() => {
+            ee.emit('add-new-user');
+            this.hideButtonView();
+        });
+        $("#editBtn").click(() => {
+            ee.emit('edit-current-user');
+            this.hideButtonView();
+        });
+        $("#deleteBtn").click(() => {
             var answer = confirm("Czy chcesz usunąć tego użytkownika?");
             if (answer) {
+                ButtonView.setButtonsDisabled(true);
                 ee.emit('delete-user');
             }
         });

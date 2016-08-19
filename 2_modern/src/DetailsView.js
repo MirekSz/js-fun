@@ -17,9 +17,15 @@ class DetailsView {
         ee.on('onRowSelectionChange', (user) => {
             this.render(user);
         });
-        ee.on('edit-current-user', this.hideDetailsView);
-        ee.on('add-new-user', this.hideDetailsView);
-        ee.on('delete-user', this.hideDetailsView);
+        ee.on('edit-current-user', () => {
+            this.hideDetailsView();
+        });
+        ee.on('add-new-user', () => {
+            this.hideDetailsView();
+        });
+        ee.on('delete-user', () => {
+            this.hideDetailsView();
+        });
     }
 
     /**

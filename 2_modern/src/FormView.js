@@ -65,12 +65,10 @@ class FormView {
     serializeForm($form, user) {
         var inputs = $form.find("input");
         $.each(inputs, function (index, element) {
-            console.log(element);
             user[element.name] = element.value;
         });
         var selects = $form.find("select");
         $.each(selects, function (index, element) {
-            console.log(element);
             user[element.name] = element.value;
         });
         return user;

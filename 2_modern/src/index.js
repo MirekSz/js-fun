@@ -17,7 +17,10 @@ function initialize() {
     new FormView(ee, '#workspace');
     getData(ee);
 }
-
+/**
+ *
+ * @param {EventEmitter} ee
+ */
 function getData(ee) {
     let users = [new User('Jacek', 'Doe', '43', 'Mężczyzna'),
                 new User('Marzanna', 'Uss', '54', 'Kobieta'),

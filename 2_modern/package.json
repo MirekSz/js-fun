@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-backend": "node src/backend.js",
-    "start-front": "regedit",
+    "start-front": "webpack --watch webpack.config.js",
     "start-all": "npm run start-backend | npm run start-front"
   },
   "author": "",

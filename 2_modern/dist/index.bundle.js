@@ -44,33 +44,41 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	__webpack_require__(1);
+	module.exports = __webpack_require__(23);
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
-	var _jquery = __webpack_require__(1);
+	var _jquery = __webpack_require__(2);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _eventEmitter = __webpack_require__(2);
+	var _eventEmitter = __webpack_require__(3);
 	
 	var _eventEmitter2 = _interopRequireDefault(_eventEmitter);
 	
-	var _user = __webpack_require__(17);
+	var _user = __webpack_require__(18);
 	
 	var _user2 = _interopRequireDefault(_user);
 	
-	var _ButtonView = __webpack_require__(18);
+	var _ButtonView = __webpack_require__(19);
 	
 	var _ButtonView2 = _interopRequireDefault(_ButtonView);
 	
-	var _TableView = __webpack_require__(19);
+	var _TableView = __webpack_require__(20);
 	
 	var _TableView2 = _interopRequireDefault(_TableView);
 	
-	var _DetailsView = __webpack_require__(20);
+	var _DetailsView = __webpack_require__(21);
 	
 	var _DetailsView2 = _interopRequireDefault(_DetailsView);
 	
-	var _FormView = __webpack_require__(21);
+	var _FormView = __webpack_require__(22);
 	
 	var _FormView2 = _interopRequireDefault(_FormView);
 	
@@ -86,7 +94,10 @@
 	    new _FormView2.default(ee, '#workspace');
 	    getData(ee);
 	}
-	
+	/**
+	 *
+	 * @param {EventEmitter} ee
+	 */
 	function getData(ee) {
 	    var users = [new _user2.default('Jacek', 'Doe', '43', 'Mężczyzna'), new _user2.default('Marzanna', 'Uss', '54', 'Kobieta'), new _user2.default('Julia', 'Dolej', '22', 'Kobieta')];
 	    setTimeout(function () {
@@ -95,7 +106,7 @@
 	}
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*eslint-disable no-unused-vars*/
@@ -10175,13 +10186,13 @@
 
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var d        = __webpack_require__(3)
-	  , callable = __webpack_require__(16)
+	var d        = __webpack_require__(4)
+	  , callable = __webpack_require__(17)
 	
 	  , apply = Function.prototype.apply, call = Function.prototype.call
 	  , create = Object.create, defineProperty = Object.defineProperty
@@ -10313,15 +10324,15 @@
 
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var assign        = __webpack_require__(4)
-	  , normalizeOpts = __webpack_require__(11)
-	  , isCallable    = __webpack_require__(12)
-	  , contains      = __webpack_require__(13)
+	var assign        = __webpack_require__(5)
+	  , normalizeOpts = __webpack_require__(12)
+	  , isCallable    = __webpack_require__(13)
+	  , contains      = __webpack_require__(14)
 	
 	  , d;
 	
@@ -10382,18 +10393,18 @@
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(5)()
+	module.exports = __webpack_require__(6)()
 		? Object.assign
-		: __webpack_require__(6);
+		: __webpack_require__(7);
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10408,13 +10419,13 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var keys  = __webpack_require__(7)
-	  , value = __webpack_require__(10)
+	var keys  = __webpack_require__(8)
+	  , value = __webpack_require__(11)
 	
 	  , max = Math.max;
 	
@@ -10436,18 +10447,18 @@
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(8)()
+	module.exports = __webpack_require__(9)()
 		? Object.keys
-		: __webpack_require__(9);
+		: __webpack_require__(10);
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10461,7 +10472,7 @@
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10474,7 +10485,7 @@
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10486,7 +10497,7 @@
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10509,7 +10520,7 @@
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 	// Deprecated
@@ -10520,18 +10531,18 @@
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(14)()
+	module.exports = __webpack_require__(15)()
 		? String.prototype.contains
-		: __webpack_require__(15);
+		: __webpack_require__(16);
 
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10545,7 +10556,7 @@
 
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10558,7 +10569,7 @@
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10570,7 +10581,7 @@
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10589,7 +10600,7 @@
 	module.exports = User;
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10600,7 +10611,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _jquery = __webpack_require__(1);
+	var _jquery = __webpack_require__(2);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
@@ -10625,15 +10636,29 @@
 	    _createClass(ButtonView, [{
 	        key: 'setUpListeners',
 	        value: function setUpListeners() {
+	            var _this = this;
+	
 	            var ee = this.ee;
 	
-	            ee.on('onRowSelectionChange', ButtonView.enableButtons);
-	            ee.on('add-new-user', this.hideButtonView);
-	            ee.on('edit-current-user', this.hideButtonView);
-	            ee.on('userEdited', this.render);
-	            ee.on('userAdded', this.render);
-	            ee.on('formCanceled', this.render);
+	            ee.on('onRowSelectionChange', function () {
+	                ButtonView.setButtonsDisabled(false);
+	            });
+	            ee.on('userEdited', function () {
+	                _this.render();
+	            });
+	            ee.on('userAdded', function () {
+	                _this.render();
+	            });
+	            ee.on('formCanceled', function () {
+	                _this.render();
+	            });
 	        }
+	
+	        /**
+	         *
+	         * @param {boolean} val
+	         */
+	
 	    }, {
 	        key: 'render',
 	        value: function render() {
@@ -10643,13 +10668,22 @@
 	    }, {
 	        key: 'setOnClickForButtons',
 	        value: function setOnClickForButtons() {
+	            var _this2 = this;
+	
 	            var ee = this.ee;
 	
-	            (0, _jquery2.default)("#addBtn").click(ee.emit('add-new-user'));
-	            (0, _jquery2.default)("#editBtn").click(ee.emit('edit-current-user'));
+	            (0, _jquery2.default)("#addBtn").click(function () {
+	                ee.emit('add-new-user');
+	                _this2.hideButtonView();
+	            });
+	            (0, _jquery2.default)("#editBtn").click(function () {
+	                ee.emit('edit-current-user');
+	                _this2.hideButtonView();
+	            });
 	            (0, _jquery2.default)("#deleteBtn").click(function () {
 	                var answer = confirm("Czy chcesz usunąć tego użytkownika?");
 	                if (answer) {
+	                    ButtonView.setButtonsDisabled(true);
 	                    ee.emit('delete-user');
 	                }
 	            });
@@ -10659,11 +10693,17 @@
 	        value: function hideButtonView() {
 	            (0, _jquery2.default)(this.divID).html("");
 	        }
+	
+	        /**
+	         *
+	         * @returns {string}
+	         */
+	
 	    }], [{
-	        key: 'enableButtons',
-	        value: function enableButtons() {
-	            (0, _jquery2.default)("#editBtn").prop("disabled", false);
-	            (0, _jquery2.default)("#deleteBtn").prop("disabled", false);
+	        key: 'setButtonsDisabled',
+	        value: function setButtonsDisabled(val) {
+	            (0, _jquery2.default)("#editBtn").prop("disabled", val);
+	            (0, _jquery2.default)("#deleteBtn").prop("disabled", val);
 	        }
 	    }, {
 	        key: 'prepareButtonHtml',
@@ -10678,7 +10718,7 @@
 	exports.default = ButtonView;
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10689,7 +10729,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _jquery = __webpack_require__(1);
+	var _jquery = __webpack_require__(2);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
@@ -10814,7 +10854,7 @@
 	exports.default = TableView;
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10825,7 +10865,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _jquery = __webpack_require__(1);
+	var _jquery = __webpack_require__(2);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
@@ -10857,9 +10897,15 @@
 	            ee.on('onRowSelectionChange', function (user) {
 	                _this.render(user);
 	            });
-	            ee.on('edit-current-user', this.hideDetailsView);
-	            ee.on('add-new-user', this.hideDetailsView);
-	            ee.on('delete-user', this.hideDetailsView);
+	            ee.on('edit-current-user', function () {
+	                _this.hideDetailsView();
+	            });
+	            ee.on('add-new-user', function () {
+	                _this.hideDetailsView();
+	            });
+	            ee.on('delete-user', function () {
+	                _this.hideDetailsView();
+	            });
 	        }
 	
 	        /**
@@ -10897,7 +10943,7 @@
 	exports.default = DetailsView;
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10908,7 +10954,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _jquery = __webpack_require__(1);
+	var _jquery = __webpack_require__(2);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
@@ -10998,12 +11044,10 @@
 	        value: function serializeForm($form, user) {
 	            var inputs = $form.find("input");
 	            _jquery2.default.each(inputs, function (index, element) {
-	                console.log(element);
 	                user[element.name] = element.value;
 	            });
 	            var selects = $form.find("select");
 	            _jquery2.default.each(selects, function (index, element) {
-	                console.log(element);
 	                user[element.name] = element.value;
 	            });
 	            return user;
@@ -11046,6 +11090,35 @@
 	}();
 	
 	exports.default = FormView;
+
+/***/ },
+/* 23 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	    devtool: 'source-map',
+	    entry: './src/index.js',
+	    output: {
+	        path: './dist',
+	        filename: 'index.bundle.js'
+	    },
+	    module: {
+	        loaders: [{
+	            test: /\.js$/,
+	            exclude: /node_modules/,
+	            loader: 'babel-loader'
+	        }]
+	    },
+	    resolve: {
+	        extensions: ['', '.jsx', '.js', '.es6', '.hbs', '.less']
+	    },
+	    node: {
+	        fs: "empty" // avoids error messages
+	    },
+	    watchOptions: { poll: 600, aggregateTimeout: 300 }
+	};
 
 /***/ }
 /******/ ]);

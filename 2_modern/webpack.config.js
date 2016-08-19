@@ -12,4 +12,11 @@ module.exports = {
             loader:'babel-loader'
         }],
     },
+    resolve: {
+        extensions: ['', '.jsx', '.js', '.es6', '.hbs', '.less'],
+    },
+    node: {
+        fs: "empty" // avoids error messages
+    },
+    watchOptions:{poll:600,aggregateTimeout:300}
 };
