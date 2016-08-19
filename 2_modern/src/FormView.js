@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from "jquery";
 
 class FormView {
     /**
@@ -52,7 +52,7 @@ class FormView {
         });
     };
 
-    hideFormView () {
+    hideFormView() {
         $(this.divID).html("");
     };
 
@@ -64,11 +64,11 @@ class FormView {
      */
     serializeForm($form, user) {
         var inputs = $form.find("input");
-        $.each(inputs, function (index, element) {
+        $.each(inputs, (index, element) => {
             user[element.name] = element.value;
         });
         var selects = $form.find("select");
-        $.each(selects, function (index, element) {
+        $.each(selects, (index, element) => {
             user[element.name] = element.value;
         });
         return user;
@@ -81,11 +81,11 @@ class FormView {
      */
     deserializeForm($form, user) {
         let inputs = $form.find("input");
-        $.each(inputs, function (index, element) {
+        $.each(inputs, (index, element) => {
             element.value = user[element.name];
         });
         let selects = $form.find("select");
-        $.each(selects, function (index, element) {
+        $.each(selects, (index, element) => {
             console.log(element);
             element.value = user[element.name];
         });

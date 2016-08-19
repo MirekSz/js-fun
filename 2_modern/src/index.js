@@ -23,8 +23,8 @@ function initialize() {
  */
 function getData(ee) {
     let users = [new User('Jacek', 'Doe', '43', 'Mężczyzna'),
-                new User('Marzanna', 'Uss', '54', 'Kobieta'),
-                new User('Julia', 'Dolej', '22', 'Kobieta')];
+        new User('Marzanna', 'Uss', '54', 'Kobieta'),
+        new User('Julia', 'Dolej', '22', 'Kobieta')];
     setTimeout(function () {
         ee.emit('users-new-data', users);
     }, 30);

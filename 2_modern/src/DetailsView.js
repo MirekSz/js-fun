@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from "jquery";
 
 class DetailsView {
     /**
@@ -12,7 +12,7 @@ class DetailsView {
         this.setUpListeners();
     }
 
-    setUpListeners () {
+    setUpListeners() {
         let {ee} = this;
         ee.on('onRowSelectionChange', (user) => {
             this.render(user);
