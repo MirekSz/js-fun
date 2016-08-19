@@ -6,7 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-backend": "node src/backend.js",
-    "compile-templates": "handlebars templates/ >> templates/templates.js",
     "start-front": "webpack --watch webpack.config.js",
     "start-all": "npm run start-backend | npm run start-front"
   },

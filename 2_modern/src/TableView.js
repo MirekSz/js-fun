@@ -76,43 +76,43 @@ class TableView {
      * @returns {string}
      */
     static prepareTableHtml(users) {
-        let compiledTemplate = Handlebars.getTemplate('tableView'); // import Handlebars in this file?
-                                                                    // from 'handlebars' or './templates/templates.js'?
+        let tableTemplate = require('../templates/tableView.hbs');
+        let Handlebars = require('handlebars-template-loader/runtime');
+        let template = Handlebars.compile(tableTemplate);
+        return template([...users.entries()]);
 
-        return compiledTemplate([...users.entries()]);
+        let tHeadHtml = `<thead>
+                        <tr>
+                            <th class="col-md-3">Imię</th>
+                            <th class="col-md-5">Nazwisko</th>
+                            <th class="col-md-2">Wiek</th>
+                            <th class="col-md-2">Płeć</th>
+                        </tr>
+                     </thead>`;
 
-        // let tHeadHtml = `<thead>
-        //                 <tr>
-        //                     <th class="col-md-3">Imię</th>
-        //                     <th class="col-md-5">Nazwisko</th>
-        //                     <th class="col-md-2">Wiek</th>
-        //                     <th class="col-md-2">Płeć</th>
-        //                 </tr>
-        //              </thead>`;
-        //
-        // let rowsHtml = [...users.values()].map(createRow).join('');
-        //
-        // return `<table class="table table-bordered">
-        //             ${tHeadHtml}
-        //             <tbody>
-        //                 ${rowsHtml}
-        //             </tbody>
-        //         </table>`;
-        //
-        // /**
-        //  *
-        //  * @param {User} user
-        //  * @param {number} id
-        //  * @returns {string}
-        //  */
-        // function createRow(user, id) {
-        //     return `<tr id="tableRow${id}">
-        //                 <td>${user.name}</td>
-        //                 <td>${user.surname}</td>
-        //                 <td>${user.age}</td>
-        //                 <td>${user.sex}</td>
-        //             </tr>`;
-        // }
+        let rowsHtml = [...users.values()].map(createRow).join('');
+
+        return `<table class="table table-bordered">
+                    ${tHeadHtml}
+                    <tbody>
+                        ${rowsHtml}
+                    </tbody>
+                </table>`;
+
+        /**
+         *
+         * @param {User} user
+         * @param {number} id
+         * @returns {string}
+         */
+        function createRow(user, id) {
+            return `<tr id="tableRow${id}">
+                        <td>${user.name}</td>
+                        <td>${user.surname}</td>
+                        <td>${user.age}</td>
+                        <td>${user.sex}</td>
+                    </tr>`;
+        }
     }
 }
 

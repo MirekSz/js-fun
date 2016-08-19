@@ -1,15 +1,18 @@
 module.exports = {
     devtool: 'source-map',
-    entry:'./src/index.js',
+    entry: './src/index.js',
     output: {
         path: './dist',
         filename: 'index.bundle.js'
     },
-    module:{
-        loaders:[{
-            test:/\.js$/,
+    module: {
+        loaders: [{
+            test: /\.js$/,
             exclude: /node_modules/,
-            loader:'babel-loader'
+            loader: 'babel-loader'
+        }, {
+            test: /\.hbs/,
+            loader: "handlebars-template-loader"
         }],
     },
     resolve: {
@@ -18,5 +21,5 @@ module.exports = {
     node: {
         fs: "empty" // avoids error messages
     },
-    watchOptions:{poll:600,aggregateTimeout:300}
+    watchOptions: {poll: 600, aggregateTimeout: 300}
 };
