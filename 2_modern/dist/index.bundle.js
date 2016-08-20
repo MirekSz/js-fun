@@ -66,11 +66,11 @@
 	
 	var _TableView2 = _interopRequireDefault(_TableView);
 	
-	var _DetailsView = __webpack_require__(41);
+	var _DetailsView = __webpack_require__(40);
 	
 	var _DetailsView2 = _interopRequireDefault(_DetailsView);
 	
-	var _FormView = __webpack_require__(42);
+	var _FormView = __webpack_require__(41);
 	
 	var _FormView2 = _interopRequireDefault(_FormView);
 	
@@ -10720,14 +10720,18 @@
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	//noinspection JSUnresolvedVariable
+	
 	
 	var _jquery = __webpack_require__(1);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _tableView = __webpack_require__(20);
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	var _tableView2 = _interopRequireDefault(_tableView);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -10824,26 +10828,7 @@
 	         * @returns {string}
 	         */
 	        value: function prepareTableHtml(users) {
-	            var tableTemplate = __webpack_require__(20);
-	            var Handlebars = __webpack_require__(40);
-	            var template = Handlebars.compile(tableTemplate);
-	            return template([].concat(_toConsumableArray(users.entries())));
-	
-	            var tHeadHtml = '<thead>\n                        <tr>\n                            <th class="col-md-3">Imię</th>\n                            <th class="col-md-5">Nazwisko</th>\n                            <th class="col-md-2">Wiek</th>\n                            <th class="col-md-2">Płeć</th>\n                        </tr>\n                     </thead>';
-	
-	            var rowsHtml = [].concat(_toConsumableArray(users.values())).map(createRow).join('');
-	
-	            return '<table class="table table-bordered">\n                    ' + tHeadHtml + '\n                    <tbody>\n                        ' + rowsHtml + '\n                    </tbody>\n                </table>';
-	
-	            /**
-	             *
-	             * @param {User} user
-	             * @param {number} id
-	             * @returns {string}
-	             */
-	            function createRow(user, id) {
-	                return '<tr id="tableRow' + id + '">\n                        <td>' + user.name + '</td>\n                        <td>' + user.surname + '</td>\n                        <td>' + user.age + '</td>\n                        <td>' + user.sex + '</td>\n                    </tr>';
-	            }
+	            return (0, _tableView2.default)({ users: users });
 	        }
 	    }]);
 	
@@ -10857,33 +10842,28 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Handlebars = __webpack_require__(21);
-	module.exports = (Handlebars['default'] || Handlebars).template({"1":function(container,depth0,helpers,partials,data,blockParams) {
-	    var stack1;
+	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
+	    var stack1, helper, alias1=container.escapeExpression, alias2=container.lambda;
 	
 	  return "\u2028\n    <tr id=\"tableRow"
-	    + container.escapeExpression(container.lambda(blockParams[0][1], depth0))
-	    + "\">\n"
-	    + ((stack1 = helpers["with"].call(depth0 != null ? depth0 : {},blockParams[0][0],{"name":"with","hash":{},"fn":container.program(2, data, 0, blockParams),"inverse":container.noop,"data":data,"blockParams":blockParams})) != null ? stack1 : "")
-	    + "    </tr>\n";
-	},"2":function(container,depth0,helpers,partials,data) {
-	    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
-	
-	  return "            <td>"
-	    + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
+	    + alias1(((helper = (helper = helpers.key || (depth0 != null ? depth0.key : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"key","hash":{},"data":data}) : helper)))
+	    + "\">\n            <td>"
+	    + alias1(alias2(((stack1 = (depth0 != null ? depth0.value : depth0)) != null ? stack1.name : stack1), depth0))
 	    + "</td>\n            <td>"
-	    + alias4(((helper = (helper = helpers.surname || (depth0 != null ? depth0.surname : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"surname","hash":{},"data":data}) : helper)))
+	    + alias1(alias2(((stack1 = (depth0 != null ? depth0.value : depth0)) != null ? stack1.surname : stack1), depth0))
 	    + "</td>\n            <td>"
-	    + alias4(((helper = (helper = helpers.age || (depth0 != null ? depth0.age : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"age","hash":{},"data":data}) : helper)))
+	    + alias1(alias2(((stack1 = (depth0 != null ? depth0.value : depth0)) != null ? stack1.age : stack1), depth0))
 	    + "</td>\n            <td>"
-	    + alias4(((helper = (helper = helpers.sex || (depth0 != null ? depth0.sex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"sex","hash":{},"data":data}) : helper)))
-	    + "</td>\n";
-	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams) {
+	    + alias1(alias2(((stack1 = (depth0 != null ? depth0.value : depth0)) != null ? stack1.sex : stack1), depth0))
+	    + "</td>\n    </tr>\n";
+	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
 	    var stack1;
 	
 	  return "<table class=\"table table-bordered\">\n    <thead>\n    <tr>\n        <th class=\"col-md-3\">Imię</th>\n        <th class=\"col-md-5\">Nazwisko</th>\n        <th class=\"col-md-2\">Wiek</th>\n        <th class=\"col-md-2\">Płeć</th>\n    </tr>\n    </thead>\n    <tbody>\n"
-	    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.users : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 2, blockParams),"inverse":container.noop,"data":data,"blockParams":blockParams})) != null ? stack1 : "")
+	    + ((stack1 = (helpers.eachInMap || (depth0 && depth0.eachInMap) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.users : depth0),{"name":"eachInMap","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
 	    + "    </tbody>\n</table>";
-	},"useData":true,"useBlockParams":true});
+	},"useData":true});
 
 /***/ },
 /* 21 */
@@ -12064,12 +12044,6 @@
 /* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(21);
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -12156,7 +12130,7 @@
 	exports.default = DetailsView;
 
 /***/ },
-/* 42 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

@@ -12,7 +12,10 @@ module.exports = {
             loader: 'babel-loader'
         }, {
             test: /\.hbs/,
-            loader: "handlebars-template-loader"
+            loader: "handlebars-loader",
+            query: {
+                helperDirs:  + '/helpers'
+            }
         }],
     },
     resolve: {
