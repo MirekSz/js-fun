@@ -1,4 +1,5 @@
 import $ from "jquery";
+import template from './buttonView.hbs';
 
 class ButtonView {
     /**
@@ -70,9 +71,7 @@ class ButtonView {
      * @returns {string}
      */
     static prepareButtonHtml() {
-        return `<button type=\"button\" class=\"btn btn-primary\" id=\"addBtn\">Dodaj<\/button>
-            <button type=\"button\" class=\"btn btn-primary\" id=\"editBtn\" disabled>Popraw<\/button>
-            <button type=\"button\" class=\"btn btn-primary\" id=\"deleteBtn\" disabled>Usuń<\/button>`;
+        return template({});
     }
 }
 

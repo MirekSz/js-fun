@@ -1,4 +1,5 @@
 import $ from "jquery";
+import template from './formView.hbs';
 
 class FormView {
     /**
@@ -93,41 +94,11 @@ class FormView {
 
     /**
      *
-     * @param {string} mode
+     * @param {string} mode Dodaj lub Edytuj
      * @returns {string}
      */
     static prepareFormHtml(mode) {
-        return `<div class=\"row\">
-                <div class=\"col-md-4\">&nbsp;<\/div>
-                <div class=\"col-md-4\">
-                    <h3>${mode + " Użytkownika"}<\/h3>
-                    <form name=\"form\" id=\"form\">
-                        <div class=\"form-group\">
-                            <label for=\"name\">Imie:<\/label>
-                            <input id=\"name\" name=\"name\" class=\"form-control\" type=\"text\" required>
-                        <\/div>
-                        <div class=\"form-group\">
-                            <label for=\"surname\">Nazwisko:<\/label>
-                            <input id=\"surname\" name=\"surname\" class=\"form-control\" type=\"text\" required>
-                        <\/div>
-                        <div class=\"form-group\">
-                            <label for=\"age\">Wiek:<\/label>
-                            <input id=\"age\" name=\"age\" class=\"form-control\" type=\"number\" min=\"18\" max=\"99\" required>
-                        <\/div>
-                        <div class=\"form-group\">
-                            <label for=\"sex\">Płeć:<\/label>
-                            <select class=\"form-control\" name=\"sex\" id=\"sex\">
-                                <option>Mężczyzna<\/option>
-                                <option>Kobieta<\/option>
-                            <\/select>
-                        <\/div>
-                        <div class=\"form-group\">
-                            <button type=\"submit\" class=\"btn btn-primary\">Zapisz<\/button>
-                            <button type=\"button\" id=\"cancelBtn\" class=\"btn btn-warning\">Cofnij<\/button>
-                        <\/div>
-                    <\/form>
-                <\/div>
-            <div class=\"col-md-4\">&nbsp;<\/div><\/div>`;
+        return template({mode: mode});
     }
 }
 export default FormView;

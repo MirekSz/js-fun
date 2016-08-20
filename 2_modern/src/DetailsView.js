@@ -1,5 +1,7 @@
 import $ from "jquery";
 
+import template from './detailsView.hbs';
+
 class DetailsView {
     /**
      *
@@ -46,24 +48,7 @@ class DetailsView {
      * @returns {string}
      */
     static prepareDetailsHtml(user) {
-        return `<div class="container">
-                <div class="row">
-                    <div class="col-md-2 evLabel">Imie:</div>
-                    <div class="col-md-2 evValue">${user.name}</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2 evLabel">Nazwisko:</div>
-                    <div class="col-md-2 evValue">${user.surname}</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2 evLabel">Wiek:</div>
-                    <div class="col-md-2 evValue">${user.age}</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2 evLabel">Płeć:</div>
-                    <div class="col-md-2 evValue">${user.sex}</div>
-                </div>
-            </div>`;
+        return template({user:user});
     }
 }
 

@@ -62,15 +62,15 @@
 	
 	var _ButtonView2 = _interopRequireDefault(_ButtonView);
 	
-	var _TableView = __webpack_require__(19);
+	var _TableView = __webpack_require__(39);
 	
 	var _TableView2 = _interopRequireDefault(_TableView);
 	
-	var _DetailsView = __webpack_require__(40);
+	var _DetailsView = __webpack_require__(42);
 	
 	var _DetailsView2 = _interopRequireDefault(_DetailsView);
 	
-	var _FormView = __webpack_require__(41);
+	var _FormView = __webpack_require__(44);
 	
 	var _FormView2 = _interopRequireDefault(_FormView);
 	
@@ -10607,6 +10607,10 @@
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
+	var _buttonView = __webpack_require__(19);
+	
+	var _buttonView2 = _interopRequireDefault(_buttonView);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10700,7 +10704,7 @@
 	    }, {
 	        key: 'prepareButtonHtml',
 	        value: function prepareButtonHtml() {
-	            return '<button type="button" class="btn btn-primary" id="addBtn">Dodaj</button>\n            <button type="button" class="btn btn-primary" id="editBtn" disabled>Popraw</button>\n            <button type="button" class="btn btn-primary" id="deleteBtn" disabled>Usuń</button>';
+	            return (0, _buttonView2.default)({});
 	        }
 	    }]);
 	
@@ -10713,169 +10717,23 @@
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	//noinspection JSUnresolvedVariable
-	
-	
-	var _jquery = __webpack_require__(1);
-	
-	var _jquery2 = _interopRequireDefault(_jquery);
-	
-	var _tableView = __webpack_require__(20);
-	
-	var _tableView2 = _interopRequireDefault(_tableView);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var TableView = function () {
-	    /**
-	     *
-	     * @param {EventEmitter} ee
-	     * @param {string} divID
-	     */
-	    function TableView(ee, divID) {
-	        _classCallCheck(this, TableView);
-	
-	        this.ee = ee;
-	        this.divID = divID;
-	        this.users = new Map([]);
-	        this.setUpListeners();
-	    }
-	
-	    _createClass(TableView, [{
-	        key: 'setUpListeners',
-	        value: function setUpListeners() {
-	            var _this = this;
-	
-	            var ee = this.ee;
-	
-	            ee.on('users-new-data', function (users) {
-	                _this.users = users;
-	                _this.render();
-	            });
-	            ee.on('delete-user', function () {
-	                _this.users.delete(_this.selectedRow);
-	                _this.render();
-	            });
-	            ee.on('edit-current-user', function () {
-	                _this.hideTableView();
-	                ee.emit('editUser', _this.users.get(_this.selectedRow));
-	            });
-	            ee.on('add-new-user', this.hideTableView);
-	            ee.on('userEdited', function (user) {
-	                _this.users.set(_this.selectedRow, user);
-	                _this.render();
-	            });
-	            ee.on('userAdded', function (user) {
-	                _this.users.set(_this.users.size, user);
-	                _this.render();
-	            });
-	            ee.on('formCanceled', function () {
-	                _this.render();
-	            });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-	
-	            this.selectedRow = -1;
-	            (0, _jquery2.default)(this.divID).html(TableView.prepareTableHtml(this.users));
-	            (0, _jquery2.default)(this.divID).find("table tbody tr").on('click', function (event) {
-	                var userId = parseInt(event.target.parentElement.id.substring(8));
-	                _this2.onRowClick(userId);
-	            });
-	        }
-	    }, {
-	        key: 'onRowClick',
-	
-	
-	        /**
-	         *
-	         * @param {number} rowNumber
-	         */
-	        value: function onRowClick(rowNumber) {
-	            var selected = this.selectedRow;
-	            if (selected != -1) {
-	                (0, _jquery2.default)("#tableRow" + selected).removeClass("activeRow");
-	            }
-	            (0, _jquery2.default)("#tableRow" + rowNumber).addClass("activeRow");
-	            this.selectedRow = rowNumber;
-	            if (selected !== rowNumber) {
-	                this.ee.emit('onRowSelectionChange', this.users.get(rowNumber));
-	            }
-	        }
-	    }, {
-	        key: 'hideTableView',
-	        value: function hideTableView() {
-	            (0, _jquery2.default)(this.divID).html("");
-	        }
-	    }], [{
-	        key: 'prepareTableHtml',
-	
-	
-	        /**
-	         *
-	         * @param {Map} users
-	         * @returns {string}
-	         */
-	        value: function prepareTableHtml(users) {
-	            return (0, _tableView2.default)({ users: users });
-	        }
-	    }]);
-	
-	    return TableView;
-	}();
-	
-	exports.default = TableView;
+	var Handlebars = __webpack_require__(20);
+	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+	    return "<button type=\"button\" class=\"btn btn-primary\" id=\"addBtn\">Dodaj</button>\n<button type=\"button\" class=\"btn btn-primary\" id=\"editBtn\" disabled>Popraw</button>\n<button type=\"button\" class=\"btn btn-primary\" id=\"deleteBtn\" disabled>Usuń</button>";
+	},"useData":true});
 
 /***/ },
 /* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Handlebars = __webpack_require__(21);
-	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
-	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
-	    var stack1, helper, alias1=container.escapeExpression, alias2=container.lambda;
-	
-	  return "\u2028\n    <tr id=\"tableRow"
-	    + alias1(((helper = (helper = helpers.key || (depth0 != null ? depth0.key : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"key","hash":{},"data":data}) : helper)))
-	    + "\">\n            <td>"
-	    + alias1(alias2(((stack1 = (depth0 != null ? depth0.value : depth0)) != null ? stack1.name : stack1), depth0))
-	    + "</td>\n            <td>"
-	    + alias1(alias2(((stack1 = (depth0 != null ? depth0.value : depth0)) != null ? stack1.surname : stack1), depth0))
-	    + "</td>\n            <td>"
-	    + alias1(alias2(((stack1 = (depth0 != null ? depth0.value : depth0)) != null ? stack1.age : stack1), depth0))
-	    + "</td>\n            <td>"
-	    + alias1(alias2(((stack1 = (depth0 != null ? depth0.value : depth0)) != null ? stack1.sex : stack1), depth0))
-	    + "</td>\n    </tr>\n";
-	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-	    var stack1;
-	
-	  return "<table class=\"table table-bordered\">\n    <thead>\n    <tr>\n        <th class=\"col-md-3\">Imię</th>\n        <th class=\"col-md-5\">Nazwisko</th>\n        <th class=\"col-md-2\">Wiek</th>\n        <th class=\"col-md-2\">Płeć</th>\n    </tr>\n    </thead>\n    <tbody>\n"
-	    + ((stack1 = (helpers.eachInMap || (depth0 && depth0.eachInMap) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.users : depth0),{"name":"eachInMap","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-	    + "    </tbody>\n</table>";
-	},"useData":true});
+	// Create a simple path alias to allow browserify to resolve
+	// the runtime on a supported path.
+	module.exports = __webpack_require__(21)['default'];
+
 
 /***/ },
 /* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// Create a simple path alias to allow browserify to resolve
-	// the runtime on a supported path.
-	module.exports = __webpack_require__(22)['default'];
-
-
-/***/ },
-/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10889,30 +10747,30 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _handlebarsBase = __webpack_require__(23);
+	var _handlebarsBase = __webpack_require__(22);
 	
 	var base = _interopRequireWildcard(_handlebarsBase);
 	
 	// Each of these augment the Handlebars object. No need to setup here.
 	// (This is done to easily share code between commonjs and browse envs)
 	
-	var _handlebarsSafeString = __webpack_require__(37);
+	var _handlebarsSafeString = __webpack_require__(36);
 	
 	var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
 	
-	var _handlebarsException = __webpack_require__(25);
+	var _handlebarsException = __webpack_require__(24);
 	
 	var _handlebarsException2 = _interopRequireDefault(_handlebarsException);
 	
-	var _handlebarsUtils = __webpack_require__(24);
+	var _handlebarsUtils = __webpack_require__(23);
 	
 	var Utils = _interopRequireWildcard(_handlebarsUtils);
 	
-	var _handlebarsRuntime = __webpack_require__(38);
+	var _handlebarsRuntime = __webpack_require__(37);
 	
 	var runtime = _interopRequireWildcard(_handlebarsRuntime);
 	
-	var _handlebarsNoConflict = __webpack_require__(39);
+	var _handlebarsNoConflict = __webpack_require__(38);
 	
 	var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
 	
@@ -10947,7 +10805,7 @@
 
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10958,17 +10816,17 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _utils = __webpack_require__(24);
+	var _utils = __webpack_require__(23);
 	
-	var _exception = __webpack_require__(25);
+	var _exception = __webpack_require__(24);
 	
 	var _exception2 = _interopRequireDefault(_exception);
 	
-	var _helpers = __webpack_require__(26);
+	var _helpers = __webpack_require__(25);
 	
-	var _decorators = __webpack_require__(34);
+	var _decorators = __webpack_require__(33);
 	
-	var _logger = __webpack_require__(36);
+	var _logger = __webpack_require__(35);
 	
 	var _logger2 = _interopRequireDefault(_logger);
 	
@@ -11057,7 +10915,7 @@
 
 
 /***/ },
-/* 24 */
+/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11187,7 +11045,7 @@
 
 
 /***/ },
-/* 25 */
+/* 24 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11233,7 +11091,7 @@
 
 
 /***/ },
-/* 26 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11244,31 +11102,31 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _helpersBlockHelperMissing = __webpack_require__(27);
+	var _helpersBlockHelperMissing = __webpack_require__(26);
 	
 	var _helpersBlockHelperMissing2 = _interopRequireDefault(_helpersBlockHelperMissing);
 	
-	var _helpersEach = __webpack_require__(28);
+	var _helpersEach = __webpack_require__(27);
 	
 	var _helpersEach2 = _interopRequireDefault(_helpersEach);
 	
-	var _helpersHelperMissing = __webpack_require__(29);
+	var _helpersHelperMissing = __webpack_require__(28);
 	
 	var _helpersHelperMissing2 = _interopRequireDefault(_helpersHelperMissing);
 	
-	var _helpersIf = __webpack_require__(30);
+	var _helpersIf = __webpack_require__(29);
 	
 	var _helpersIf2 = _interopRequireDefault(_helpersIf);
 	
-	var _helpersLog = __webpack_require__(31);
+	var _helpersLog = __webpack_require__(30);
 	
 	var _helpersLog2 = _interopRequireDefault(_helpersLog);
 	
-	var _helpersLookup = __webpack_require__(32);
+	var _helpersLookup = __webpack_require__(31);
 	
 	var _helpersLookup2 = _interopRequireDefault(_helpersLookup);
 	
-	var _helpersWith = __webpack_require__(33);
+	var _helpersWith = __webpack_require__(32);
 	
 	var _helpersWith2 = _interopRequireDefault(_helpersWith);
 	
@@ -11285,14 +11143,14 @@
 
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _utils = __webpack_require__(24);
+	var _utils = __webpack_require__(23);
 	
 	exports['default'] = function (instance) {
 	  instance.registerHelper('blockHelperMissing', function (context, options) {
@@ -11330,7 +11188,7 @@
 
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11340,9 +11198,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _utils = __webpack_require__(24);
+	var _utils = __webpack_require__(23);
 	
-	var _exception = __webpack_require__(25);
+	var _exception = __webpack_require__(24);
 	
 	var _exception2 = _interopRequireDefault(_exception);
 	
@@ -11430,7 +11288,7 @@
 
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11440,7 +11298,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _exception = __webpack_require__(25);
+	var _exception = __webpack_require__(24);
 	
 	var _exception2 = _interopRequireDefault(_exception);
 	
@@ -11461,14 +11319,14 @@
 
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _utils = __webpack_require__(24);
+	var _utils = __webpack_require__(23);
 	
 	exports['default'] = function (instance) {
 	  instance.registerHelper('if', function (conditional, options) {
@@ -11496,7 +11354,7 @@
 
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11528,7 +11386,7 @@
 
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11546,14 +11404,14 @@
 
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _utils = __webpack_require__(24);
+	var _utils = __webpack_require__(23);
 	
 	exports['default'] = function (instance) {
 	  instance.registerHelper('with', function (context, options) {
@@ -11585,7 +11443,7 @@
 
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11596,7 +11454,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _decoratorsInline = __webpack_require__(35);
+	var _decoratorsInline = __webpack_require__(34);
 	
 	var _decoratorsInline2 = _interopRequireDefault(_decoratorsInline);
 	
@@ -11607,14 +11465,14 @@
 
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _utils = __webpack_require__(24);
+	var _utils = __webpack_require__(23);
 	
 	exports['default'] = function (instance) {
 	  instance.registerDecorator('inline', function (fn, props, container, options) {
@@ -11642,14 +11500,14 @@
 
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _utils = __webpack_require__(24);
+	var _utils = __webpack_require__(23);
 	
 	var logger = {
 	  methodMap: ['debug', 'info', 'warn', 'error'],
@@ -11695,7 +11553,7 @@
 
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports) {
 
 	// Build out our basic SafeString type
@@ -11716,7 +11574,7 @@
 
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11736,15 +11594,15 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _utils = __webpack_require__(24);
+	var _utils = __webpack_require__(23);
 	
 	var Utils = _interopRequireWildcard(_utils);
 	
-	var _exception = __webpack_require__(25);
+	var _exception = __webpack_require__(24);
 	
 	var _exception2 = _interopRequireDefault(_exception);
 	
-	var _base = __webpack_require__(23);
+	var _base = __webpack_require__(22);
 	
 	function checkRevision(compilerInfo) {
 	  var compilerRevision = compilerInfo && compilerInfo[0] || 1,
@@ -12014,7 +11872,7 @@
 
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/* global window */
@@ -12041,7 +11899,210 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	//noinspection JSUnresolvedVariable
+	
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _tableView = __webpack_require__(40);
+	
+	var _tableView2 = _interopRequireDefault(_tableView);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var TableView = function () {
+	    /**
+	     *
+	     * @param {EventEmitter} ee
+	     * @param {string} divID
+	     */
+	    function TableView(ee, divID) {
+	        _classCallCheck(this, TableView);
+	
+	        this.ee = ee;
+	        this.divID = divID;
+	        this.users = new Map([]);
+	        this.setUpListeners();
+	    }
+	
+	    _createClass(TableView, [{
+	        key: 'setUpListeners',
+	        value: function setUpListeners() {
+	            var _this = this;
+	
+	            var ee = this.ee;
+	
+	            ee.on('users-new-data', function (users) {
+	                _this.users = users;
+	                _this.render();
+	            });
+	            ee.on('delete-user', function () {
+	                _this.users.delete(_this.selectedRow);
+	                _this.render();
+	            });
+	            ee.on('edit-current-user', function () {
+	                _this.hideTableView();
+	                ee.emit('editUser', _this.users.get(_this.selectedRow));
+	            });
+	            ee.on('add-new-user', this.hideTableView);
+	            ee.on('userEdited', function (user) {
+	                _this.users.set(_this.selectedRow, user);
+	                _this.render();
+	            });
+	            ee.on('userAdded', function (user) {
+	                _this.users.set(_this.users.size, user);
+	                _this.render();
+	            });
+	            ee.on('formCanceled', function () {
+	                _this.render();
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+	
+	            this.selectedRow = -1;
+	            (0, _jquery2.default)(this.divID).html(TableView.prepareTableHtml(this.users));
+	            (0, _jquery2.default)(this.divID).find("table tbody tr").on('click', function (event) {
+	                var userId = parseInt(event.target.parentElement.id.substring(8));
+	                _this2.onRowClick(userId);
+	            });
+	        }
+	    }, {
+	        key: 'onRowClick',
+	
+	
+	        /**
+	         *
+	         * @param {number} rowNumber
+	         */
+	        value: function onRowClick(rowNumber) {
+	            var selected = this.selectedRow;
+	            if (selected != -1) {
+	                (0, _jquery2.default)("#tableRow" + selected).removeClass("activeRow");
+	            }
+	            (0, _jquery2.default)("#tableRow" + rowNumber).addClass("activeRow");
+	            this.selectedRow = rowNumber;
+	            if (selected !== rowNumber) {
+	                this.ee.emit('onRowSelectionChange', this.users.get(rowNumber));
+	            }
+	        }
+	    }, {
+	        key: 'hideTableView',
+	        value: function hideTableView() {
+	            (0, _jquery2.default)(this.divID).html("");
+	        }
+	    }], [{
+	        key: 'prepareTableHtml',
+	
+	
+	        /**
+	         *
+	         * @param {Map} users
+	         * @returns {string}
+	         */
+	        value: function prepareTableHtml(users) {
+	            return (0, _tableView2.default)({ users: users });
+	        }
+	    }]);
+	
+	    return TableView;
+	}();
+	
+	exports.default = TableView;
+
+/***/ },
 /* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Handlebars = __webpack_require__(20);
+	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
+	    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+	
+	  return "\u2028\n    <tr id=\"tableRow"
+	    + alias2(alias1((depth0 != null ? depth0.key : depth0), depth0))
+	    + "\">\n            <td>"
+	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.value : depth0)) != null ? stack1.name : stack1), depth0))
+	    + "</td>\n            <td>"
+	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.value : depth0)) != null ? stack1.surname : stack1), depth0))
+	    + "</td>\n            <td>"
+	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.value : depth0)) != null ? stack1.age : stack1), depth0))
+	    + "</td>\n            <td>"
+	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.value : depth0)) != null ? stack1.sex : stack1), depth0))
+	    + "</td>\n    </tr>\n";
+	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+	    var stack1;
+	
+	  return "<table class=\"table table-bordered\">\n    <thead>\n    <tr>\n        <th class=\"col-md-3\">Imię</th>\n        <th class=\"col-md-5\">Nazwisko</th>\n        <th class=\"col-md-2\">Wiek</th>\n        <th class=\"col-md-2\">Płeć</th>\n    </tr>\n    </thead>\n    <tbody>\n"
+	    + ((stack1 = __default(__webpack_require__(41)).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.users : depth0),{"name":"eachInMap","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + "    </tbody>\n</table>";
+	},"useData":true});
+
+/***/ },
+/* 41 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
+	/**
+	 *
+	 * @param {Map} map
+	 * @param block
+	 * @returns {string}
+	 */
+	module.exports = function (map, block) {
+	    var out = '';
+	    var _iteratorNormalCompletion = true;
+	    var _didIteratorError = false;
+	    var _iteratorError = undefined;
+	
+	    try {
+	        for (var _iterator = map[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	            var _step$value = _slicedToArray(_step.value, 2);
+	
+	            var key = _step$value[0];
+	            var value = _step$value[1];
+	
+	            out += block.fn({ key: key, value: value });
+	        }
+	    } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	    } finally {
+	        try {
+	            if (!_iteratorNormalCompletion && _iterator.return) {
+	                _iterator.return();
+	            }
+	        } finally {
+	            if (_didIteratorError) {
+	                throw _iteratorError;
+	            }
+	        }
+	    }
+	
+	    return out;
+	};
+
+/***/ },
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12055,6 +12116,10 @@
 	var _jquery = __webpack_require__(1);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _detailsView = __webpack_require__(43);
+	
+	var _detailsView2 = _interopRequireDefault(_detailsView);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -12120,7 +12185,7 @@
 	         * @returns {string}
 	         */
 	        value: function prepareDetailsHtml(user) {
-	            return '<div class="container">\n                <div class="row">\n                    <div class="col-md-2 evLabel">Imie:</div>\n                    <div class="col-md-2 evValue">' + user.name + '</div>\n                </div>\n                <div class="row">\n                    <div class="col-md-2 evLabel">Nazwisko:</div>\n                    <div class="col-md-2 evValue">' + user.surname + '</div>\n                </div>\n                <div class="row">\n                    <div class="col-md-2 evLabel">Wiek:</div>\n                    <div class="col-md-2 evValue">' + user.age + '</div>\n                </div>\n                <div class="row">\n                    <div class="col-md-2 evLabel">Płeć:</div>\n                    <div class="col-md-2 evValue">' + user.sex + '</div>\n                </div>\n            </div>';
+	            return (0, _detailsView2.default)({ user: user });
 	        }
 	    }]);
 	
@@ -12130,10 +12195,30 @@
 	exports.default = DetailsView;
 
 /***/ },
-/* 41 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	var Handlebars = __webpack_require__(20);
+	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+	    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+	
+	  return "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-2 evLabel\">Imie:</div>\n        <div class=\"col-md-2 evValue\">"
+	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.name : stack1), depth0))
+	    + "</div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-2 evLabel\">Nazwisko:</div>\n        <div class=\"col-md-2 evValue\">"
+	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.surname : stack1), depth0))
+	    + "</div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-2 evLabel\">Wiek:</div>\n        <div class=\"col-md-2 evValue\">"
+	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.age : stack1), depth0))
+	    + "</div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-2 evLabel\">Płeć:</div>\n        <div class=\"col-md-2 evValue\">"
+	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.sex : stack1), depth0))
+	    + "</div>\n    </div>\n</div>";
+	},"useData":true});
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -12144,6 +12229,10 @@
 	var _jquery = __webpack_require__(1);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _formView = __webpack_require__(45);
+	
+	var _formView2 = _interopRequireDefault(_formView);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -12164,7 +12253,7 @@
 	    }
 	
 	    _createClass(FormView, [{
-	        key: "setUpListeners",
+	        key: 'setUpListeners',
 	        value: function setUpListeners() {
 	            var _this = this;
 	
@@ -12195,7 +12284,7 @@
 	            });
 	        }
 	    }, {
-	        key: "renderWithMode",
+	        key: 'renderWithMode',
 	
 	
 	        /**
@@ -12214,12 +12303,12 @@
 	            });
 	        }
 	    }, {
-	        key: "hideFormView",
+	        key: 'hideFormView',
 	        value: function hideFormView() {
 	            (0, _jquery2.default)(this.divID).html("");
 	        }
 	    }, {
-	        key: "serializeForm",
+	        key: 'serializeForm',
 	
 	
 	        /**
@@ -12247,7 +12336,7 @@
 	         */
 	
 	    }, {
-	        key: "deserializeForm",
+	        key: 'deserializeForm',
 	        value: function deserializeForm($form, user) {
 	            var inputs = $form.find("input");
 	            _jquery2.default.each(inputs, function (index, element) {
@@ -12262,14 +12351,14 @@
 	
 	        /**
 	         *
-	         * @param {string} mode
+	         * @param {string} mode Dodaj lub Edytuj
 	         * @returns {string}
 	         */
 	
 	    }], [{
-	        key: "prepareFormHtml",
+	        key: 'prepareFormHtml',
 	        value: function prepareFormHtml(mode) {
-	            return "<div class=\"row\">\n                <div class=\"col-md-4\">&nbsp;</div>\n                <div class=\"col-md-4\">\n                    <h3>" + (mode + " Użytkownika") + "</h3>\n                    <form name=\"form\" id=\"form\">\n                        <div class=\"form-group\">\n                            <label for=\"name\">Imie:</label>\n                            <input id=\"name\" name=\"name\" class=\"form-control\" type=\"text\" required>\n                        </div>\n                        <div class=\"form-group\">\n                            <label for=\"surname\">Nazwisko:</label>\n                            <input id=\"surname\" name=\"surname\" class=\"form-control\" type=\"text\" required>\n                        </div>\n                        <div class=\"form-group\">\n                            <label for=\"age\">Wiek:</label>\n                            <input id=\"age\" name=\"age\" class=\"form-control\" type=\"number\" min=\"18\" max=\"99\" required>\n                        </div>\n                        <div class=\"form-group\">\n                            <label for=\"sex\">Płeć:</label>\n                            <select class=\"form-control\" name=\"sex\" id=\"sex\">\n                                <option>Mężczyzna</option>\n                                <option>Kobieta</option>\n                            </select>\n                        </div>\n                        <div class=\"form-group\">\n                            <button type=\"submit\" class=\"btn btn-primary\">Zapisz</button>\n                            <button type=\"button\" id=\"cancelBtn\" class=\"btn btn-warning\">Cofnij</button>\n                        </div>\n                    </form>\n                </div>\n            <div class=\"col-md-4\">&nbsp;</div></div>";
+	            return (0, _formView2.default)({ mode: mode });
 	        }
 	    }]);
 	
@@ -12277,6 +12366,20 @@
 	}();
 	
 	exports.default = FormView;
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Handlebars = __webpack_require__(20);
+	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+	    var helper;
+	
+	  return "<div class=\"row\">\n    <div class=\"col-md-4\">&nbsp;</div>\n    <div class=\"col-md-4\">\n        <h3>"
+	    + container.escapeExpression(((helper = (helper = helpers.mode || (depth0 != null ? depth0.mode : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"mode","hash":{},"data":data}) : helper)))
+	    + " Użytkownika</h3>\n        <form name=\"form\" id=\"form\">\n            <div class=\"form-group\">\n                <label for=\"name\">Imie:</label>\n                <input id=\"name\" name=\"name\" class=\"form-control\" type=\"text\" required>\n            </div>\n            <div class=\"form-group\">\n                <label for=\"surname\">Nazwisko:</label>\n                <input id=\"surname\" name=\"surname\" class=\"form-control\" type=\"text\"\n                       required>\n            </div>\n            <div class=\"form-group\">\n                <label for=\"age\">Wiek:</label>\n                <input id=\"age\" name=\"age\" class=\"form-control\" type=\"number\"\n                       min=\"18\" max=\"99\" required>\n            </div>\n            <div class=\"form-group\">\n                <label for=\"sex\">Płeć:</label>\n                <select class=\"form-control\" name=\"sex\" id=\"sex\">\n                    <option>Mężczyzna</option>\n                    <option>Kobieta</option>\n                </select>\n            </div>\n            <div class=\"form-group\">\n                <button type=\"submit\" class=\"btn btn-primary\">Zapisz</button>\n                <button type=\"button\" id=\"cancelBtn\" class=\"btn btn-warning\">Cofnij</button>\n            </div>\n        </form>\n    </div>\n    <div class=\"col-md-4\">&nbsp;</div>\n</div>";
+	},"useData":true});
 
 /***/ }
 /******/ ]);

@@ -78,7 +78,7 @@ class TableView {
      * @returns {string}
      */
     static prepareTableHtml(users) {
-        return template({users:users});
+        return template({users: users});
     }
 }
 
