@@ -1,3 +1,5 @@
+var path = require("path");
+var helpersDir = path.join(__dirname,'src','helpers');
 module.exports = {
     devtool: 'source-map',
     entry: './src/index.js',
@@ -13,8 +15,8 @@ module.exports = {
         }, {
             test: /\.hbs/,
             loader: "handlebars-loader",
-            query: {
-                helperDirs:  + '/helpers'
+            query:{
+                helperDirs:[helpersDir]
             }
         }],
     },

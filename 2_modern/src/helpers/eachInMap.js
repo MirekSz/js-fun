@@ -1,7 +1,13 @@
+/**
+ *
+ * @param {Map} map
+ * @param block
+ * @returns {string}
+ */
 module.exports = function( map, block ) {
-    let out = '';
-    Object.keys(map).map((key) => {
-        out += block.fn( {key: key, value: map.get(key)} );
-    });
+    var out = '';
+    for (var [key, value] of map) {
+        out += block.fn( {key, value} )
+    }
     return out;
 };
