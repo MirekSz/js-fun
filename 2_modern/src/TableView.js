@@ -3,7 +3,7 @@ import template from './tableView.hbs';
 
 import {BUTTON_EVENTS} from './ButtonView';
 import {FORM_EVENTS} from './FormView';
-import {USER_SERVICE_EVENT} from './HttpManager';
+import {USER_SERVICE_EVENT} from './UserService';
 
 export const TABLE_EVENTS = {
     ON_ROW_SELECTION_CHANGE: 'onRowSelectionChange',
@@ -14,15 +14,18 @@ class TableView {
     /**
      *
      * @param {EventEmitter} ee
-     * @param {HttpManager} httpManager
-     * @param {string} divID
+     * @param {UserService} service
      */
-    constructor(ee, httpManager, divID) {
+    constructor(ee, service) {
         this.ee = ee;
-        this.httpManager = httpManager;
-        this.divID = divID;
+        this.service = service;
         this.users = [];
         this.setUpListeners();
+    }
+
+    setDivID(div) {
+        this.divID = div;
+        return this;
     }
 
     setUpListeners() {
@@ -32,23 +35,14 @@ class TableView {
             this.render();
         });
         ee.on(BUTTON_EVENTS.DELETE_USER, () => {
-            this.httpManager.deleteUser(this.users[this.selectedRow].id);
+            this.service.deleteUser(this.users[this.selectedRow].id);
         });
         ee.on(BUTTON_EVENTS.EDIT_BUTTON_CLICK, () => {
             this.hideTableView();
             ee.emit(TABLE_EVENTS.EDIT_USER, this.users[this.selectedRow]);
         });
-        ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hideTableView);
-        ee.on(FORM_EVENTS.USER_EDITED, (user) => {
-            this.httpManager.editUser(user);
-
-        });
-        ee.on(FORM_EVENTS.USER_ADDED, (user) => {
-            this.httpManager.addUser(user);
-        });
-        ee.on(FORM_EVENTS.FORM_CANCELED, () => {
-            this.render();
-        });
+        ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hideTableView.bind(this));
+        ee.on(FORM_EVENTS.FORM_CANCELED, this.render.bind(this));
     };
 
     render() {
@@ -67,9 +61,9 @@ class TableView {
     onRowClick(rowNumber) {
         let selected = this.selectedRow;
         if (selected != -1) {
-            $("#tableRow" + selected).removeClass("activeRow");
+            $(`tr[data-id*='${selected}']`).removeClass("activeRow");
         }
-        $("#tableRow" + rowNumber).addClass("activeRow");
+        $(`tr[data-id*='${rowNumber}']`).addClass("activeRow");
         this.selectedRow = rowNumber;
         if (selected !== rowNumber) {
             this.ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, this.users[rowNumber]);

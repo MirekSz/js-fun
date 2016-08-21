@@ -5,21 +5,24 @@ import {TABLE_EVENTS} from './TableView'
 import {FORM_EVENTS} from './FormView';
 
 export const BUTTON_EVENTS = {
-    ADD_NEW_USER:'add-new-user',
-    EDIT_BUTTON_CLICK:'edit-button-click',
-    DELETE_USER:'delete-user'
+    ADD_NEW_USER: 'add-new-user',
+    EDIT_BUTTON_CLICK: 'edit-button-click',
+    DELETE_USER: 'delete-user'
 };
 
 class ButtonView {
     /**
      *
      * @param {EventEmitter} ee
-     * @param {string} divID
      */
-    constructor(ee, divID) {
+    constructor(ee) {
         this.ee = ee;
-        this.divID = divID;
         this.setUpListeners();
+    }
+
+    setDivID(div) {
+        this.divID = div;
+        return this;
     }
 
     setUpListeners() {

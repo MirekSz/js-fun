@@ -1,7 +1,7 @@
 import $ from 'jquery'
 import EventEmitter from "event-emitter";
-import HttpManager from "./HttpManager";
 
+import UserService from './UserService';
 import ButtonView from "./ButtonView";
 import TableView from "./TableView";
 import DetailsView from "./DetailsView";
@@ -11,13 +11,15 @@ $(document).ready(initialize);
 
 function initialize() {
 
+    let baseUrl = 'http://localhost:3000';
+
     let ee = new EventEmitter();
-    let httpManager = new HttpManager(ee);
+    let service = new UserService(ee, baseUrl, '/users/');
 
-    new ButtonView(ee, "#buttonView").render();
-    new TableView(ee, httpManager, '#workspace');
-    new DetailsView(ee, '#detailsView');
-    new FormView(ee, '#workspace');
+    new ButtonView(ee).setDivID("#buttonView").render();
+    new TableView(ee, service).setDivID("#workspace");
+    new DetailsView(ee).setDivID("#detailsView");
+    new FormView(ee, service).setDivID("#workspace");
 
-    httpManager.getUsers();
+    service.getUsers();
 }

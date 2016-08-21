@@ -45,15 +45,15 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	__webpack_require__(70);
-	module.exports = __webpack_require__(74);
+	__webpack_require__(71);
+	module.exports = __webpack_require__(75);
 
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var _jquery = __webpack_require__(2);
 	
@@ -63,23 +63,23 @@
 	
 	var _eventEmitter2 = _interopRequireDefault(_eventEmitter);
 	
-	var _HttpManager = __webpack_require__(18);
+	var _UserService = __webpack_require__(18);
 	
-	var _HttpManager2 = _interopRequireDefault(_HttpManager);
+	var _UserService2 = _interopRequireDefault(_UserService);
 	
-	var _ButtonView = __webpack_require__(43);
+	var _ButtonView = __webpack_require__(44);
 	
 	var _ButtonView2 = _interopRequireDefault(_ButtonView);
 	
-	var _TableView = __webpack_require__(64);
+	var _TableView = __webpack_require__(65);
 	
 	var _TableView2 = _interopRequireDefault(_TableView);
 	
-	var _DetailsView = __webpack_require__(66);
+	var _DetailsView = __webpack_require__(69);
 	
 	var _DetailsView2 = _interopRequireDefault(_DetailsView);
 	
-	var _FormView = __webpack_require__(68);
+	var _FormView = __webpack_require__(67);
 	
 	var _FormView2 = _interopRequireDefault(_FormView);
 	
@@ -89,15 +89,17 @@
 	
 	function initialize() {
 	
+	    var baseUrl = 'http://localhost:3000';
+	
 	    var ee = new _eventEmitter2.default();
-	    var httpManager = new _HttpManager2.default(ee);
+	    var service = new _UserService2.default(ee, baseUrl, '/users/');
 	
-	    new _ButtonView2.default(ee, "#buttonView").render();
-	    new _TableView2.default(ee, httpManager, '#workspace');
-	    new _DetailsView2.default(ee, '#detailsView');
-	    new _FormView2.default(ee, '#workspace');
+	    new _ButtonView2.default(ee).setDivID("#buttonView").render();
+	    new _TableView2.default(ee, service).setDivID("#workspace");
+	    new _DetailsView2.default(ee).setDivID("#detailsView");
+	    new _FormView2.default(ee, service).setDivID("#workspace");
 	
-	    httpManager.getUsers();
+	    service.getUsers();
 	}
 
 /***/ },
@@ -10579,6 +10581,71 @@
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.USER_SERVICE_EVENT = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _HttpManager = __webpack_require__(19);
+	
+	var _HttpManager2 = _interopRequireDefault(_HttpManager);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var USER_SERVICE_EVENT = exports.USER_SERVICE_EVENT = {
+	    USERS_NEW_DATA: 'users-new-data'
+	};
+	
+	var UserService = function () {
+	    function UserService(ee, baseUrl, usersUrl) {
+	        _classCallCheck(this, UserService);
+	
+	        this.ee = ee;
+	        this.http = new _HttpManager2.default(baseUrl);
+	        this.url = usersUrl;
+	    }
+	
+	    _createClass(UserService, [{
+	        key: "getUsers",
+	        value: function getUsers() {
+	            var _this = this;
+	
+	            this.http.getData(this.url, function (data) {
+	                _this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, data);
+	            });
+	        }
+	    }, {
+	        key: "addUser",
+	        value: function addUser(user) {
+	            this.http.post(this.url, user, this.getUsers.bind(this));
+	        }
+	    }, {
+	        key: "editUser",
+	        value: function editUser(user) {
+	            this.http.put(this.url, user, this.getUsers.bind(this));
+	        }
+	    }, {
+	        key: "deleteUser",
+	        value: function deleteUser(id) {
+	            this.http.doDelete(this.url + id, id, this.getUsers.bind(this));
+	        }
+	    }]);
+	
+	    return UserService;
+	}();
+	
+	exports.default = UserService;
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -10587,11 +10654,11 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _axios = __webpack_require__(19);
+	var _axios = __webpack_require__(20);
 	
 	var _axios2 = _interopRequireDefault(_axios);
 	
-	var _user = __webpack_require__(42);
+	var _user = __webpack_require__(43);
 	
 	var _user2 = _interopRequireDefault(_user);
 	
@@ -10600,26 +10667,31 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var HttpManager = function () {
+	
 	    /**
 	     *
-	     * @param {EventEmitter} ee
+	     * @param {string} baseUrl
 	     */
-	    function HttpManager(ee) {
+	    function HttpManager(baseUrl) {
 	        _classCallCheck(this, HttpManager);
 	
-	        this.ee = ee;
 	        this.axios = _axios2.default.create({
-	            baseURL: 'http://localhost:3000'
+	            baseURL: baseUrl
 	        });
 	    }
 	
-	    _createClass(HttpManager, [{
-	        key: 'getUsers',
-	        value: function getUsers() {
-	            var _this = this;
+	    /**
+	     *
+	     * @param {string} url
+	     * @param {function} callback
+	     */
 	
-	            this.axios.get('/users').then(function (response) {
-	                _this.ee.emit('users-new-data', response.data);
+	
+	    _createClass(HttpManager, [{
+	        key: 'getData',
+	        value: function getData(url, callback) {
+	            this.axios.get(url).then(function (response) {
+	                return callback(response.data);
 	            }).catch(function (error) {
 	                console.log(error);
 	            });
@@ -10627,55 +10699,45 @@
 	
 	        /**
 	         *
-	         * @param {User} user
+	         * @param {string} url
+	         * @param {Object} postData
+	         * @param {function} callback
 	         */
 	
 	    }, {
-	        key: 'addUser',
-	        value: function addUser(user) {
-	            var _this2 = this;
-	
-	            var promise = this.axios.post('/users', {
-	                user: user
-	            });
-	
-	            var promise2 = promise.then(function () {
-	                _this2.getUsers();
-	            });
-	
-	            return promise2;
-	        }
-	
-	        /**
-	         *
-	         * @param {User} user
-	         */
-	
-	    }, {
-	        key: 'editUser',
-	        value: function editUser(user) {
-	            var _this3 = this;
-	
-	            this.axios.put('/users', {
-	                user: user
-	            }).then(function () {
-	                _this3.getUsers();
+	        key: 'post',
+	        value: function post(url, postData, callback) {
+	            this.axios.post(url, postData).then(callback()).catch(function (error) {
+	                console.log(error);
 	            });
 	        }
 	
 	        /**
 	         *
-	         * @param {number} id
+	         * @param {string} url
+	         * @param {Object} putData
+	         * @param {function} callback
 	         */
 	
 	    }, {
-	        key: 'deleteUser',
-	        value: function deleteUser(id) {
-	            var _this4 = this;
+	        key: 'put',
+	        value: function put(url, putData, callback) {
+	            this.axios.put(url, putData).then(callback()).catch(function (error) {
+	                console.log(error);
+	            });
+	        }
 	
-	            this.axios.delete('/users/' + id).then(function () {
-	                _this4.getUsers();
-	            }).catch(function (error) {
+	        /**
+	         *
+	         * @param {string} url
+	         * @param {Object} id
+	         * @param {function} callback
+	         */
+	
+	    }, {
+	        key: 'doDelete',
+	        value: function doDelete(url, id, callback) {
+	            this.axios.delete(url, id).then(callback()).catch(function (error) {
 	                console.log(error);
 	            });
 	        }
@@ -10687,20 +10749,20 @@
 	exports.default = HttpManager;
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(20);
+	module.exports = __webpack_require__(21);
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(21);
-	var bind = __webpack_require__(22);
-	var Axios = __webpack_require__(23);
+	var utils = __webpack_require__(22);
+	var bind = __webpack_require__(23);
+	var Axios = __webpack_require__(24);
 	
 	/**
 	 * Create an instance of Axios
@@ -10736,16 +10798,16 @@
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(41);
+	axios.spread = __webpack_require__(42);
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var bind = __webpack_require__(22);
+	var bind = __webpack_require__(23);
 	
 	/*global toString:true*/
 	
@@ -11045,7 +11107,7 @@
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11062,17 +11124,17 @@
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var defaults = __webpack_require__(24);
-	var utils = __webpack_require__(21);
-	var InterceptorManager = __webpack_require__(26);
-	var dispatchRequest = __webpack_require__(27);
-	var isAbsoluteURL = __webpack_require__(39);
-	var combineURLs = __webpack_require__(40);
+	var defaults = __webpack_require__(25);
+	var utils = __webpack_require__(22);
+	var InterceptorManager = __webpack_require__(27);
+	var dispatchRequest = __webpack_require__(28);
+	var isAbsoluteURL = __webpack_require__(40);
+	var combineURLs = __webpack_require__(41);
 	
 	/**
 	 * Create a new instance of Axios
@@ -11153,13 +11215,13 @@
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(21);
-	var normalizeHeaderName = __webpack_require__(25);
+	var utils = __webpack_require__(22);
+	var normalizeHeaderName = __webpack_require__(26);
 	
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -11231,12 +11293,12 @@
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(21);
+	var utils = __webpack_require__(22);
 	
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -11249,12 +11311,12 @@
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(21);
+	var utils = __webpack_require__(22);
 	
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -11307,13 +11369,13 @@
 
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var utils = __webpack_require__(21);
-	var transformData = __webpack_require__(29);
+	var utils = __webpack_require__(22);
+	var transformData = __webpack_require__(30);
 	
 	/**
 	 * Dispatch a request to the server using whichever adapter
@@ -11354,10 +11416,10 @@
 	    adapter = config.adapter;
 	  } else if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(30);
+	    adapter = __webpack_require__(31);
 	  } else if (typeof process !== 'undefined') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(30);
+	    adapter = __webpack_require__(31);
 	  }
 	
 	  return Promise.resolve(config)
@@ -11386,10 +11448,10 @@
 	    });
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -11555,12 +11617,12 @@
 
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(21);
+	var utils = __webpack_require__(22);
 	
 	/**
 	 * Transform the data for a request or a response
@@ -11581,18 +11643,18 @@
 
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var utils = __webpack_require__(21);
-	var settle = __webpack_require__(31);
-	var buildURL = __webpack_require__(34);
-	var parseHeaders = __webpack_require__(35);
-	var isURLSameOrigin = __webpack_require__(36);
-	var createError = __webpack_require__(32);
-	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(37);
+	var utils = __webpack_require__(22);
+	var settle = __webpack_require__(32);
+	var buildURL = __webpack_require__(35);
+	var parseHeaders = __webpack_require__(36);
+	var isURLSameOrigin = __webpack_require__(37);
+	var createError = __webpack_require__(33);
+	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(38);
 	
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -11686,7 +11748,7 @@
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(38);
+	      var cookies = __webpack_require__(39);
 	
 	      // Add xsrf header
 	      var xsrfValue = config.withCredentials || isURLSameOrigin(config.url) ?
@@ -11745,15 +11807,15 @@
 	  });
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var createError = __webpack_require__(32);
+	var createError = __webpack_require__(33);
 	
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -11779,12 +11841,12 @@
 
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var enhanceError = __webpack_require__(33);
+	var enhanceError = __webpack_require__(34);
 	
 	/**
 	 * Create an Error with the specified message, config, error code, and response.
@@ -11802,7 +11864,7 @@
 
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11827,12 +11889,12 @@
 
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(21);
+	var utils = __webpack_require__(22);
 	
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -11901,12 +11963,12 @@
 
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(21);
+	var utils = __webpack_require__(22);
 	
 	/**
 	 * Parse headers into an object
@@ -11944,12 +12006,12 @@
 
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(21);
+	var utils = __webpack_require__(22);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -12018,7 +12080,7 @@
 
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12060,12 +12122,12 @@
 
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(21);
+	var utils = __webpack_require__(22);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -12119,7 +12181,7 @@
 
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12139,7 +12201,7 @@
 
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12157,7 +12219,7 @@
 
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12190,7 +12252,7 @@
 
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12210,7 +12272,7 @@
 	module.exports.User = User;
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12226,11 +12288,13 @@
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _buttonView = __webpack_require__(44);
+	var _buttonView = __webpack_require__(45);
 	
 	var _buttonView2 = _interopRequireDefault(_buttonView);
 	
-	var _TableView = __webpack_require__(64);
+	var _TableView = __webpack_require__(65);
+	
+	var _FormView = __webpack_require__(67);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -12238,7 +12302,7 @@
 	
 	var BUTTON_EVENTS = exports.BUTTON_EVENTS = {
 	    ADD_NEW_USER: 'add-new-user',
-	    EDIT_CURRENT_USER: 'edit-current-user',
+	    EDIT_BUTTON_CLICK: 'edit-button-click',
 	    DELETE_USER: 'delete-user'
 	};
 	
@@ -12246,33 +12310,31 @@
 	    /**
 	     *
 	     * @param {EventEmitter} ee
-	     * @param {string} divID
 	     */
-	    function ButtonView(ee, divID) {
+	    function ButtonView(ee) {
 	        _classCallCheck(this, ButtonView);
 	
 	        this.ee = ee;
-	        this.divID = divID;
 	        this.setUpListeners();
 	    }
 	
 	    _createClass(ButtonView, [{
+	        key: 'setDivID',
+	        value: function setDivID(div) {
+	            this.divID = div;
+	            return this;
+	        }
+	    }, {
 	        key: 'setUpListeners',
 	        value: function setUpListeners() {
-	            var _this = this;
-	
 	            var ee = this.ee;
 	
 	            ee.on(_TableView.TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, function () {
 	                ButtonView.setButtonsDisabled(false);
 	            });
-	            ee.on('userEdited', function () {
-	                _this.render();
-	            });
-	            ee.on('userAdded', function () {
-	                _this.render();
-	            });
-	            ee.on('formCanceled', this.render);
+	            ee.on(_FormView.FORM_EVENTS.USER_EDITED, this.render.bind(this));
+	            ee.on(_FormView.FORM_EVENTS.USER_ADDED, this.render.bind(this));
+	            ee.on(_FormView.FORM_EVENTS.FORM_CANCELED, this.render.bind(this));
 	        }
 	
 	        /**
@@ -12289,23 +12351,23 @@
 	    }, {
 	        key: 'setOnClickForButtons',
 	        value: function setOnClickForButtons() {
-	            var _this2 = this;
+	            var _this = this;
 	
 	            var ee = this.ee;
 	
 	            (0, _jquery2.default)("#addBtn").click(function () {
-	                ee.emit('add-new-user');
-	                _this2.hideButtonView();
+	                ee.emit(BUTTON_EVENTS.ADD_NEW_USER);
+	                _this.hideButtonView();
 	            });
 	            (0, _jquery2.default)("#editBtn").click(function () {
-	                ee.emit('edit-current-user');
-	                _this2.hideButtonView();
+	                ee.emit(BUTTON_EVENTS.EDIT_BUTTON_CLICK);
+	                _this.hideButtonView();
 	            });
 	            (0, _jquery2.default)("#deleteBtn").click(function () {
 	                var answer = confirm("Czy chcesz usunąć tego użytkownika?");
 	                if (answer) {
 	                    ButtonView.setButtonsDisabled(true);
-	                    ee.emit('delete-user');
+	                    ee.emit(BUTTON_EVENTS.DELETE_USER);
 	                }
 	            });
 	        }
@@ -12339,26 +12401,26 @@
 	exports.default = ButtonView;
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Handlebars = __webpack_require__(45);
+	var Handlebars = __webpack_require__(46);
 	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
 	    return "<button type=\"button\" class=\"btn btn-primary\" id=\"addBtn\">Dodaj</button>\n<button type=\"button\" class=\"btn btn-primary\" id=\"editBtn\" disabled>Popraw</button>\n<button type=\"button\" class=\"btn btn-primary\" id=\"deleteBtn\" disabled>Usuń</button>";
 	},"useData":true});
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Create a simple path alias to allow browserify to resolve
 	// the runtime on a supported path.
-	module.exports = __webpack_require__(46)['default'];
+	module.exports = __webpack_require__(47)['default'];
 
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12372,30 +12434,30 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _handlebarsBase = __webpack_require__(47);
+	var _handlebarsBase = __webpack_require__(48);
 	
 	var base = _interopRequireWildcard(_handlebarsBase);
 	
 	// Each of these augment the Handlebars object. No need to setup here.
 	// (This is done to easily share code between commonjs and browse envs)
 	
-	var _handlebarsSafeString = __webpack_require__(61);
+	var _handlebarsSafeString = __webpack_require__(62);
 	
 	var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
 	
-	var _handlebarsException = __webpack_require__(49);
+	var _handlebarsException = __webpack_require__(50);
 	
 	var _handlebarsException2 = _interopRequireDefault(_handlebarsException);
 	
-	var _handlebarsUtils = __webpack_require__(48);
+	var _handlebarsUtils = __webpack_require__(49);
 	
 	var Utils = _interopRequireWildcard(_handlebarsUtils);
 	
-	var _handlebarsRuntime = __webpack_require__(62);
+	var _handlebarsRuntime = __webpack_require__(63);
 	
 	var runtime = _interopRequireWildcard(_handlebarsRuntime);
 	
-	var _handlebarsNoConflict = __webpack_require__(63);
+	var _handlebarsNoConflict = __webpack_require__(64);
 	
 	var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
 	
@@ -12430,7 +12492,7 @@
 
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12441,17 +12503,17 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _utils = __webpack_require__(48);
+	var _utils = __webpack_require__(49);
 	
-	var _exception = __webpack_require__(49);
+	var _exception = __webpack_require__(50);
 	
 	var _exception2 = _interopRequireDefault(_exception);
 	
-	var _helpers = __webpack_require__(50);
+	var _helpers = __webpack_require__(51);
 	
-	var _decorators = __webpack_require__(58);
+	var _decorators = __webpack_require__(59);
 	
-	var _logger = __webpack_require__(60);
+	var _logger = __webpack_require__(61);
 	
 	var _logger2 = _interopRequireDefault(_logger);
 	
@@ -12540,7 +12602,7 @@
 
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12670,7 +12732,7 @@
 
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12716,7 +12778,7 @@
 
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12727,31 +12789,31 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _helpersBlockHelperMissing = __webpack_require__(51);
+	var _helpersBlockHelperMissing = __webpack_require__(52);
 	
 	var _helpersBlockHelperMissing2 = _interopRequireDefault(_helpersBlockHelperMissing);
 	
-	var _helpersEach = __webpack_require__(52);
+	var _helpersEach = __webpack_require__(53);
 	
 	var _helpersEach2 = _interopRequireDefault(_helpersEach);
 	
-	var _helpersHelperMissing = __webpack_require__(53);
+	var _helpersHelperMissing = __webpack_require__(54);
 	
 	var _helpersHelperMissing2 = _interopRequireDefault(_helpersHelperMissing);
 	
-	var _helpersIf = __webpack_require__(54);
+	var _helpersIf = __webpack_require__(55);
 	
 	var _helpersIf2 = _interopRequireDefault(_helpersIf);
 	
-	var _helpersLog = __webpack_require__(55);
+	var _helpersLog = __webpack_require__(56);
 	
 	var _helpersLog2 = _interopRequireDefault(_helpersLog);
 	
-	var _helpersLookup = __webpack_require__(56);
+	var _helpersLookup = __webpack_require__(57);
 	
 	var _helpersLookup2 = _interopRequireDefault(_helpersLookup);
 	
-	var _helpersWith = __webpack_require__(57);
+	var _helpersWith = __webpack_require__(58);
 	
 	var _helpersWith2 = _interopRequireDefault(_helpersWith);
 	
@@ -12768,14 +12830,14 @@
 
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _utils = __webpack_require__(48);
+	var _utils = __webpack_require__(49);
 	
 	exports['default'] = function (instance) {
 	  instance.registerHelper('blockHelperMissing', function (context, options) {
@@ -12813,7 +12875,7 @@
 
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12823,9 +12885,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _utils = __webpack_require__(48);
+	var _utils = __webpack_require__(49);
 	
-	var _exception = __webpack_require__(49);
+	var _exception = __webpack_require__(50);
 	
 	var _exception2 = _interopRequireDefault(_exception);
 	
@@ -12913,7 +12975,7 @@
 
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12923,7 +12985,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _exception = __webpack_require__(49);
+	var _exception = __webpack_require__(50);
 	
 	var _exception2 = _interopRequireDefault(_exception);
 	
@@ -12944,14 +13006,14 @@
 
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _utils = __webpack_require__(48);
+	var _utils = __webpack_require__(49);
 	
 	exports['default'] = function (instance) {
 	  instance.registerHelper('if', function (conditional, options) {
@@ -12979,7 +13041,7 @@
 
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13011,7 +13073,7 @@
 
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13029,14 +13091,14 @@
 
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _utils = __webpack_require__(48);
+	var _utils = __webpack_require__(49);
 	
 	exports['default'] = function (instance) {
 	  instance.registerHelper('with', function (context, options) {
@@ -13068,7 +13130,7 @@
 
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13079,7 +13141,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _decoratorsInline = __webpack_require__(59);
+	var _decoratorsInline = __webpack_require__(60);
 	
 	var _decoratorsInline2 = _interopRequireDefault(_decoratorsInline);
 	
@@ -13090,14 +13152,14 @@
 
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _utils = __webpack_require__(48);
+	var _utils = __webpack_require__(49);
 	
 	exports['default'] = function (instance) {
 	  instance.registerDecorator('inline', function (fn, props, container, options) {
@@ -13125,14 +13187,14 @@
 
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	exports.__esModule = true;
 	
-	var _utils = __webpack_require__(48);
+	var _utils = __webpack_require__(49);
 	
 	var logger = {
 	  methodMap: ['debug', 'info', 'warn', 'error'],
@@ -13178,7 +13240,7 @@
 
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports) {
 
 	// Build out our basic SafeString type
@@ -13199,7 +13261,7 @@
 
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13219,15 +13281,15 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _utils = __webpack_require__(48);
+	var _utils = __webpack_require__(49);
 	
 	var Utils = _interopRequireWildcard(_utils);
 	
-	var _exception = __webpack_require__(49);
+	var _exception = __webpack_require__(50);
 	
 	var _exception2 = _interopRequireDefault(_exception);
 	
-	var _base = __webpack_require__(47);
+	var _base = __webpack_require__(48);
 	
 	function checkRevision(compilerInfo) {
 	  var compilerRevision = compilerInfo && compilerInfo[0] || 1,
@@ -13497,7 +13559,7 @@
 
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/* global window */
@@ -13524,7 +13586,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13540,11 +13602,15 @@
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _tableView = __webpack_require__(65);
+	var _tableView = __webpack_require__(66);
 	
 	var _tableView2 = _interopRequireDefault(_tableView);
 	
-	var _ButtonView = __webpack_require__(43);
+	var _ButtonView = __webpack_require__(44);
+	
+	var _FormView = __webpack_require__(67);
+	
+	var _UserService = __webpack_require__(18);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -13559,47 +13625,43 @@
 	    /**
 	     *
 	     * @param {EventEmitter} ee
-	     * @param {HttpManager} httpManager
-	     * @param {string} divID
+	     * @param {UserService} service
 	     */
-	    function TableView(ee, httpManager, divID) {
+	    function TableView(ee, service) {
 	        _classCallCheck(this, TableView);
 	
 	        this.ee = ee;
-	        this.httpManager = httpManager;
-	        this.divID = divID;
+	        this.service = service;
 	        this.users = [];
 	        this.setUpListeners();
 	    }
 	
 	    _createClass(TableView, [{
+	        key: 'setDivID',
+	        value: function setDivID(div) {
+	            this.divID = div;
+	            return this;
+	        }
+	    }, {
 	        key: 'setUpListeners',
 	        value: function setUpListeners() {
 	            var _this = this;
 	
 	            var ee = this.ee;
 	
-	            ee.on('users-new-data', function (users) {
+	            ee.on(_UserService.USER_SERVICE_EVENT.USERS_NEW_DATA, function (users) {
 	                _this.users = users;
 	                _this.render();
 	            });
 	            ee.on(_ButtonView.BUTTON_EVENTS.DELETE_USER, function () {
-	                _this.httpManager.deleteUser(_this.users[_this.selectedRow].id);
+	                _this.service.deleteUser(_this.users[_this.selectedRow].id);
 	            });
-	            ee.on(_ButtonView.BUTTON_EVENTS.EDIT_CURRENT_USER, function () {
+	            ee.on(_ButtonView.BUTTON_EVENTS.EDIT_BUTTON_CLICK, function () {
 	                _this.hideTableView();
-	                ee.emit('edit-user', _this.users[_this.selectedRow]);
+	                ee.emit(TABLE_EVENTS.EDIT_USER, _this.users[_this.selectedRow]);
 	            });
-	            ee.on(_ButtonView.BUTTON_EVENTS.ADD_NEW_USER, this.hideTableView);
-	            ee.on('userEdited', function (user) {
-	                _this.httpManager.editUser(user);
-	            });
-	            ee.on('userAdded', function (user) {
-	                _this.httpManager.addUser(user);
-	            });
-	            ee.on('formCanceled', function () {
-	                _this.render();
-	            });
+	            ee.on(_ButtonView.BUTTON_EVENTS.ADD_NEW_USER, this.hideTableView.bind(this));
+	            ee.on(_FormView.FORM_EVENTS.FORM_CANCELED, this.render.bind(this));
 	        }
 	    }, {
 	        key: 'render',
@@ -13624,9 +13686,9 @@
 	        value: function onRowClick(rowNumber) {
 	            var selected = this.selectedRow;
 	            if (selected != -1) {
-	                (0, _jquery2.default)("#tableRow" + selected).removeClass("activeRow");
+	                (0, _jquery2.default)('tr[data-id*=\'' + selected + '\']').removeClass("activeRow");
 	            }
-	            (0, _jquery2.default)("#tableRow" + rowNumber).addClass("activeRow");
+	            (0, _jquery2.default)('tr[data-id*=\'' + rowNumber + '\']').addClass("activeRow");
 	            this.selectedRow = rowNumber;
 	            if (selected !== rowNumber) {
 	                this.ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, this.users[rowNumber]);
@@ -13657,10 +13719,10 @@
 	exports.default = TableView;
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Handlebars = __webpack_require__(45);
+	var Handlebars = __webpack_require__(46);
 	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
 	    var helper, alias1=container.escapeExpression, alias2=container.lambda;
@@ -13685,126 +13747,15 @@
 	},"useData":true});
 
 /***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _jquery = __webpack_require__(2);
-	
-	var _jquery2 = _interopRequireDefault(_jquery);
-	
-	var _detailsView = __webpack_require__(67);
-	
-	var _detailsView2 = _interopRequireDefault(_detailsView);
-	
-	var _TableView = __webpack_require__(64);
-	
-	var _ButtonView = __webpack_require__(43);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var DetailsView = function () {
-	    /**
-	     *
-	     * @param {EventEmitter} ee
-	     * @param {string} divID
-	     */
-	    function DetailsView(ee, divID) {
-	        _classCallCheck(this, DetailsView);
-	
-	        this.ee = ee;
-	        this.divID = divID;
-	        this.setUpListeners();
-	    }
-	
-	    _createClass(DetailsView, [{
-	        key: 'setUpListeners',
-	        value: function setUpListeners() {
-	            var _this = this;
-	
-	            var ee = this.ee;
-	
-	            ee.on(_TableView.TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, function (user) {
-	                _this.render(user);
-	            });
-	            ee.on(_ButtonView.BUTTON_EVENTS.EDIT_CURRENT_USER, this.hideDetailsView().bind(this));
-	            ee.on(_ButtonView.BUTTON_EVENTS.ADD_NEW_USER, this.hideDetailsView().bind(this));
-	            ee.on(_ButtonView.BUTTON_EVENTS.DELETE_USER, this.hideDetailsView().bind(this));
-	        }
-	
-	        /**
-	         *
-	         * @param {User} user
-	         */
-	
-	    }, {
-	        key: 'render',
-	        value: function render(user) {
-	            (0, _jquery2.default)(this.divID).html(DetailsView.prepareDetailsHtml(user));
-	        }
-	    }, {
-	        key: 'hideDetailsView',
-	        value: function hideDetailsView() {
-	            (0, _jquery2.default)(this.divID).html("");
-	        }
-	    }], [{
-	        key: 'prepareDetailsHtml',
-	
-	
-	        /**
-	         *
-	         * @param {User} user
-	         * @returns {string}
-	         */
-	        value: function prepareDetailsHtml(user) {
-	            console.log(_detailsView2.default);
-	            return (0, _detailsView2.default)({ user: user });
-	        }
-	    }]);
-	
-	    return DetailsView;
-	}();
-	
-	exports.default = DetailsView;
-
-/***/ },
 /* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Handlebars = __webpack_require__(45);
-	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
-	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-	    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
-	
-	  return "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-2 evLabel\">Imie:</div>\n        <div class=\"col-md-2 evValue\">"
-	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.name : stack1), depth0))
-	    + "</div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-2 evLabel\">Nazwisko:</div>\n        <div class=\"col-md-2 evValue\">"
-	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.surname : stack1), depth0))
-	    + "</div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-2 evLabel\">Wiek:</div>\n        <div class=\"col-md-2 evValue\">"
-	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.age : stack1), depth0))
-	    + "</div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-2 evLabel\">Płeć:</div>\n        <div class=\"col-md-2 evValue\">"
-	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.sex : stack1), depth0))
-	    + "</div>\n    </div>\n</div>";
-	},"useData":true});
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.FORM_EVENTS = undefined;
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -13812,36 +13763,52 @@
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _formView = __webpack_require__(69);
+	var _formView = __webpack_require__(68);
 	
 	var _formView2 = _interopRequireDefault(_formView);
+	
+	var _TableView = __webpack_require__(65);
+	
+	var _ButtonView = __webpack_require__(44);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var FORM_EVENTS = exports.FORM_EVENTS = {
+	    USER_EDITED: 'user-edited',
+	    USER_ADDED: 'userAdded',
+	    FORM_CANCELED: 'formCanceled'
+	};
 	
 	var FormView = function () {
 	    /**
 	     *
 	     * @param {EventEmitter} ee
-	     * @param {string} divID
+	     * @param {UserService} service
 	     */
-	    function FormView(ee, divID) {
+	    function FormView(ee, service) {
 	        _classCallCheck(this, FormView);
 	
 	        this.ee = ee;
-	        this.divID = divID;
+	        this.service = service;
 	        this.setUpListeners();
 	    }
 	
 	    _createClass(FormView, [{
+	        key: 'setDivID',
+	        value: function setDivID(div) {
+	            this.divID = div;
+	            return this;
+	        }
+	    }, {
 	        key: 'setUpListeners',
 	        value: function setUpListeners() {
 	            var _this = this;
 	
 	            var ee = this.ee;
 	
-	            ee.on('edit-user', function (user) {
+	            ee.on(_TableView.TABLE_EVENTS.EDIT_USER, function (user) {
 	                _this.renderWithMode("Edytuj");
 	                var $form = (0, _jquery2.default)("#form");
 	                _this.deserializeForm($form, user);
@@ -13850,10 +13817,11 @@
 	                    e.preventDefault();
 	                    user = _this.serializeForm($form, user);
 	                    _this.hideFormView();
-	                    ee.emit('userEdited', user);
+	                    _this.service.editUser(user); //TODO: przetestować zamianę tej linii z ee.emit
+	                    ee.emit(FORM_EVENTS.USER_EDITED);
 	                });
 	            });
-	            ee.on('add-new-user', function () {
+	            ee.on(_ButtonView.BUTTON_EVENTS.ADD_NEW_USER, function () {
 	                _this.renderWithMode("Dodaj");
 	                var $form = (0, _jquery2.default)("#form");
 	
@@ -13861,7 +13829,8 @@
 	                    e.preventDefault();
 	                    var user = _this.serializeForm($form, {});
 	                    _this.hideFormView();
-	                    ee.emit('userAdded', user);
+	                    _this.service.addUser(user); //TODO: to samo
+	                    ee.emit(FORM_EVENTS.USER_ADDED);
 	                });
 	            });
 	        }
@@ -13881,7 +13850,7 @@
 	            (0, _jquery2.default)(this.divID).html(FormView.prepareFormHtml(mode));
 	            (0, _jquery2.default)("#cancelBtn").click(function () {
 	                _this2.hideFormView();
-	                ee.emit('formCanceled');
+	                ee.emit(FORM_EVENTS.FORM_CANCELED);
 	            });
 	        }
 	    }, {
@@ -13949,10 +13918,10 @@
 	exports.default = FormView;
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Handlebars = __webpack_require__(45);
+	var Handlebars = __webpack_require__(46);
 	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
 	    var helper;
@@ -13963,16 +13932,131 @@
 	},"useData":true});
 
 /***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _jquery = __webpack_require__(2);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	var _detailsView = __webpack_require__(70);
+	
+	var _detailsView2 = _interopRequireDefault(_detailsView);
+	
+	var _TableView = __webpack_require__(65);
+	
+	var _ButtonView = __webpack_require__(44);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var DetailsView = function () {
+	    /**
+	     *
+	     * @param {EventEmitter} ee
+	     */
+	    function DetailsView(ee) {
+	        _classCallCheck(this, DetailsView);
+	
+	        this.ee = ee;
+	        this.setUpListeners();
+	    }
+	
+	    _createClass(DetailsView, [{
+	        key: 'setDivID',
+	        value: function setDivID(div) {
+	            this.divID = div;
+	            return this;
+	        }
+	    }, {
+	        key: 'setUpListeners',
+	        value: function setUpListeners() {
+	            var _this = this;
+	
+	            var ee = this.ee;
+	
+	            ee.on(_TableView.TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, function (user) {
+	                _this.render(user);
+	            });
+	            ee.on(_TableView.TABLE_EVENTS.EDIT_USER, this.hideDetailsView.bind(this));
+	            ee.on(_ButtonView.BUTTON_EVENTS.ADD_NEW_USER, this.hideDetailsView.bind(this));
+	            ee.on(_ButtonView.BUTTON_EVENTS.DELETE_USER, this.hideDetailsView.bind(this));
+	        }
+	
+	        /**
+	         *
+	         * @param {User} user
+	         */
+	
+	    }, {
+	        key: 'render',
+	        value: function render(user) {
+	            (0, _jquery2.default)(this.divID).html(DetailsView.prepareDetailsHtml(user));
+	        }
+	    }, {
+	        key: 'hideDetailsView',
+	        value: function hideDetailsView() {
+	            (0, _jquery2.default)(this.divID).html("");
+	        }
+	    }], [{
+	        key: 'prepareDetailsHtml',
+	
+	
+	        /**
+	         *
+	         * @param {User} user
+	         * @returns {string}
+	         */
+	        value: function prepareDetailsHtml(user) {
+	            return (0, _detailsView2.default)({ user: user });
+	        }
+	    }]);
+	
+	    return DetailsView;
+	}();
+	
+	exports.default = DetailsView;
+
+/***/ },
 /* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Handlebars = __webpack_require__(46);
+	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+	    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+	
+	  return "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-2 evLabel\">Imie:</div>\n        <div class=\"col-md-2 evValue\">"
+	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.name : stack1), depth0))
+	    + "</div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-2 evLabel\">Nazwisko:</div>\n        <div class=\"col-md-2 evValue\">"
+	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.surname : stack1), depth0))
+	    + "</div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-2 evLabel\">Wiek:</div>\n        <div class=\"col-md-2 evValue\">"
+	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.age : stack1), depth0))
+	    + "</div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-md-2 evLabel\">Płeć:</div>\n        <div class=\"col-md-2 evValue\">"
+	    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.sex : stack1), depth0))
+	    + "</div>\n    </div>\n</div>";
+	},"useData":true});
+
+/***/ },
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(71);
+	var content = __webpack_require__(72);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(73)(content, {});
+	var update = __webpack_require__(74)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -13989,10 +14073,10 @@
 	}
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(72)();
+	exports = module.exports = __webpack_require__(73)();
 	// imports
 	
 	
@@ -14003,7 +14087,7 @@
 
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports) {
 
 	/*
@@ -14059,7 +14143,7 @@
 
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -14311,12 +14395,12 @@
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(__dirname) {'use strict';
 	
-	var path = __webpack_require__(75);
+	var path = __webpack_require__(76);
 	var helpersDir = path.join(__dirname, 'src', 'helpers');
 	
 	module.exports = {
@@ -14353,7 +14437,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -14581,7 +14665,7 @@
 	    }
 	;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ }
 /******/ ]);

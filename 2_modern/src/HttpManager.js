@@ -1,27 +1,26 @@
 import axios from 'axios';
 import User from './user.js';
 
-export const USER_SERVICE_EVENT = {
-    USERS_NEW_DATA:'users-new-data'
-};
-
 class HttpManager {
+
     /**
      *
-     * @param {EventEmitter} ee
+     * @param {string} baseUrl
      */
-    constructor(ee) {
-        this.ee = ee;
+    constructor(baseUrl) {
         this.axios = axios.create({
-            baseURL: 'http://localhost:3000'
+            baseURL: baseUrl
         })
     }
 
-    getUsers() {
-        this.axios.get('/users')
-            .then((response) => {
-                this.ee.emit(USER_SERVICE_EVENT, response.data);
-            })
+    /**
+     *
+     * @param {string} url
+     * @param {function} callback
+     */
+    getData(url, callback) {
+        this.axios.get(url)
+            .then((response) => callback(response.data))
             .catch((error) => {
                 console.log(error);
             });
@@ -29,42 +28,44 @@ class HttpManager {
 
     /**
      *
-     * @param {User} user
+     * @param {string} url
+     * @param {Object} postData
+     * @param {function} callback
      */
-    addUser(user) {
-        var promise = this.axios.post('/users', {
-            user: user
-        });
-
-        var promise2 = promise.then(() => {
-            this.getUsers();
-        });
-
-        return promise2;
+    post(url, postData, callback) {
+        this.axios.post(url, postData)
+            .then(callback())
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     /**
      *
-     * @param {User} user
+     * @param {string} url
+     * @param {Object} putData
+     * @param {function} callback
      */
-    editUser(user) {
-        this.axios.put(`/users`, {
-            user: user
-        }).then(() => {
-            this.getUsers();
-        })
+    put(url, putData, callback) {
+        this.axios.put(url, putData)
+            .then(callback())
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     /**
      *
-     * @param {number} id
+     * @param {string} url
+     * @param {Object} id
+     * @param {function} callback
      */
-    deleteUser(id) {
-        this.axios.delete(`/users/${id}`).then(() => {
-            this.getUsers();
-        }).catch((error) => {
-            console.log(error);
-        });
+    doDelete(url, id, callback) {
+        this.axios.delete(url, id)
+            .then(callback())
+            .catch((error) => {
+                console.log(error);
+            });
     }
 }
 

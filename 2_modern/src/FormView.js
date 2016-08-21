@@ -14,12 +14,17 @@ class FormView {
     /**
      *
      * @param {EventEmitter} ee
-     * @param {string} divID
+     * @param {UserService} service
      */
-    constructor(ee, divID) {
+    constructor(ee, service) {
         this.ee = ee;
-        this.divID = divID;
+        this.service = service;
         this.setUpListeners();
+    }
+
+    setDivID(div) {
+        this.divID = div;
+        return this;
     }
 
     setUpListeners() {
@@ -33,7 +38,8 @@ class FormView {
                 e.preventDefault();
                 user = this.serializeForm($form, user);
                 this.hideFormView();
-                ee.emit(FORM_EVENTS.USER_EDITED, user);
+                this.service.editUser(user); //TODO: przetestować zamianę tej linii z ee.emit
+                ee.emit(FORM_EVENTS.USER_EDITED);
             });
         });
         ee.on(BUTTON_EVENTS.ADD_NEW_USER, () => {
@@ -44,7 +50,8 @@ class FormView {
                 e.preventDefault();
                 var user = this.serializeForm($form, {});
                 this.hideFormView();
-                ee.emit(FORM_EVENTS.USER_ADDED, user);
+                this.service.addUser(user); //TODO: to samo
+                ee.emit(FORM_EVENTS.USER_ADDED);
             });
         });
     };

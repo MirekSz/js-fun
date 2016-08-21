@@ -23,20 +23,21 @@ var users = [new User(0, 'Jacek', 'Doe', '43', 'Mężczyzna'),
     new User(2, 'Julia', 'Dolej', '22', 'Kobieta')];
 
 app.get('/users', function (request, response) {
+    console.log(users[0]);
     response.send(users);
 });
 
 app.post('/users', function (request, response) {
-    var user = request.body.user;
+    var user = request.body;
     user.id = generateID();
     users.push(user);
     response.send({id: user.id});
 });
 
 app.put('/users', function (request, response) {
-    var user = request.body.user;
-    var founded = users.find(user => user.id == request.body.user.id);
-    Object.assign(founded, user);
+    var editedUser = request.body;
+    var found = users.find(user => user.id == editedUser.id);
+    Object.assign(found, editedUser);
     response.end();
 });
 
