@@ -10707,7 +10707,7 @@
 	    }, {
 	        key: 'post',
 	        value: function post(url, postData, callback) {
-	            this.axios.post(url, postData).then(callback()).catch(function (error) {
+	            this.axios.post(url, postData).then(callback).catch(function (error) {
 	                console.log(error);
 	            });
 	        }
@@ -10722,7 +10722,7 @@
 	    }, {
 	        key: 'put',
 	        value: function put(url, putData, callback) {
-	            this.axios.put(url, putData).then(callback()).catch(function (error) {
+	            this.axios.put(url, putData).then(callback).catch(function (error) {
 	                console.log(error);
 	            });
 	        }
@@ -10737,7 +10737,7 @@
 	    }, {
 	        key: 'doDelete',
 	        value: function doDelete(url, id, callback) {
-	            this.axios.delete(url, id).then(callback()).catch(function (error) {
+	            this.axios.delete(url, id).then(callback).catch(function (error) {
 	                console.log(error);
 	            });
 	        }

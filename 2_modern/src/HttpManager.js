@@ -34,7 +34,7 @@ class HttpManager {
      */
     post(url, postData, callback) {
         this.axios.post(url, postData)
-            .then(callback())
+            .then(callback)
             .catch((error) => {
                 console.log(error);
             });
@@ -48,7 +48,7 @@ class HttpManager {
      */
     put(url, putData, callback) {
         this.axios.put(url, putData)
-            .then(callback())
+            .then(callback)
             .catch((error) => {
                 console.log(error);
             });
@@ -62,7 +62,7 @@ class HttpManager {
      */
     doDelete(url, id, callback) {
         this.axios.delete(url, id)
-            .then(callback())
+            .then(callback)
             .catch((error) => {
                 console.log(error);
             });

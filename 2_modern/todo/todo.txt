@@ -2,9 +2,9 @@ https://github.com/lukehoban/es6features
 https://www.youtube.com/playlist?list=PLoYCgNOIyGACDQLaThEEKBAlgs4OIUGif
 https://remysharp.com/2010/10/08/what-is-a-polyfill
 
-<DONE> 1. events as CONST
+<DONE> events as CONST
 <DONE> divID ustawiany po stworzeniu obiektu
-<PRAWIE> HTTPManager -> rework |||||||||| Najpierw idzie getData a potem put, naprawić
+<DONE> HTTPManager -> rework
 2. dane z backendu - 3s. Najpierw nagłówki + loading
 4. cache na userów
 3. more of less + autoprefixer
