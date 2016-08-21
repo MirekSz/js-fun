@@ -1,6 +1,8 @@
 import $ from "jquery";
-
 import template from './detailsView.hbs';
+
+import {TABLE_EVENTS} from './TableView';
+import {BUTTON_EVENTS} from './ButtonView';
 
 class DetailsView {
     /**
@@ -16,18 +18,12 @@ class DetailsView {
 
     setUpListeners() {
         let {ee} = this;
-        ee.on('onRowSelectionChange', (user) => {
+        ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, (user) => {
             this.render(user);
         });
-        ee.on('edit-current-user', () => {
-            this.hideDetailsView();
-        });
-        ee.on('add-new-user', () => {
-            this.hideDetailsView();
-        });
-        ee.on('delete-user', () => {
-            this.hideDetailsView();
-        });
+        ee.on(TABLE_EVENTS.EDIT_USER, this.hideDetailsView().bind(this));
+        ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hideDetailsView().bind(this));
+        ee.on(BUTTON_EVENTS.DELETE_USER, this.hideDetailsView().bind(this));
     }
 
     /**

@@ -12218,7 +12218,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.EVENTS = undefined;
+	exports.BUTTON_EVENTS = undefined;
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -12236,8 +12236,10 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var EVENTS = exports.EVENTS = {
-	    onRowSelectionChange: 'onRowSelectionChange'
+	var BUTTON_EVENTS = exports.BUTTON_EVENTS = {
+	    ADD_NEW_USER: 'add-new-user',
+	    EDIT_CURRENT_USER: 'edit-current-user',
+	    DELETE_USER: 'delete-user'
 	};
 	
 	var ButtonView = function () {
@@ -12261,7 +12263,7 @@
 	
 	            var ee = this.ee;
 	
-	            ee.on(_TableView.EVENTS.onRowSelectionChange, function () {
+	            ee.on(_TableView.TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, function () {
 	                ButtonView.setButtonsDisabled(false);
 	            });
 	            ee.on('userEdited', function () {
@@ -13530,11 +13532,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.EVENTS = undefined;
+	exports.TABLE_EVENTS = undefined;
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	//noinspection JSUnresolvedVariable
-	
 	
 	var _jquery = __webpack_require__(2);
 	
@@ -13544,12 +13544,15 @@
 	
 	var _tableView2 = _interopRequireDefault(_tableView);
 	
+	var _ButtonView = __webpack_require__(43);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var EVENTS = exports.EVENTS = {
-	    onRowSelectionChange: 'onRowSelectionChange'
+	var TABLE_EVENTS = exports.TABLE_EVENTS = {
+	    ON_ROW_SELECTION_CHANGE: 'onRowSelectionChange',
+	    EDIT_USER: 'edit-user'
 	};
 	
 	var TableView = function () {
@@ -13580,14 +13583,14 @@
 	                _this.users = users;
 	                _this.render();
 	            });
-	            ee.on('delete-user', function () {
+	            ee.on(_ButtonView.BUTTON_EVENTS.DELETE_USER, function () {
 	                _this.httpManager.deleteUser(_this.users[_this.selectedRow].id);
 	            });
-	            ee.on('edit-current-user', function () {
+	            ee.on(_ButtonView.BUTTON_EVENTS.EDIT_CURRENT_USER, function () {
 	                _this.hideTableView();
-	                ee.emit('editUser', _this.users[_this.selectedRow]);
+	                ee.emit('edit-user', _this.users[_this.selectedRow]);
 	            });
-	            ee.on('add-new-user', this.hideTableView);
+	            ee.on(_ButtonView.BUTTON_EVENTS.ADD_NEW_USER, this.hideTableView);
 	            ee.on('userEdited', function (user) {
 	                _this.httpManager.editUser(user);
 	            });
@@ -13626,7 +13629,7 @@
 	            (0, _jquery2.default)("#tableRow" + rowNumber).addClass("activeRow");
 	            this.selectedRow = rowNumber;
 	            if (selected !== rowNumber) {
-	                this.ee.emit(EVENTS.onRowSelectionChange, this.users[rowNumber]);
+	                this.ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, this.users[rowNumber]);
 	            }
 	        }
 	    }, {
@@ -13701,6 +13704,10 @@
 	
 	var _detailsView2 = _interopRequireDefault(_detailsView);
 	
+	var _TableView = __webpack_require__(64);
+	
+	var _ButtonView = __webpack_require__(43);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -13726,18 +13733,12 @@
 	
 	            var ee = this.ee;
 	
-	            ee.on('onRowSelectionChange', function (user) {
+	            ee.on(_TableView.TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, function (user) {
 	                _this.render(user);
 	            });
-	            ee.on('edit-current-user', function () {
-	                _this.hideDetailsView();
-	            });
-	            ee.on('add-new-user', function () {
-	                _this.hideDetailsView();
-	            });
-	            ee.on('delete-user', function () {
-	                _this.hideDetailsView();
-	            });
+	            ee.on(_ButtonView.BUTTON_EVENTS.EDIT_CURRENT_USER, this.hideDetailsView().bind(this));
+	            ee.on(_ButtonView.BUTTON_EVENTS.ADD_NEW_USER, this.hideDetailsView().bind(this));
+	            ee.on(_ButtonView.BUTTON_EVENTS.DELETE_USER, this.hideDetailsView().bind(this));
 	        }
 	
 	        /**
@@ -13840,7 +13841,7 @@
 	
 	            var ee = this.ee;
 	
-	            ee.on('editUser', function (user) {
+	            ee.on('edit-user', function (user) {
 	                _this.renderWithMode("Edytuj");
 	                var $form = (0, _jquery2.default)("#form");
 	                _this.deserializeForm($form, user);

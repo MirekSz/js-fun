@@ -1,6 +1,15 @@
 import $ from "jquery";
 import template from './formView.hbs';
 
+import {TABLE_EVENTS} from './TableView'
+import {BUTTON_EVENTS} from './ButtonView';
+
+export const FORM_EVENTS = {
+    USER_EDITED:'user-edited',
+    USER_ADDED:'userAdded',
+    FORM_CANCELED:'formCanceled'
+};
+
 class FormView {
     /**
      *
@@ -15,7 +24,7 @@ class FormView {
 
     setUpListeners() {
         let {ee} = this;
-        ee.on('editUser', (user) => {
+        ee.on(TABLE_EVENTS.EDIT_USER, (user) => {
             this.renderWithMode("Edytuj");
             let $form = $("#form");
             this.deserializeForm($form, user);
@@ -24,10 +33,10 @@ class FormView {
                 e.preventDefault();
                 user = this.serializeForm($form, user);
                 this.hideFormView();
-                ee.emit('userEdited', user);
+                ee.emit(FORM_EVENTS.USER_EDITED, user);
             });
         });
-        ee.on('add-new-user', () => {
+        ee.on(BUTTON_EVENTS.ADD_NEW_USER, () => {
             this.renderWithMode("Dodaj");
             var $form = $("#form");
 
@@ -35,7 +44,7 @@ class FormView {
                 e.preventDefault();
                 var user = this.serializeForm($form, {});
                 this.hideFormView();
-                ee.emit('userAdded', user);
+                ee.emit(FORM_EVENTS.USER_ADDED, user);
             });
         });
     };
@@ -49,7 +58,7 @@ class FormView {
         $(this.divID).html(FormView.prepareFormHtml(mode));
         $("#cancelBtn").click(() => {
             this.hideFormView();
-            ee.emit('formCanceled');
+            ee.emit(FORM_EVENTS.FORM_CANCELED);
         });
     };
 

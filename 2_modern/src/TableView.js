@@ -1,9 +1,15 @@
 import $ from 'jquery';
-//noinspection JSUnresolvedVariable
 import template from './tableView.hbs';
-export const EVENTS = {
-    onRowSelectionChange: 'onRowSelectionChange'
+
+import {BUTTON_EVENTS} from './ButtonView';
+import {FORM_EVENTS} from './FormView';
+import {USER_SERVICE_EVENT} from './HttpManager';
+
+export const TABLE_EVENTS = {
+    ON_ROW_SELECTION_CHANGE: 'onRowSelectionChange',
+    EDIT_USER:'edit-user'
 };
+
 class TableView {
     /**
      *
@@ -21,26 +27,26 @@ class TableView {
 
     setUpListeners() {
         let {ee} = this;
-        ee.on('users-new-data', (users) => {
+        ee.on(USER_SERVICE_EVENT.USERS_NEW_DATA, (users) => {
             this.users = users;
             this.render();
         });
-        ee.on('delete-user', () => {
+        ee.on(BUTTON_EVENTS.DELETE_USER, () => {
             this.httpManager.deleteUser(this.users[this.selectedRow].id);
         });
-        ee.on('edit-current-user', () => {
+        ee.on(BUTTON_EVENTS.EDIT_BUTTON_CLICK, () => {
             this.hideTableView();
-            ee.emit('editUser', this.users[this.selectedRow]);
+            ee.emit(TABLE_EVENTS.EDIT_USER, this.users[this.selectedRow]);
         });
-        ee.on('add-new-user', this.hideTableView);
-        ee.on('userEdited', (user) => {
+        ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hideTableView);
+        ee.on(FORM_EVENTS.USER_EDITED, (user) => {
             this.httpManager.editUser(user);
 
         });
-        ee.on('userAdded', (user) => {
+        ee.on(FORM_EVENTS.USER_ADDED, (user) => {
             this.httpManager.addUser(user);
         });
-        ee.on('formCanceled', () => {
+        ee.on(FORM_EVENTS.FORM_CANCELED, () => {
             this.render();
         });
     };
@@ -66,7 +72,7 @@ class TableView {
         $("#tableRow" + rowNumber).addClass("activeRow");
         this.selectedRow = rowNumber;
         if (selected !== rowNumber) {
-            this.ee.emit(EVENTS.onRowSelectionChange, this.users[rowNumber]);
+            this.ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, this.users[rowNumber]);
         }
     };
 

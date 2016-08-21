@@ -1,9 +1,13 @@
 import $ from "jquery";
 import template from './buttonView.hbs';
-import {EVENTS as EVENTS_TABLE} from './TableView'
 
-export const EVENTS = {
-    onRowSelectionChange: 'onRowSelectionChange'
+import {TABLE_EVENTS} from './TableView'
+import {FORM_EVENTS} from './FormView';
+
+export const BUTTON_EVENTS = {
+    ADD_NEW_USER:'add-new-user',
+    EDIT_BUTTON_CLICK:'edit-button-click',
+    DELETE_USER:'delete-user'
 };
 
 class ButtonView {
@@ -20,16 +24,12 @@ class ButtonView {
 
     setUpListeners() {
         let {ee} = this;
-        ee.on(EVENTS_TABLE.onRowSelectionChange, () => {
+        ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, () => {
             ButtonView.setButtonsDisabled(false);
         });
-        ee.on('userEdited', () => {
-            this.render();
-        });
-        ee.on('userAdded', () => {
-            this.render();
-        });
-        ee.on('formCanceled', this.render);
+        ee.on(FORM_EVENTS.USER_EDITED, this.render.bind(this));
+        ee.on(FORM_EVENTS.USER_ADDED, this.render.bind(this));
+        ee.on(FORM_EVENTS.FORM_CANCELED, this.render.bind(this));
     }
 
     /**
@@ -49,18 +49,18 @@ class ButtonView {
     setOnClickForButtons() {
         let {ee} = this;
         $("#addBtn").click(() => {
-            ee.emit('add-new-user');
+            ee.emit(BUTTON_EVENTS.ADD_NEW_USER);
             this.hideButtonView();
         });
         $("#editBtn").click(() => {
-            ee.emit('edit-current-user');
+            ee.emit(BUTTON_EVENTS.EDIT_BUTTON_CLICK);
             this.hideButtonView();
         });
         $("#deleteBtn").click(() => {
             var answer = confirm("Czy chcesz usunąć tego użytkownika?");
             if (answer) {
                 ButtonView.setButtonsDisabled(true);
-                ee.emit('delete-user');
+                ee.emit(BUTTON_EVENTS.DELETE_USER);
             }
         });
     }

@@ -1,6 +1,10 @@
 import axios from 'axios';
 import User from './user.js';
 
+export const USER_SERVICE_EVENT = {
+    USERS_NEW_DATA:'users-new-data'
+};
+
 class HttpManager {
     /**
      *
@@ -16,7 +20,7 @@ class HttpManager {
     getUsers() {
         this.axios.get('/users')
             .then((response) => {
-                this.ee.emit('users-new-data', response.data);
+                this.ee.emit(USER_SERVICE_EVENT, response.data);
             })
             .catch((error) => {
                 console.log(error);

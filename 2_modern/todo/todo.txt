@@ -4,13 +4,14 @@ https://remysharp.com/2010/10/08/what-is-a-polyfill
 
 1. events as CONST
 1.5 - divID przekazywany dopiero na render.
++++ HTTPManager -> rework
 2. dane z backendu - 3s. Najpierw nagłówki + loading
 4. cache na userów
 3. more of less + autoprefixer
   + images, SVG
 5. animacje
 6. strict mode
-7. dziedziczeniu vs mixin - JS
+7. dziedziczenie vs mixin - JS
 
 Eslint -> livereload -> browsersync(features, poczytać) -> webpack hot-reloader
 poczytać o Grunt -> przeskok na Gulp - napisać taska, który obserwuje bundle i
