@@ -48,7 +48,8 @@ class DetailsView {
      * @returns {string}
      */
     static prepareDetailsHtml(user) {
-        return template({user:user});
+        console.log(template);
+        return template({user});
     }
 }
 

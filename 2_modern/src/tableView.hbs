@@ -9,7 +9,7 @@
     </thead>
     <tbody>
     {{#each users}} 
-    <tr id="tableRow{{@index}}">
+    <tr data-id="{{@index}}">
             <td>{{this.name}}</td>
             <td>{{this.surname}}</td>
             <td>{{this.age}}</td>

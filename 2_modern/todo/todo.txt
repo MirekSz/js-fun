@@ -3,6 +3,18 @@ https://www.youtube.com/playlist?list=PLoYCgNOIyGACDQLaThEEKBAlgs4OIUGif
 https://remysharp.com/2010/10/08/what-is-a-polyfill
 
 1. events as CONST
-2. backnd axios/promise (temporary - ID as column in TableView)
-3. less
+1.5 - divID przekazywany dopiero na render.
+2. dane z backendu - 3s. Najpierw nagłówki + loading
+4. cache na userów
+3. more of less + autoprefixer
+  + images, SVG
+5. animacje
+6. strict mode
+7. dziedziczeniu vs mixin - JS
+
+Eslint -> livereload -> browsersync(features, poczytać) -> webpack hot-reloader
+poczytać o Grunt -> przeskok na Gulp - napisać taska, który obserwuje bundle i
+przy zmianie odświeża przeglądarkę i Gowlem informuje, że aplikacja jest gotowa
+- podpiąć lessa
+
 

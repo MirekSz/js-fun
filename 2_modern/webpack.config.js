@@ -1,8 +1,12 @@
 var path = require("path");
-var helpersDir = path.join(__dirname,'src','helpers');
+var helpersDir = path.join(__dirname, 'src', 'helpers');
+
 module.exports = {
     devtool: 'source-map',
-    entry: './src/index.js',
+    entry: [
+            './src/index.js',
+        './users.less'
+    ],
     output: {
         path: './dist',
         filename: 'index.bundle.js'
@@ -15,9 +19,12 @@ module.exports = {
         }, {
             test: /\.hbs/,
             loader: "handlebars-loader",
-            query:{
-                helperDirs:[helpersDir]
+            query: {
+                helperDirs: [helpersDir]
             }
+        }, {
+            test: /\.less$/,
+            loader: "style!css!less"
         }],
     },
     resolve: {

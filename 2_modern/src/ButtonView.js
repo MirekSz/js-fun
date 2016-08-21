@@ -1,5 +1,10 @@
 import $ from "jquery";
 import template from './buttonView.hbs';
+import {EVENTS as EVENTS_TABLE} from './TableView'
+
+export const EVENTS = {
+    onRowSelectionChange: 'onRowSelectionChange'
+};
 
 class ButtonView {
     /**
@@ -15,7 +20,7 @@ class ButtonView {
 
     setUpListeners() {
         let {ee} = this;
-        ee.on('onRowSelectionChange', () => {
+        ee.on(EVENTS_TABLE.onRowSelectionChange, () => {
             ButtonView.setButtonsDisabled(false);
         });
         ee.on('userEdited', () => {
@@ -24,9 +29,7 @@ class ButtonView {
         ee.on('userAdded', () => {
             this.render();
         });
-        ee.on('formCanceled', () => {
-            this.render();
-        });
+        ee.on('formCanceled', this.render);
     }
 
     /**

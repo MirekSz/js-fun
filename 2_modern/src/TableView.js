@@ -1,7 +1,9 @@
 import $ from 'jquery';
 //noinspection JSUnresolvedVariable
 import template from './tableView.hbs';
-
+export const EVENTS = {
+    onRowSelectionChange: 'onRowSelectionChange'
+};
 class TableView {
     /**
      *
@@ -33,6 +35,7 @@ class TableView {
         ee.on('add-new-user', this.hideTableView);
         ee.on('userEdited', (user) => {
             this.httpManager.editUser(user);
+
         });
         ee.on('userAdded', (user) => {
             this.httpManager.addUser(user);
@@ -46,7 +49,7 @@ class TableView {
         this.selectedRow = -1;
         $(this.divID).html(TableView.prepareTableHtml(this.users));
         $(this.divID).find("table tbody tr").on('click', (event) => {
-            let rowNumber = parseInt((event.target.parentElement.id).substring(8));
+            let rowNumber = parseInt($(event.target.parentElement).attr('data-id'));
             this.onRowClick(rowNumber);
         });
     };
@@ -63,7 +66,7 @@ class TableView {
         $("#tableRow" + rowNumber).addClass("activeRow");
         this.selectedRow = rowNumber;
         if (selected !== rowNumber) {
-            this.ee.emit('onRowSelectionChange', this.users[rowNumber]);
+            this.ee.emit(EVENTS.onRowSelectionChange, this.users[rowNumber]);
         }
     };
 
@@ -77,7 +80,7 @@ class TableView {
      * @returns {string}
      */
     static prepareTableHtml(users) {
-        return template({users: users});
+        return template({users});
     }
 }
 

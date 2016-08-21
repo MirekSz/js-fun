@@ -28,11 +28,15 @@ class HttpManager {
      * @param {User} user
      */
     addUser(user) {
-        this.axios.post('/users', {
+        var promise = this.axios.post('/users', {
             user: user
-        }).then(() => {
+        });
+
+        var promise2 = promise.then(() => {
             this.getUsers();
         });
+
+        return promise2;
     }
 
     /**

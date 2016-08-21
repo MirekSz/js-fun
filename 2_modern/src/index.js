@@ -10,6 +10,7 @@ import FormView from "./FormView";
 $(document).ready(initialize);
 
 function initialize() {
+
     let ee = new EventEmitter();
     let httpManager = new HttpManager(ee);
 
