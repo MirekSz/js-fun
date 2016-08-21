@@ -22,7 +22,7 @@ class FormView {
 
             $form.on("submit", (e) => {
                 e.preventDefault();
-                var user = this.serializeForm($form, {});
+                user = this.serializeForm($form, user);
                 this.hideFormView();
                 ee.emit('userEdited', user);
             });
@@ -87,7 +87,6 @@ class FormView {
         });
         let selects = $form.find("select");
         $.each(selects, (index, element) => {
-            console.log(element);
             element.value = user[element.name];
         });
     }

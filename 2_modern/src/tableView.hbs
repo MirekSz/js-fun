@@ -8,13 +8,13 @@
     </tr>
     </thead>
     <tbody>
-    {{#eachInMap users}} 
-    <tr id="tableRow{{key}}">
-            <td>{{value.name}}</td>
-            <td>{{value.surname}}</td>
-            <td>{{value.age}}</td>
-            <td>{{value.sex}}</td>
+    {{#each users}} 
+    <tr id="tableRow{{@index}}">
+            <td>{{this.name}}</td>
+            <td>{{this.surname}}</td>
+            <td>{{this.age}}</td>
+            <td>{{this.sex}}</td>
     </tr>
-    {{/eachInMap}}
+    {{/each}}
     </tbody>
 </table>

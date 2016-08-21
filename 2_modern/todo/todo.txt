@@ -2,13 +2,7 @@ https://github.com/lukehoban/es6features
 https://www.youtube.com/playlist?list=PLoYCgNOIyGACDQLaThEEKBAlgs4OIUGif
 https://remysharp.com/2010/10/08/what-is-a-polyfill
 
-1. div
-2. =>
-3. JSDOC
-4. eventy
-5. users jako mapa
-6. Handlebars
-7. skrypty
-8. backnd axios/promise
-9. less
+1. events as CONST
+2. backnd axios/promise (temporary - ID as column in TableView)
+3. less
 

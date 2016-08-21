@@ -1,5 +1,8 @@
+'use strict';
+
 class User {
-    constructor(name, surname, age, sex) {
+    constructor(id, name, surname, age, sex) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.age = age;
@@ -7,4 +10,4 @@ class User {
     }
 }
 
-module.exports = User;
+module.exports.User = User;

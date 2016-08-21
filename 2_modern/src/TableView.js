@@ -6,12 +6,14 @@ class TableView {
     /**
      *
      * @param {EventEmitter} ee
+     * @param {HttpManager} httpManager
      * @param {string} divID
      */
-    constructor(ee, divID) {
+    constructor(ee, httpManager, divID) {
         this.ee = ee;
+        this.httpManager = httpManager;
         this.divID = divID;
-        this.users = new Map([]);
+        this.users = [];
         this.setUpListeners();
     }
 
@@ -22,21 +24,18 @@ class TableView {
             this.render();
         });
         ee.on('delete-user', () => {
-            this.users.delete(this.selectedRow);
-            this.render();
+            this.httpManager.deleteUser(this.users[this.selectedRow].id);
         });
         ee.on('edit-current-user', () => {
             this.hideTableView();
-            ee.emit('editUser', this.users.get(this.selectedRow));
+            ee.emit('editUser', this.users[this.selectedRow]);
         });
         ee.on('add-new-user', this.hideTableView);
         ee.on('userEdited', (user) => {
-            this.users.set(this.selectedRow, user);
-            this.render()
+            this.httpManager.editUser(user);
         });
         ee.on('userAdded', (user) => {
-            this.users.set(this.users.size, user);
-            this.render()
+            this.httpManager.addUser(user);
         });
         ee.on('formCanceled', () => {
             this.render();
@@ -47,8 +46,8 @@ class TableView {
         this.selectedRow = -1;
         $(this.divID).html(TableView.prepareTableHtml(this.users));
         $(this.divID).find("table tbody tr").on('click', (event) => {
-            let userId = parseInt((event.target.parentElement.id).substring(8));
-            this.onRowClick(userId);
+            let rowNumber = parseInt((event.target.parentElement.id).substring(8));
+            this.onRowClick(rowNumber);
         });
     };
 
@@ -64,7 +63,7 @@ class TableView {
         $("#tableRow" + rowNumber).addClass("activeRow");
         this.selectedRow = rowNumber;
         if (selected !== rowNumber) {
-            this.ee.emit('onRowSelectionChange', this.users.get(rowNumber));
+            this.ee.emit('onRowSelectionChange', this.users[rowNumber]);
         }
     };
 
@@ -74,7 +73,7 @@ class TableView {
 
     /**
      *
-     * @param {Map} users
+     * @param {Array} users
      * @returns {string}
      */
     static prepareTableHtml(users) {
