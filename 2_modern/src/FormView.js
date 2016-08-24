@@ -38,7 +38,7 @@ class FormView {
                 e.preventDefault();
                 user = this.serializeForm($form, user);
                 this.hideFormView();
-                this.service.editUser(user); //TODO: przetestować zamianę tej linii z ee.emit
+                this.service.editUser(user);
                 ee.emit(FORM_EVENTS.USER_EDITED);
             });
         });
@@ -50,7 +50,7 @@ class FormView {
                 e.preventDefault();
                 var user = this.serializeForm($form, {});
                 this.hideFormView();
-                this.service.addUser(user); //TODO: to samo
+                this.service.addUser(user);
                 ee.emit(FORM_EVENTS.USER_ADDED);
             });
         });

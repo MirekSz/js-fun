@@ -7,7 +7,7 @@ import {USER_SERVICE_EVENT} from './UserService';
 
 export const TABLE_EVENTS = {
     ON_ROW_SELECTION_CHANGE: 'onRowSelectionChange',
-    EDIT_USER:'edit-user'
+    EDIT_USER: 'edit-user'
 };
 
 class TableView {
@@ -21,6 +21,7 @@ class TableView {
         this.service = service;
         this.users = [];
         this.setUpListeners();
+        this.loading = true;
     }
 
     setDivID(div) {
@@ -32,6 +33,7 @@ class TableView {
         let {ee} = this;
         ee.on(USER_SERVICE_EVENT.USERS_NEW_DATA, (users) => {
             this.users = users;
+            this.loading = false;
             this.render();
         });
         ee.on(BUTTON_EVENTS.DELETE_USER, () => {
@@ -43,15 +45,25 @@ class TableView {
         });
         ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hideTableView.bind(this));
         ee.on(FORM_EVENTS.FORM_CANCELED, this.render.bind(this));
+        ee.on(FORM_EVENTS.USER_EDITED, () => {
+            this.loading = true;
+            this.render();
+        });
+        ee.on(FORM_EVENTS.USER_ADDED, () => {
+            this.loading = true;
+            this.render();
+        });
     };
 
     render() {
         this.selectedRow = -1;
-        $(this.divID).html(TableView.prepareTableHtml(this.users));
-        $(this.divID).find("table tbody tr").on('click', (event) => {
-            let rowNumber = parseInt($(event.target.parentElement).attr('data-id'));
-            this.onRowClick(rowNumber);
-        });
+        $(this.divID).html(TableView.prepareTableHtml(this.users, this.loading));
+        if (!this.loading) {
+            $(this.divID).find("table tbody tr").on('click', (event) => {
+                let rowNumber = parseInt($(event.target.parentElement).attr('data-id'));
+                this.onRowClick(rowNumber);
+            });
+        }
     };
 
     /**
@@ -77,10 +89,11 @@ class TableView {
     /**
      *
      * @param {Array} users
+     * @param {boolean} loading
      * @returns {string}
      */
-    static prepareTableHtml(users) {
-        return template({users});
+    static prepareTableHtml(users, loading) {
+        return template({users, loading});
     }
 }
 

@@ -95,7 +95,7 @@
 	    var service = new _UserService2.default(ee, baseUrl, '/users/');
 	
 	    new _ButtonView2.default(ee).setDivID("#buttonView").render();
-	    new _TableView2.default(ee, service).setDivID("#workspace");
+	    new _TableView2.default(ee, service).setDivID("#workspace").render();
 	    new _DetailsView2.default(ee).setDivID("#detailsView");
 	    new _FormView2.default(ee, service).setDivID("#workspace");
 	
@@ -13632,6 +13632,7 @@
 	        this.service = service;
 	        this.users = [];
 	        this.setUpListeners();
+	        this.loading = true;
 	    }
 	
 	    _createClass(TableView, [{
@@ -13649,6 +13650,7 @@
 	
 	            ee.on(_UserService.USER_SERVICE_EVENT.USERS_NEW_DATA, function (users) {
 	                _this.users = users;
+	                _this.loading = false;
 	                _this.render();
 	            });
 	            ee.on(_ButtonView.BUTTON_EVENTS.DELETE_USER, function () {
@@ -13660,6 +13662,14 @@
 	            });
 	            ee.on(_ButtonView.BUTTON_EVENTS.ADD_NEW_USER, this.hideTableView.bind(this));
 	            ee.on(_FormView.FORM_EVENTS.FORM_CANCELED, this.render.bind(this));
+	            ee.on(_FormView.FORM_EVENTS.USER_EDITED, function () {
+	                _this.loading = true;
+	                _this.render();
+	            });
+	            ee.on(_FormView.FORM_EVENTS.USER_ADDED, function () {
+	                _this.loading = true;
+	                _this.render();
+	            });
 	        }
 	    }, {
 	        key: 'render',
@@ -13667,11 +13677,13 @@
 	            var _this2 = this;
 	
 	            this.selectedRow = -1;
-	            (0, _jquery2.default)(this.divID).html(TableView.prepareTableHtml(this.users));
-	            (0, _jquery2.default)(this.divID).find("table tbody tr").on('click', function (event) {
-	                var rowNumber = parseInt((0, _jquery2.default)(event.target.parentElement).attr('data-id'));
-	                _this2.onRowClick(rowNumber);
-	            });
+	            (0, _jquery2.default)(this.divID).html(TableView.prepareTableHtml(this.users, this.loading));
+	            if (!this.loading) {
+	                (0, _jquery2.default)(this.divID).find("table tbody tr").on('click', function (event) {
+	                    var rowNumber = parseInt((0, _jquery2.default)(event.target.parentElement).attr('data-id'));
+	                    _this2.onRowClick(rowNumber);
+	                });
+	            }
 	        }
 	    }, {
 	        key: 'onRowClick',
@@ -13704,10 +13716,11 @@
 	        /**
 	         *
 	         * @param {Array} users
+	         * @param {boolean} loading
 	         * @returns {string}
 	         */
-	        value: function prepareTableHtml(users) {
-	            return (0, _tableView2.default)({ users: users });
+	        value: function prepareTableHtml(users, loading) {
+	            return (0, _tableView2.default)({ users: users, loading: loading });
 	        }
 	    }]);
 	
@@ -13723,6 +13736,10 @@
 	var Handlebars = __webpack_require__(45);
 	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
+	    var stack1;
+	
+	  return ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.users : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+	},"2":function(container,depth0,helpers,partials,data) {
 	    var helper, alias1=container.escapeExpression, alias2=container.lambda;
 	
 	  return "\u2028\n    <tr data-id=\""
@@ -13736,12 +13753,15 @@
 	    + "</td>\n            <td>"
 	    + alias1(alias2((depth0 != null ? depth0.sex : depth0), depth0))
 	    + "</td>\n    </tr>\n";
+	},"4":function(container,depth0,helpers,partials,data) {
+	    return "    <h3>Loading...</h3>\n";
 	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-	    var stack1;
+	    var stack1, alias1=depth0 != null ? depth0 : {};
 	
 	  return "<table class=\"table table-bordered\">\n    <thead>\n    <tr>\n        <th class=\"col-md-3\">Imię</th>\n        <th class=\"col-md-5\">Nazwisko</th>\n        <th class=\"col-md-2\">Wiek</th>\n        <th class=\"col-md-2\">Płeć</th>\n    </tr>\n    </thead>\n    <tbody>\n"
-	    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.users : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-	    + "    </tbody>\n</table>";
+	    + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.loading : depth0),{"name":"unless","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + "    </tbody>\n</table>\n"
+	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.loading : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
 	},"useData":true});
 
 /***/ },
@@ -13815,7 +13835,7 @@
 	                    e.preventDefault();
 	                    user = _this.serializeForm($form, user);
 	                    _this.hideFormView();
-	                    _this.service.editUser(user); //TODO: przetestować zamianę tej linii z ee.emit
+	                    _this.service.editUser(user);
 	                    ee.emit(FORM_EVENTS.USER_EDITED);
 	                });
 	            });
@@ -13827,7 +13847,7 @@
 	                    e.preventDefault();
 	                    var user = _this.serializeForm($form, {});
 	                    _this.hideFormView();
-	                    _this.service.addUser(user); //TODO: to samo
+	                    _this.service.addUser(user);
 	                    ee.emit(FORM_EVENTS.USER_ADDED);
 	                });
 	            });
@@ -14079,7 +14099,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".page-header {\n  text-align: center;\n  border-color: #444444;\n  color: #444444;\n}\nh3,\nh4 {\n  text-align: center;\n  font-weight: bold;\n}\n.activeRow {\n  background-color: dodgerblue;\n}\nthead {\n  background-color: #cccccc;\n  font-size: 18px;\n}\ntbody {\n  font-size: 16px;\n}\n#detailsView {\n  margin-top: 70px;\n  font-size: 18px;\n}\ntable {\n  margin-top: 15px;\n}\n.evLabel {\n  text-align: center;\n  font-weight: bold;\n}\n.evValue {\n  text-align: center;\n}\n#cancelBtn {\n  alignment: right;\n  margin-left: 15px;\n}\n", ""]);
+	exports.push([module.id, ".page-header {\n  text-align: center;\n  border-color: #444444;\n  color: #444444;\n}\nh3,\nh4 {\n  text-align: center;\n  font-weight: bold;\n}\n.activeRow {\n  background-color: dodgerblue;\n}\nthead {\n  background-color: #cccccc;\n  font-size: 18px;\n}\ntbody {\n  font-size: 16px;\n}\n#detailsView {\n  margin-top: 70px;\n  font-size: 18px;\n}\n#buttonView {\n  margin-bottom: 15px;\n}\n.evLabel {\n  text-align: center;\n  font-weight: bold;\n}\n.evValue {\n  text-align: center;\n}\n#cancelBtn {\n  alignment: right;\n  margin-left: 15px;\n}\n", ""]);
 	
 	// exports
 

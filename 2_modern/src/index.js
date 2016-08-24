@@ -17,7 +17,7 @@ function initialize() {
     let service = new UserService(ee, baseUrl, '/users/');
 
     new ButtonView(ee).setDivID("#buttonView").render();
-    new TableView(ee, service).setDivID("#workspace");
+    new TableView(ee, service).setDivID("#workspace").render();
     new DetailsView(ee).setDivID("#detailsView");
     new FormView(ee, service).setDivID("#workspace");
 

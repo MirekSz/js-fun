@@ -5,7 +5,7 @@ https://remysharp.com/2010/10/08/what-is-a-polyfill
 <DONE> events as CONST
 <DONE> divID ustawiany po stworzeniu obiektu
 <DONE> HTTPManager -> rework
-2. dane z backendu - 3s. Najpierw nagłówki + loading
+<DONE> (na delete trochę brzydko, dziwna zmiana pozycji nagłówków)Najpierw nagłówki + loading
 4. cache na userów
 3. more of less + autoprefixer
   + images, SVG
