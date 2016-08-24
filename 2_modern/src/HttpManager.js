@@ -1,5 +1,4 @@
-import axios from 'axios';
-import User from './user.js';
+import axios from "axios";
 
 class HttpManager {
 
@@ -15,57 +14,41 @@ class HttpManager {
 
     /**
      *
-     * @param {string} url
-     * @param {function} callback
+     * @param url
+     * @return {axios.Promise}
      */
-    getData(url, callback) {
-        this.axios.get(url)
-            .then((response) => callback(response.data))
-            .catch((error) => {
-                console.log(error);
-            });
+    getData(url) {
+        return this.axios.get(url);
     }
 
     /**
      *
      * @param {string} url
-     * @param {Object} postData
-     * @param {function} callback
+     * @param {User} postData
+     * @return {axios.Promise}
      */
-    post(url, postData, callback) {
-        this.axios.post(url, postData)
-            .then(callback)
-            .catch((error) => {
-                console.log(error);
-            });
+    post(url, postData) {
+        return this.axios.post(url, postData);
     }
 
     /**
      *
      * @param {string} url
-     * @param {Object} putData
-     * @param {function} callback
+     * @param {User} putData
+     * @return {axios.Promise}
      */
-    put(url, putData, callback) {
-        this.axios.put(url, putData)
-            .then(callback)
-            .catch((error) => {
-                console.log(error);
-            });
+    put(url, putData) {
+        return this.axios.put(url, putData);
     }
 
     /**
      *
      * @param {string} url
      * @param {Object} id
-     * @param {function} callback
+     * @return {axios.Promise}
      */
-    doDelete(url, id, callback) {
-        this.axios.delete(url, id)
-            .then(callback)
-            .catch((error) => {
-                console.log(error);
-            });
+    doDelete(url, id) {
+        return this.axios.delete(url, id);
     }
 }
 

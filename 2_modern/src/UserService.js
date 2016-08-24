@@ -5,6 +5,12 @@ export const USER_SERVICE_EVENT = {
 };
 
 class UserService {
+    /**
+     *
+     * @param {EventEmitter} ee
+     * @param baseUrl
+     * @param usersUrl
+     */
     constructor(ee, baseUrl, usersUrl) {
         this.ee = ee;
         this.http = new HttpManager(baseUrl);
@@ -12,22 +18,43 @@ class UserService {
     }
 
     getUsers() {
-        this.http.getData(this.url, (data) => {
+        this.http.getData(this.url).then((data) => {
             this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, data);
+        }).catch((error) => {
+            console.log(error);
         });
-
     }
 
+    /**
+     *
+     * @param {User} user
+     */
     addUser(user) {
-        this.http.post(this.url, user, this.getUsers.bind(this));
+        this.http.post(this.url, user).then(this.getUsers.bind(this))
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
+    /**
+     *
+     * @param {User} user
+     */
     editUser(user) {
-        this.http.put(this.url, user, this.getUsers.bind(this));
+        this.http.put(this.url, user).then(this.getUsers.bind(this))
+            .catch((error) => {
+                console.log(error);
+            });
     }
-
+    /**
+     *
+     * @param id
+     */
     deleteUser(id) {
-        this.http.doDelete(this.url + id, id, this.getUsers.bind(this));
+        this.http.doDelete(this.url + id, id).then(this.getUsers.bind(this))
+            .catch((error) => {
+                console.log(error);
+            });
     }
 }
 
