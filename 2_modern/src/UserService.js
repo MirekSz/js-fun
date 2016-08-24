@@ -18,8 +18,9 @@ class UserService {
     }
 
     getUsers() {
-        this.http.getData(this.url).then((data) => {
-            this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, data);
+        this.http.getData(this.url).then((response) => {
+            console.log(response.data);
+            this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, response.data);
         }).catch((error) => {
             console.log(error);
         });

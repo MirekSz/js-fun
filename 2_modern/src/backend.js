@@ -23,8 +23,7 @@ var users = [new User(0, 'Jacek', 'Doe', '43', 'Mężczyzna'),
     new User(2, 'Julia', 'Dolej', '22', 'Kobieta')];
 
 app.get('/users', function (request, response) {
-    console.log(users[0]);
-    response.send(users);
+    setTimeout(() => {response.send(users)}, 2000);
 });
 
 app.post('/users', function (request, response) {
