@@ -6,7 +6,11 @@
   },
   "rules": {
     "semi": 2,
-    "no-console": "off",
-    "no-undef":"off"
+    "no-console": "off"
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "commonjs":true
   }
 }
