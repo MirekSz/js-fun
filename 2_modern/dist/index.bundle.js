@@ -13693,14 +13693,14 @@
 	                });
 	            }
 	        }
-	    }, {
-	        key: 'onRowClick',
-	
 	
 	        /**
 	         *
 	         * @param {number} rowNumber
 	         */
+	
+	    }, {
+	        key: 'onRowClick',
 	        value: function onRowClick(rowNumber) {
 	            var selected = this.selectedRow;
 	            if (selected != -1) {
@@ -13717,9 +13717,6 @@
 	        value: function hideTableView() {
 	            (0, _jquery2.default)(this.divID).html("");
 	        }
-	    }], [{
-	        key: 'prepareTableHtml',
-	
 	
 	        /**
 	         *
@@ -13727,6 +13724,9 @@
 	         * @param {boolean} loading
 	         * @returns {string}
 	         */
+	
+	    }], [{
+	        key: 'prepareTableHtml',
 	        value: function prepareTableHtml(users, loading) {
 	            return (0, _tableView2.default)({ users: users, loading: loading });
 	        }
@@ -13860,14 +13860,14 @@
 	                });
 	            });
 	        }
-	    }, {
-	        key: 'renderWithMode',
-	
 	
 	        /**
 	         *
 	         * @param {string} mode
 	         */
+	
+	    }, {
+	        key: 'renderWithMode',
 	        value: function renderWithMode(mode) {
 	            var _this2 = this;
 	
@@ -13884,9 +13884,6 @@
 	        value: function hideFormView() {
 	            (0, _jquery2.default)(this.divID).html("");
 	        }
-	    }, {
-	        key: 'serializeForm',
-	
 	
 	        /**
 	         *
@@ -13894,6 +13891,9 @@
 	         * @param {User} user
 	         * @returns {User}
 	         */
+	
+	    }, {
+	        key: 'serializeForm',
 	        value: function serializeForm($form, user) {
 	            var inputs = $form.find("input");
 	            _jquery2.default.each(inputs, function (index, element) {
@@ -14033,15 +14033,15 @@
 	        value: function hideDetailsView() {
 	            (0, _jquery2.default)(this.divID).html("");
 	        }
-	    }], [{
-	        key: 'prepareDetailsHtml',
-	
 	
 	        /**
 	         *
 	         * @param {User} user
 	         * @returns {string}
 	         */
+	
+	    }], [{
+	        key: 'prepareDetailsHtml',
 	        value: function prepareDetailsHtml(user) {
 	            return (0, _detailsView2.default)({ user: user });
 	        }

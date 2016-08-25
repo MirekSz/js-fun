@@ -14,7 +14,8 @@ http://survivejs.com/webpack/developing-with-webpack/automatic-browser-refresh/ 
 6. strict mode
 7. dziedziczenie vs mixin - JS
 
-Eslint -> livereload -> browsersync(features, poczytać) -> webpack hot-reloader
+Eslint(DONE - podstawowy preset es6) -> livereload (Pominięte)
+-> browsersync(features, poczytać) (DONE - podstawa) -> webpack hot-reloader (web-server DONE, not HMR)
 poczytać o Grunt -> przeskok na Gulp - napisać taska, który obserwuje bundle i
 przy zmianie odświeża przeglądarkę i Gowlem informuje, że aplikacja jest gotowa
 - podpiąć lessa

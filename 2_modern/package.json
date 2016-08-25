@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev-server":"webpack-dev-server",
     "start-backend": "node src/backend.js",
     "start-front": "webpack --watch webpack.config.js",
     "start-all": "npm run start-backend | npm run start-front"
@@ -22,7 +23,8 @@
     "less-loader": "^2.2.3",
     "postcss-loader": "^0.10.1",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.15.0"
   },
   "dependencies": {
     "axios": "^0.13.1",
