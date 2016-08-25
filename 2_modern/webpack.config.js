@@ -4,12 +4,15 @@ var helpersDir = path.join(__dirname, 'src', 'helpers');
 module.exports = {
     devtool: 'source-map',
     entry: [
-            './src/index.js',
+        './src/index.js',
         './users.less'
     ],
     output: {
         path: './dist',
         filename: 'index.bundle.js'
+    },
+    resolve: {
+        extensions: ['', '.jsx', '.js', '.es6', '.hbs', '.less'],
     },
     module: {
         loaders: [{
@@ -24,11 +27,9 @@ module.exports = {
             }
         }, {
             test: /\.less$/,
-            loader: "style!css!less"
+            exclude: /node_modules/,
+            loaders: ["style", "css", "postcss", "less"]
         }],
-    },
-    resolve: {
-        extensions: ['', '.jsx', '.js', '.es6', '.hbs', '.less'],
     },
     node: {
         fs: "empty" // avoids error messages

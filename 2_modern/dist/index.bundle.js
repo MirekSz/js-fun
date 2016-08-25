@@ -10615,7 +10615,7 @@
 	        this.ee = ee;
 	        this.http = new _HttpManager2.default(baseUrl);
 	        this.url = usersUrl;
-	        this.cache = false;
+	        //this.cache = false;
 	    }
 	
 	    _createClass(UserService, [{
@@ -10623,18 +10623,18 @@
 	        value: function getUsers() {
 	            var _this = this;
 	
-	            if (this.cache) {
-	                this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, this.cacheData);
-	                this.cache = false;
-	            } else {
-	                this.http.getData(this.url).then(function (response) {
-	                    _this.cacheData = response.data;
-	                    _this.cache = true;
-	                    _this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, response.data);
-	                }).catch(function (error) {
-	                    console.log(error);
-	                });
-	            }
+	            //if (this.cache) {
+	            //    this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, this.cacheData);
+	            //    this.cache = false;
+	            //} else {
+	            this.http.getData(this.url).then(function (response) {
+	                //this.cacheData = response.data;
+	                //this.cache = true;
+	                _this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, response.data);
+	            }).catch(function (error) {
+	                console.log(error);
+	            });
+	            //}
 	        }
 	
 	        /**
@@ -14088,8 +14088,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./node_modules/css-loader/index.js!./node_modules/less-loader/index.js!./users.less", function() {
-				var newContent = require("!!./node_modules/css-loader/index.js!./node_modules/less-loader/index.js!./users.less");
+			module.hot.accept("!!./node_modules/css-loader/index.js!./node_modules/postcss-loader/index.js!./node_modules/less-loader/index.js!./users.less", function() {
+				var newContent = require("!!./node_modules/css-loader/index.js!./node_modules/postcss-loader/index.js!./node_modules/less-loader/index.js!./users.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -14107,7 +14107,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".page-header {\n  text-align: center;\n  border-color: #444444;\n  color: #444444;\n}\nh3,\nh4 {\n  text-align: center;\n  font-weight: bold;\n}\n.activeRow {\n  background-color: dodgerblue;\n}\nthead {\n  background-color: #cccccc;\n  font-size: 18px;\n}\ntbody {\n  font-size: 16px;\n}\n#detailsView {\n  margin-top: 70px;\n  font-size: 18px;\n}\n#buttonView {\n  margin-bottom: 15px;\n}\n.evLabel {\n  text-align: center;\n  font-weight: bold;\n}\n.evValue {\n  text-align: center;\n}\n#cancelBtn {\n  alignment: right;\n  margin-left: 15px;\n}\n", ""]);
+	exports.push([module.id, ".page-header {\n  text-align: center;\n  border-color: #444444;\n  color: #444444;\n}\nh3,\nh4 {\n  text-align: center;\n  font-weight: bold;\n  user-select: none;\n}\n.activeRow {\n  background-color: dodgerblue;\n}\nthead {\n  background-color: #cccccc;\n  font-size: 18px;\n}\ntbody {\n  font-size: 16px;\n}\n#detailsView {\n  margin-top: 70px;\n  font-size: 18px;\n}\n#buttonView {\n  margin-bottom: 15px;\n}\n.evLabel {\n  text-align: center;\n  font-weight: bold;\n}\n.evValue {\n  text-align: center;\n}\n#cancelBtn {\n  alignment: right;\n  margin-left: 15px;\n}\n", ""]);
 	
 	// exports
 
@@ -14436,6 +14436,9 @@
 	        path: './dist',
 	        filename: 'index.bundle.js'
 	    },
+	    resolve: {
+	        extensions: ['', '.jsx', '.js', '.es6', '.hbs', '.less']
+	    },
 	    module: {
 	        loaders: [{
 	            test: /\.js$/,
@@ -14449,11 +14452,9 @@
 	            }
 	        }, {
 	            test: /\.less$/,
-	            loader: "style!css!less"
+	            exclude: /node_modules/,
+	            loaders: ["style", "css", "postcss", "less"]
 	        }]
-	    },
-	    resolve: {
-	        extensions: ['', '.jsx', '.js', '.es6', '.hbs', '.less']
 	    },
 	    node: {
 	        fs: "empty" // avoids error messages

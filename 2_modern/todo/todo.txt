@@ -1,14 +1,15 @@
-https://github.com/lukehoban/es6features
-https://www.youtube.com/playlist?list=PLoYCgNOIyGACDQLaThEEKBAlgs4OIUGif
-https://remysharp.com/2010/10/08/what-is-a-polyfill
+http://survivejs.com/webpack/developing-with-webpack
+
+http://survivejs.com/webpack/developing-with-webpack/automatic-browser-refresh/ (webpack hot-reload)
 
 <DONE> events as CONST
 <DONE> divID ustawiany po stworzeniu obiektu
 <DONE> HTTPManager -> rework
 <DONE> (na delete trochę brzydko, dziwna zmiana pozycji nagłówków)Najpierw nagłówki + loading
-4. cache na userów
-3. more of less + autoprefixer
-  + images, SVG
+<done - naive/simple> 4. cache na userów
+<NOT DONE?> autoprefixer - Po 3 godzinach kombinowania to jedyna zmiana która przeszła bez błędów,
+            ale chyba nie dodaje prefixów..
+4. images, SVG
 5. animacje
 6. strict mode
 7. dziedziczenie vs mixin - JS
