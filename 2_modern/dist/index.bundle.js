@@ -10615,6 +10615,7 @@
 	        this.ee = ee;
 	        this.http = new _HttpManager2.default(baseUrl);
 	        this.url = usersUrl;
+	        this.cache = false;
 	    }
 	
 	    _createClass(UserService, [{
@@ -10622,12 +10623,18 @@
 	        value: function getUsers() {
 	            var _this = this;
 	
-	            this.http.getData(this.url).then(function (response) {
-	                console.log(response.data);
-	                _this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, response.data);
-	            }).catch(function (error) {
-	                console.log(error);
-	            });
+	            if (this.cache) {
+	                this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, this.cacheData);
+	                this.cache = false;
+	            } else {
+	                this.http.getData(this.url).then(function (response) {
+	                    _this.cacheData = response.data;
+	                    _this.cache = true;
+	                    _this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, response.data);
+	                }).catch(function (error) {
+	                    console.log(error);
+	                });
+	            }
 	        }
 	
 	        /**
@@ -10655,6 +10662,7 @@
 	                console.log(error);
 	            });
 	        }
+	
 	        /**
 	         *
 	         * @param id

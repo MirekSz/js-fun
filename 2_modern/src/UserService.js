@@ -15,15 +15,22 @@ class UserService {
         this.ee = ee;
         this.http = new HttpManager(baseUrl);
         this.url = usersUrl;
+        //this.cache = false;
     }
 
     getUsers() {
-        this.http.getData(this.url).then((response) => {
-            console.log(response.data);
-            this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, response.data);
-        }).catch((error) => {
-            console.log(error);
-        });
+        //if (this.cache) {
+        //    this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, this.cacheData);
+        //    this.cache = false;
+        //} else {
+            this.http.getData(this.url).then((response) => {
+                //this.cacheData = response.data;
+                //this.cache = true;
+                this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, response.data);
+            }).catch((error) => {
+                console.log(error);
+            });
+        //}
     }
 
     /**
@@ -47,6 +54,7 @@ class UserService {
                 console.log(error);
             });
     }
+
     /**
      *
      * @param id
