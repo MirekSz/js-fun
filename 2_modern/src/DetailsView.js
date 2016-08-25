@@ -39,7 +39,7 @@ class DetailsView {
 
     hideDetailsView() {
         $(this.divID).html("");
-    };
+    }
 
     /**
      *

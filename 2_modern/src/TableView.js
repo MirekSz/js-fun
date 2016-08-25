@@ -53,7 +53,7 @@ class TableView {
             this.loading = true;
             this.render();
         });
-    };
+    }
 
     render() {
         this.selectedRow = -1;
@@ -64,7 +64,7 @@ class TableView {
                 this.onRowClick(rowNumber);
             });
         }
-    };
+    }
 
     /**
      *
@@ -80,11 +80,11 @@ class TableView {
         if (selected !== rowNumber) {
             this.ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, this.users[rowNumber]);
         }
-    };
+    }
 
     hideTableView() {
         $(this.divID).html("");
-    };
+    }
 
     /**
      *

@@ -9,7 +9,7 @@ http://survivejs.com/webpack/developing-with-webpack/automatic-browser-refresh/ 
 <done - naive/simple> 4. cache na userów
 <NOT DONE?> autoprefixer - Po 3 godzinach kombinowania to jedyna zmiana która przeszła bez błędów,
             ale chyba nie dodaje prefixów..
-4. images, SVG
+4. images, SVG - http://survivejs.com/webpack/loading-assets/loading-images/
 5. animacje
 6. strict mode
 7. dziedziczenie vs mixin - JS
@@ -20,3 +20,15 @@ przy zmianie odświeża przeglądarkę i Gowlem informuje, że aplikacja jest go
 - podpiąć lessa
 
 
+Strict mode:
+1. Eliminates some JavaScript silent errors by changing them to throw errors
+2. Fixes mistakes that make it difficult for JavaScript engines to perform optimizations:
+   strict mode code can sometimes be made to run faster than identical code that's not strict mode
+3. Prohibits some syntax likely to be defined in future versions of ECMAScript.
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode
+
+Mixin:
+starszy - https://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at-javascript-mixins/
+
+nowszy - http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/

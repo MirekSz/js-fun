@@ -5,7 +5,7 @@ var User = require('./user').User;
 
 var app = express();
 app.listen(3000, function () {
-    console.log('listening on 3000')
+    console.log('listening on 3000');
 });
 
 app.use(bodyParser.json({type: '*/*'}));
@@ -23,7 +23,7 @@ var users = [new User(0, 'Jacek', 'Doe', '43', 'Mężczyzna'),
     new User(2, 'Julia', 'Dolej', '22', 'Kobieta')];
 
 app.get('/users', function (request, response) {
-    setTimeout(() => {response.send(users)}, 2000);
+    setTimeout(() => {response.send(users);}, 2000);
 });
 
 app.post('/users', function (request, response) {

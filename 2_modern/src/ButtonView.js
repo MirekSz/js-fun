@@ -1,7 +1,7 @@
 import $ from "jquery";
 import template from './buttonView.hbs';
 
-import {TABLE_EVENTS} from './TableView'
+import {TABLE_EVENTS} from './TableView';
 import {FORM_EVENTS} from './FormView';
 
 export const BUTTON_EVENTS = {

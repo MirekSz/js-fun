@@ -9,7 +9,7 @@ class HttpManager {
     constructor(baseUrl) {
         this.axios = axios.create({
             baseURL: baseUrl
-        })
+        });
     }
 
     /**

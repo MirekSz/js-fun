@@ -1,7 +1,7 @@
 import $ from "jquery";
 import template from './formView.hbs';
 
-import {TABLE_EVENTS} from './TableView'
+import {TABLE_EVENTS} from './TableView';
 import {BUTTON_EVENTS} from './ButtonView';
 
 export const FORM_EVENTS = {
@@ -54,7 +54,7 @@ class FormView {
                 ee.emit(FORM_EVENTS.USER_ADDED);
             });
         });
-    };
+    }
 
     /**
      *
@@ -67,11 +67,11 @@ class FormView {
             this.hideFormView();
             ee.emit(FORM_EVENTS.FORM_CANCELED);
         });
-    };
+    }
 
     hideFormView() {
         $(this.divID).html("");
-    };
+    }
 
     /**
      *
