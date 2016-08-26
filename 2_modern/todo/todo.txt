@@ -23,9 +23,10 @@ http://survivejs.com/webpack/developing-with-webpack/automatic-browser-refresh/
     - Eslint - podstawowy preset es6
     - browsersync - page refresh
     - webpack hot-reloader + HMR (with CLI/npm script, not webpack configuration)
+    - animations - rowselection with jquery and 'transition' css property
+    - animations - css3 - poczytane
 </DONE>
 <TODO>
-    - animations
     - read about Grunt
     - read and set up Gulp
     - Gulp task - watch app.bundle.js, reload browser after change and "App is ready" with Gowl
