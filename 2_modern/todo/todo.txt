@@ -25,12 +25,10 @@ http://survivejs.com/webpack/developing-with-webpack/automatic-browser-refresh/
     - webpack hot-reloader + HMR (with CLI/npm script, not webpack configuration)
     - animations - rowselection with jquery and 'transition' css property
     - animations - css3 - poczytane
+    - Gulp Task - less to css + notify (less-to-css)
 </DONE>
 <TODO>
-    - read about Grunt
-    - read and set up Gulp
     - Gulp task - watch app.bundle.js, reload browser after change and "App is ready" with Gowl
-    - Gulp Task - less to css
 </TODO>
 
 <Problems>
