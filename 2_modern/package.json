@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-dev-server":"webpack-dev-server",
+    "start-dev-server":"webpack-dev-server --output-public-path=/dist/ --inline --hot",
     "start-backend": "node src/backend.js",
     "start-front": "webpack --watch webpack.config.js",
     "start-all": "npm run start-backend | npm run start-front"

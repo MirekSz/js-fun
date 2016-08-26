@@ -13704,9 +13704,9 @@
 	        value: function onRowClick(rowNumber) {
 	            var selected = this.selectedRow;
 	            if (selected != -1) {
-	                (0, _jquery2.default)('tr[data-id*=\'' + selected + '\']').removeClass("activeRow");
+	                (0, _jquery2.default)('tr[data-id*=\'' + selected + '\']').removeClass("activeRow", { duration: 500 });
 	            }
-	            (0, _jquery2.default)('tr[data-id*=\'' + rowNumber + '\']').addClass("activeRow");
+	            (0, _jquery2.default)('tr[data-id*=\'' + rowNumber + '\']').addClass("activeRow", { duration: 500 });
 	            this.selectedRow = rowNumber;
 	            if (selected !== rowNumber) {
 	                this.ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, this.users[rowNumber]);
@@ -14107,7 +14107,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".page-header {\n  text-align: center;\n  border-color: #444444;\n  color: #444444;\n}\nh3,\nh4 {\n  text-align: center;\n  font-weight: bold;\n  user-select: none;\n}\n.activeRow {\n  background-color: dodgerblue;\n}\nthead {\n  background-color: #cccccc;\n  font-size: 18px;\n}\ntbody {\n  font-size: 16px;\n}\n#detailsView {\n  margin-top: 70px;\n  font-size: 18px;\n}\n#buttonView {\n  margin-bottom: 15px;\n}\n.evLabel {\n  text-align: center;\n  font-weight: bold;\n}\n.evValue {\n  text-align: center;\n}\n#cancelBtn {\n  alignment: right;\n  margin-left: 15px;\n}\n", ""]);
+	exports.push([module.id, ".page-header {\n  text-align: center;\n  border-color: #444444;\n  color: #444444;\n}\nh3,\nh4 {\n  text-align: center;\n  font-weight: bold;\n  user-select: none;\n}\n.activeRow {\n  background-color: dodgerblue;\n}\nthead {\n  background-color: #cccccc;\n  font-size: 18px;\n}\ntbody {\n  font-size: 16px;\n}\ntr {\n  transition: all 0.5s ease;\n}\n#detailsView {\n  margin-top: 70px;\n  font-size: 18px;\n}\n#buttonView {\n  margin-bottom: 15px;\n}\n.evLabel {\n  text-align: center;\n  font-weight: bold;\n}\n.evValue {\n  text-align: center;\n}\n#cancelBtn {\n  alignment: right;\n  margin-left: 15px;\n}\n", ""]);
 	
 	// exports
 

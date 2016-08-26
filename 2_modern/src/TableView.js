@@ -73,9 +73,9 @@ class TableView {
     onRowClick(rowNumber) {
         let selected = this.selectedRow;
         if (selected != -1) {
-            $(`tr[data-id*='${selected}']`).removeClass("activeRow");
+            $(`tr[data-id*='${selected}']`).removeClass("activeRow", {duration:500});
         }
-        $(`tr[data-id*='${rowNumber}']`).addClass("activeRow");
+        $(`tr[data-id*='${rowNumber}']`).addClass("activeRow", {duration:500});
         this.selectedRow = rowNumber;
         if (selected !== rowNumber) {
             this.ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, this.users[rowNumber]);
