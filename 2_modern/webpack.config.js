@@ -2,7 +2,7 @@ var path = require("path");
 var helpersDir = path.join(__dirname, 'src', 'helpers');
 
 module.exports = {
-    devtool: 'source-map',
+    devtool: 'cheap-module-eval-source-map',
     entry: [
         './src/index.js',
         './users.less'
