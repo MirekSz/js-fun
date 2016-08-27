@@ -3,7 +3,6 @@
 http://survivejs.com/webpack/developing-with-webpack
 
 http://survivejs.com/webpack/developing-with-webpack/automatic-browser-refresh/
-(pytanie do konfiguracji)
 
 ----------
 
@@ -12,7 +11,7 @@ http://survivejs.com/webpack/developing-with-webpack/automatic-browser-refresh/
     - events as CONST
     - divID ustawiany po stworzeniu obiektu
     - HTTPManager -> rework
-      (na delete trochę brzydko, dziwna zmiana pozycji nagłówków)Najpierw nagłówki + loading
+    - Najpierw nagłówki + loading (na delete trochę brzydko + dziwna zmiana pozycji nagłówków)
     - Cache na userów (naive/simple)
     - images, SVG - poczytane - http://survivejs.com/webpack/loading-assets/loading-images/
     - Strict mode - poczytane - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode
@@ -26,11 +25,8 @@ http://survivejs.com/webpack/developing-with-webpack/automatic-browser-refresh/
     - animations - rowselection with jquery and 'transition' css property
     - animations - css3 - poczytane
     - Gulp Task - less to css + notify (less-to-css)
+    - Gulp & livereload - https://scotch.io/tutorials/a-quick-guide-to-using-livereload-with-gulp
 </DONE>
-<TODO>
-    - Gulp task - watch app.bundle.js, reload browser after change and "App is ready" with Gowl
-</TODO>
-
 <Problems>
     - autoprefixer - Po 3 godzinach kombinowania to jedyna zmiana która przeszła bez błędów,
       ale chyba nie dodaje prefixów..
