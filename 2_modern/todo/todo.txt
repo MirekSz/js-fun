@@ -7,7 +7,6 @@ http://survivejs.com/webpack/developing-with-webpack/automatic-browser-refresh/
 ----------
 
 ----- TO-DO LIST ------
-- gulp - własny procesor, który wypisuje, jaki plik procesujesz
 - gulp - z 3 plików less jeden
 - package.json - post-install
 
