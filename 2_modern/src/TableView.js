@@ -59,8 +59,8 @@ class TableView {
         this.selectedRow = -1;
         $(this.divID).html(TableView.prepareTableHtml(this.users, this.loading));
         if (!this.loading) {
-            $(this.divID).find("table tbody tr").on('click', (event) => {
-                let rowNumber = parseInt($(event.target.parentElement).attr('data-id'));
+            $(this.divID).find('table tbody tr').on('click', (event) => {
+                let rowNumber = parseInt($(event.target.parentElement).attr('data-id'), 10);
                 this.onRowClick(rowNumber);
             });
         }
@@ -72,10 +72,10 @@ class TableView {
      */
     onRowClick(rowNumber) {
         let selected = this.selectedRow;
-        if (selected != -1) {
-            $(`tr[data-id*='${selected}']`).removeClass("activeRow", {duration:500});
+        if (selected !== -1) {
+            $(`tr[data-id*='${selected}']`).removeClass('activeRow', {duration: 500});
         }
-        $(`tr[data-id*='${rowNumber}']`).addClass("activeRow", {duration:500});
+        $(`tr[data-id*='${rowNumber}']`).addClass('activeRow', {duration: 500});
         this.selectedRow = rowNumber;
         if (selected !== rowNumber) {
             this.ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, this.users[rowNumber]);
@@ -83,7 +83,7 @@ class TableView {
     }
 
     hideTableView() {
-        $(this.divID).html("");
+        $(this.divID).html('');
     }
 
     /**

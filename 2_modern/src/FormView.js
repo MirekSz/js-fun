@@ -1,13 +1,13 @@
-import $ from "jquery";
+import $ from 'jquery';
 import template from './formView.hbs';
 
 import {TABLE_EVENTS} from './TableView';
 import {BUTTON_EVENTS} from './ButtonView';
 
 export const FORM_EVENTS = {
-    USER_EDITED:'user-edited',
-    USER_ADDED:'userAdded',
-    FORM_CANCELED:'formCanceled'
+    USER_EDITED: 'user-edited',
+    USER_ADDED: 'userAdded',
+    FORM_CANCELED: 'formCanceled'
 };
 
 class FormView {
@@ -30,25 +30,25 @@ class FormView {
     setUpListeners() {
         let {ee} = this;
         ee.on(TABLE_EVENTS.EDIT_USER, (user) => {
-            this.renderWithMode("Edytuj");
-            let $form = $("#form");
+            this.renderWithMode('Edytuj');
+            let $form = $('#form');
             this.deserializeForm($form, user);
 
-            $form.on("submit", (e) => {
+            $form.on('submit', (e) => {
                 e.preventDefault();
-                user = this.serializeForm($form, user);
+                let newUserData = this.serializeForm($form, {});
                 this.hideFormView();
-                this.service.editUser(user);
+                this.service.editUser(newUserData);
                 ee.emit(FORM_EVENTS.USER_EDITED);
             });
         });
         ee.on(BUTTON_EVENTS.ADD_NEW_USER, () => {
-            this.renderWithMode("Dodaj");
-            var $form = $("#form");
+            this.renderWithMode('Dodaj');
+            let $form = $('#form');
 
-            $form.on("submit", (e) => {
+            $form.on('submit', (e) => {
                 e.preventDefault();
-                var user = this.serializeForm($form, {});
+                let user = this.serializeForm($form, {});
                 this.hideFormView();
                 this.service.addUser(user);
                 ee.emit(FORM_EVENTS.USER_ADDED);
@@ -63,14 +63,14 @@ class FormView {
     renderWithMode(mode) {
         let {ee} = this;
         $(this.divID).html(FormView.prepareFormHtml(mode));
-        $("#cancelBtn").click(() => {
+        $('#cancelBtn').click(() => {
             this.hideFormView();
             ee.emit(FORM_EVENTS.FORM_CANCELED);
         });
     }
 
     hideFormView() {
-        $(this.divID).html("");
+        $(this.divID).html('');
     }
 
     /**
@@ -80,11 +80,11 @@ class FormView {
      * @returns {User}
      */
     serializeForm($form, user) {
-        var inputs = $form.find("input");
+        let inputs = $form.find('input');
         $.each(inputs, (index, element) => {
             user[element.name] = element.value;
         });
-        var selects = $form.find("select");
+        let selects = $form.find('select');
         $.each(selects, (index, element) => {
             user[element.name] = element.value;
         });
@@ -97,11 +97,11 @@ class FormView {
      * @param {User} user
      */
     deserializeForm($form, user) {
-        let inputs = $form.find("input");
+        let inputs = $form.find('input');
         $.each(inputs, (index, element) => {
             element.value = user[element.name];
         });
-        let selects = $form.find("select");
+        let selects = $form.find('select');
         $.each(selects, (index, element) => {
             element.value = user[element.name];
         });

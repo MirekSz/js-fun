@@ -69,7 +69,7 @@ class ButtonView {
     }
 
     hideButtonView() {
-        $(this.divID).html("");
+        $(this.divID).html("xx");
     }
 
     /**

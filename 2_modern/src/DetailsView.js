@@ -1,4 +1,4 @@
-import $ from "jquery";
+import $ from 'jquery';
 import template from './detailsView.hbs';
 
 import {TABLE_EVENTS} from './TableView';
@@ -38,7 +38,7 @@ class DetailsView {
     }
 
     hideDetailsView() {
-        $(this.divID).html("");
+        $(this.divID).html('');
     }
 
     /**

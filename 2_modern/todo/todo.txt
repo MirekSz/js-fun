@@ -7,30 +7,20 @@ http://survivejs.com/webpack/developing-with-webpack/automatic-browser-refresh/
 ----------
 
 ----- TO-DO LIST ------
-<DONE>
-    - events as CONST
-    - divID ustawiany po stworzeniu obiektu
-    - HTTPManager -> rework
-    - Najpierw nagłówki + loading (na delete trochę brzydko + dziwna zmiana pozycji nagłówków)
-    - Cache na userów (naive/simple)
-    - images, SVG - poczytane - http://survivejs.com/webpack/loading-assets/loading-images/
-    - Strict mode - poczytane - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode
-    - Mixin - JS (vs Dziedziczenie) - poczytane:
-        starszy - https://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at-javascript-mixins/
-        nowszy - http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
+- gulp - własny procesor, który wypisuje, jaki plik procesujesz
+- gulp - z 3 plików less jeden
+- package.json - post-install
 
-    - Eslint - podstawowy preset es6
-    - browsersync - page refresh
-    - webpack hot-reloader + HMR (with CLI/npm script, not webpack configuration)
-    - animations - rowselection with jquery and 'transition' css property
-    - animations - css3 - poczytane
-    - Gulp Task - less to css + notify (less-to-css)
-    - Gulp & livereload - https://scotch.io/tutorials/a-quick-guide-to-using-livereload-with-gulp
-</DONE>
-<Problems>
-    - autoprefixer - Po 3 godzinach kombinowania to jedyna zmiana która przeszła bez błędów,
-      ale chyba nie dodaje prefixów..
-</Problems>
+
+Testy
+- Mocha -  http://www.erikschierboom.com/images/posts/publishing-library-part-1-testing/mocha-test-runner-grouped.png
+- Chai
+
+- karma         http://developer.telerik.com/wp-content/uploads/2015/01/04.jpg
+- phantomjs
+
+- sinon
+
 ----------
 
 ----- Notes -----
