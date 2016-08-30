@@ -1,4 +1,6 @@
-var path = require("path");
+/*eslint-disable */
+
+var path = require('path');
 var helpersDir = path.join(__dirname, 'src', 'helpers');
 var autoprefixer = require('autoprefixer');
 
@@ -13,7 +15,11 @@ module.exports = {
         filename: 'index.bundle.js'
     },
     resolve: {
-        extensions: ['', '.jsx', '.js', '.es6', '.hbs', '.less'],
+        extensions: ['', '.jsx', '.js', '.es6', '.hbs', '.less']
+    },
+    devServer: {
+        hot: true,
+        inline: true
     },
     module: {
         loaders: [{
@@ -22,27 +28,27 @@ module.exports = {
             loader: 'babel-loader'
         }, {
             test: /\.hbs/,
-            loader: "handlebars-loader",
+            loader: 'handlebars-loader',
             query: {
                 helperDirs: [helpersDir]
             }
         }, {
             test: /\.json/,
-            loader: "json-loader"
+            loader: 'json-loader'
         }, {
             test: /\.md/,
-            loader: "markdown-loader"
+            loader: 'markdown-loader'
         }, {
             test: /\.less$/,
             exclude: /node_modules/,
-            loaders: ["style", "css", "postcss", "less"]
-        }],
+            loaders: ['style', 'css', 'postcss', 'less']
+        }]
     },
     postcss: function () {
         return [autoprefixer({ browsers: ['last 2 versions'] })];
     },
     node: {
-        fs: "empty" // avoids error messages
+        fs: 'empty'
     },
     watchOptions: {poll: 600, aggregateTimeout: 300}
 };

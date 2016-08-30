@@ -36,7 +36,7 @@ class FormView {
 
             $form.on('submit', (e) => {
                 e.preventDefault();
-                let newUserData = this.serializeForm($form, {});
+                let newUserData = this.serializeForm($form, user);
                 this.hideFormView();
                 this.service.editUser(newUserData);
                 ee.emit(FORM_EVENTS.USER_EDITED);
