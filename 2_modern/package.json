@@ -8,7 +8,8 @@
     "start-dev-server": "webpack-dev-server --output-public-path=/dist/ --inline --hot",
     "start-backend": "node src/backend.js",
     "start-front": "webpack --watch webpack.config.js",
-    "start-all": "npm run start-backend | npm run start-dev-server"
+    "start-all": "npm run start-backend | npm run start-dev-server",
+    "postinstall":"npm i webpack -g | npm i gulp -g"
   },
   "author": "",
   "license": "ISC",

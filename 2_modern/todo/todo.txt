@@ -1,15 +1,9 @@
 ----- LINKS TO READ/ TO GO BACK TO -----
 
-http://survivejs.com/webpack/developing-with-webpack
-
-http://survivejs.com/webpack/developing-with-webpack/automatic-browser-refresh/
-
 ----------
 
 ----- TO-DO LIST ------
-- gulp - z 3 plików less jeden
 - package.json - post-install
-
 
 Testy
 - Mocha -  http://www.erikschierboom.com/images/posts/publishing-library-part-1-testing/mocha-test-runner-grouped.png
