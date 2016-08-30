@@ -1,0 +1,47 @@
+{
+  "name": "2_modern",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev-server": "webpack-dev-server --output-public-path=/dist/ --inline --hot",
+    "start-backend": "node src/backend.js",
+    "start-front": "webpack --watch webpack.config.js",
+    "start-all": "npm run start-backend | npm run start-dev-server",
+    "postinstall":"npm i webpack -g | npm i gulp -g"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^6.4.0",
+    "babel-core": "^6.13.2",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.13.2",
+    "css-loader": "^0.23.1",
+    "eslint": "^3.3.1",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-less": "^3.1.0",
+    "gulp-notify": "^2.2.0",
+    "handlebars-loader": "^1.3.0",
+    "json-loader": "^0.5.4",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "markdown-loader": "^0.1.7",
+    "postcss-loader": "^0.10.1",
+    "precss": "^1.4.0",
+    "style-loader": "^0.13.1",
+    "through2": "^2.0.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.15.0"
+  },
+  "dependencies": {
+    "axios": "^0.13.1",
+    "babel-polyfill": "^6.13.0",
+    "event-emitter": "^0.3.4",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "handlebars": "^4.0.5",
+    "jquery": "^3.1.0"
+  }
+}

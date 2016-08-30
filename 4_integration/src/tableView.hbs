@@ -1,0 +1,25 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th class="col-md-3">Imię</th>
+        <th class="col-md-5">Nazwisko</th>
+        <th class="col-md-2">Wiek</th>
+        <th class="col-md-2">Płeć</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#unless loading}}
+    {{#each users}} 
+    <tr data-id="{{@index}}">
+            <td>{{this.name}}</td>
+            <td>{{this.surname}}</td>
+            <td>{{this.age}}</td>
+            <td>{{this.sex}}</td>
+    </tr>
+    {{/each}}
+    {{/unless}}
+    </tbody>
+</table>
+{{#if loading}}
+    <h3>Loading...</h3>
+{{/if}}
