@@ -8,7 +8,7 @@
     "start-front": "webpack-dev-server --output-public-path=/dist/ --inline --hot",
     "start-test": "webpack-dev-server --config webpack.tests.config.js --inline --hot",
     "start-all": "npm run start-backend | npm run start-front | npm run start-test",
-    "postinstall": "npm i webpack -g | npm i gulp -g"
+    "postinstall": "npm i webpack -g | npm i gulp -g | npm i karma -g | npm i karma-cli -g"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +26,10 @@
     "gulp-notify": "^2.2.0",
     "handlebars-loader": "^1.3.0",
     "json-loader": "^0.5.4",
+    "karma": "^1.2.0",
+    "karma-mocha": "^1.1.1",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-webpack": "^1.8.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "markdown-loader": "^0.1.7",
