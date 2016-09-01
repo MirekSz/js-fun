@@ -6,7 +6,7 @@
   "scripts": {
     "start-backend": "node src/backend.js",
     "start-front": "webpack-dev-server --output-public-path=/dist/ --inline --hot",
-    "start-test": "webpack-dev-server --config webpack.tests.config.js",
+    "start-test": "webpack-dev-server --config webpack.tests.config.js --inline --hot",
     "start-all": "npm run start-backend | npm run start-front | npm run start-test",
     "postinstall": "npm i webpack -g | npm i gulp -g"
   },

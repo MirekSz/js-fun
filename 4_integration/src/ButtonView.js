@@ -1,4 +1,4 @@
-import $ from "jquery";
+import $ from 'jquery';
 import template from './buttonView.hbs';
 
 import {TABLE_EVENTS} from './TableView';
@@ -40,8 +40,8 @@ class ButtonView {
      * @param {boolean} val
      */
     static setButtonsDisabled(val) {
-        $("#editBtn").prop("disabled", val);
-        $("#deleteBtn").prop("disabled", val);
+        $('#editBtn').prop('disabled', val);
+        $('#deleteBtn').prop('disabled', val);
     }
 
     render() {
@@ -51,16 +51,16 @@ class ButtonView {
 
     setOnClickForButtons() {
         let {ee} = this;
-        $("#addBtn").click(() => {
+        $('#addBtn').click(() => {
             ee.emit(BUTTON_EVENTS.ADD_NEW_USER);
             this.hideButtonView();
         });
-        $("#editBtn").click(() => {
+        $('#editBtn').click(() => {
             ee.emit(BUTTON_EVENTS.EDIT_BUTTON_CLICK);
             this.hideButtonView();
         });
-        $("#deleteBtn").click(() => {
-            var answer = confirm("Czy chcesz usunąć tego użytkownika?");
+        $('#deleteBtn').click(() => {
+            let answer = confirm('Czy chcesz usunąć tego użytkownika?');
             if (answer) {
                 ButtonView.setButtonsDisabled(true);
                 ee.emit(BUTTON_EVENTS.DELETE_USER);
@@ -69,7 +69,7 @@ class ButtonView {
     }
 
     hideButtonView() {
-        $(this.divID).html("xx");
+        $(this.divID).html('');
     }
 
     /**
