@@ -6,9 +6,6 @@ import {USER_SERVICE_EVENT} from '../src/UserService'
 
 describe('TableView tests...', function () {
 
-
-
-
     before(()=> {
         $(document.body).append('<div id="workspace"></div>')
     });
@@ -47,6 +44,7 @@ describe('TableView tests...', function () {
         let tableView = new TableView(ee);
         tableView.setDivID('#workspace');
         tableView.render();
+
         var userToAdd = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
 
         //when
