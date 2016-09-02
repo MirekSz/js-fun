@@ -8,5 +8,7 @@ cache:
 branches:
   only:
     - master
+before_script:
+ - cd 4_integration
 script:
-  - cd 4_integration && npm install && npm run start-backend | ./node_modules/.bin/karma start --single-run --browsers PhantomJS || exit 0
+  - npm run start-backend |
