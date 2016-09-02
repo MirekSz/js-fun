@@ -11,4 +11,5 @@ branches:
 before_script:
  - cd 4_integration
 script:
-  - npm run start-backend |
+  - npm run start-backend
+  - npm test
