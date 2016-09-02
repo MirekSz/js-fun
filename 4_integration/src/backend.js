@@ -35,9 +35,7 @@ function generateID() {
 }
 
 app.get('/users', function (request, response) {
-    setTimeout(() => {
-        response.send(users);
-    }, 2000);
+    response.send(users);
 });
 
 app.post('/users', function (request, response) {
