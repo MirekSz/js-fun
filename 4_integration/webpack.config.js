@@ -5,7 +5,7 @@ var helpersDir = path.join(__dirname, 'src', 'helpers');
 var autoprefixer = require('autoprefixer');
 
 module.exports = {
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'inline-source-map',
     entry: [
         './src/index.js',
         './users.less'

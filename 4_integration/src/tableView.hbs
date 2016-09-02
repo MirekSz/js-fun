@@ -10,7 +10,7 @@
     <tbody>
     {{#unless loading}}
     {{#each users}} 
-    <tr data-id="{{@index}}">
+    <tr data-id="{{this.id}}">
             <td>{{this.name}}</td>
             <td>{{this.surname}}</td>
             <td>{{this.age}}</td>

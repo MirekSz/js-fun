@@ -93,6 +93,7 @@ class TableView {
      * @returns {string}
      */
     static prepareTableHtml(users, loading) {
+        console.log(users)
         return template({users, loading});
     }
 }

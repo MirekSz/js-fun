@@ -2,7 +2,7 @@
 
 import EventEmitter from 'event-emitter';
 import UserService from '../src/UserService';
-import User from '../src/user';
+
 
 let baseUrl = 'http://localhost:3000';
 
