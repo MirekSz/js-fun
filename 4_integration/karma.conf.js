@@ -6,7 +6,6 @@ module.exports = function (config) {
     config.set({
         basePath: '',
         frameworks: ['mocha', 'chai', 'jquery-2.1.0'],
-        singleRun: false,
         files: [
             './node_modules/babel-polyfill/dist/polyfill.js',
             'test/index.js'
@@ -34,7 +33,6 @@ module.exports = function (config) {
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
-        autoWatch: true,
         browsers: ['PhantomJS'],
         concurrency: Infinity,
         webpackServer: {
