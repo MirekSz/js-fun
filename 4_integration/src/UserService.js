@@ -18,8 +18,9 @@ class UserService {
     }
 
     getUsers() {
-        this.http.getData(this.url).then((response) => {
+        return this.http.getData(this.url).then((response) => {
             this.ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, response.data);
+            return response.data;
         }).catch((error) => {
             console.log(error);
         });
@@ -30,10 +31,10 @@ class UserService {
      * @param {User} user
      */
     addUser(user) {
-        this.http.post(this.url, user).then(this.getUsers.bind(this))
-            .catch((error) => {
-                console.log(error);
-            });
+        return this.http.post(this.url, user).then((user) => {
+            this.getUsers();
+            return user;
+        })
     }
 
     /**
@@ -41,7 +42,7 @@ class UserService {
      * @param {User} user
      */
     editUser(user) {
-        this.http.put(this.url, user).then(this.getUsers.bind(this))
+        return this.http.put(this.url, user).then(this.getUsers.bind(this))
             .catch((error) => {
                 console.log(error);
             });
@@ -52,7 +53,7 @@ class UserService {
      * @param id
      */
     deleteUser(id) {
-        this.http.doDelete(this.url + id, id).then(this.getUsers.bind(this))
+        return this.http.doDelete(this.url + id, id).then(this.getUsers.bind(this))
             .catch((error) => {
                 console.log(error);
             });
