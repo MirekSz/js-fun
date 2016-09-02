@@ -9,5 +9,4 @@ branches:
   only:
     - master
 script:
-  - npm run start-backend |
-
+  - cd 4_integration && npm install && npm run start-backend | ./node_modules/.bin/karma start --single-run --browsers PhantomJS
