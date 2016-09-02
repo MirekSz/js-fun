@@ -8,7 +8,8 @@
     "start-front": "webpack-dev-server --output-public-path=/dist/ --inline --hot",
     "start-test": "webpack-dev-server --config webpack.tests.config.js --inline --hot",
     "start-all": "npm run start-backend | npm run start-front | npm run start-test",
-    "postinstall": "npm i webpack -g | npm i gulp -g | npm i karma -g | npm i karma-cli -g"
+    "postinstall": "npm i webpack -g | npm i gulp -g | npm i karma -g | npm i karma-cli -g",
+    "test": "karma start --single-run --browsers PhantomJS"
   },
   "author": "",
   "license": "ISC",
