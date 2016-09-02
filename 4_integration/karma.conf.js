@@ -5,9 +5,10 @@ var webpack = require('webpack');
 module.exports = function (config) {
     config.set({
         basePath: '',
-        frameworks: ['mocha'],
-        singleRun: true,
+        frameworks: ['mocha','chai'],
+        singleRun: false,
         files: [
+            './node_modules/babel-polyfill/dist/polyfill.js',
             'test/index.js'
         ],
         exclude: ['node_modules/'],
@@ -38,6 +39,12 @@ module.exports = function (config) {
         concurrency: Infinity,
         webpackServer: {
             noInfo: true //please don't spam the console when running in karma!
-        }
+        },
+        plugins : [
+            require('karma-mocha'),
+            require('karma-chai'),
+            require('karma-webpack'),
+            require('karma-phantomjs-launcher'),
+        ]
     });
 };

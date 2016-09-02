@@ -1,5 +1,6 @@
 module.exports = {
-    entry: 'mocha!./test/index.js',
+    devtool: 'inline-source-map',
+    entry: ['babel-polyfill','mocha!./test/index.js'],
     output: {
         filename: 'test.build.js',
         path: './test/',
@@ -9,8 +10,9 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                loaders: ['babel-loader']
-            },
+                loaders: ['babel-loader'],
+                 exclude: /node_modules/
+},
             {
                 test: /\.hbs$/,
                 loader: 'handlebars'
