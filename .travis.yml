@@ -12,5 +12,5 @@ before_script:
  - cd 4_integration
 script:
   - npm install
-  - npm run start-backend && exit 0
+  - nohup npm run start-backend
   - npm test
