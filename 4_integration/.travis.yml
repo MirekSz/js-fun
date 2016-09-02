@@ -1,0 +1,15 @@
+sudo: false
+language: node_js
+node_js:
+  - stable
+cache:
+  directories:
+    - node_modules
+branches:
+  only:
+    - master
+script:
+  - npm install
+  - ./node_modules/.bin/karma start --single-run --browsers PhantomJS
+after_success:
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
