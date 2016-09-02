@@ -38,6 +38,7 @@ describe('TableView tests...', function () {
         expect($('#workspace table tbody tr').length).to.be.eq(0)
     });
 
+
     it('should render table rows after USERS_NEW_DATA event', function () {
         //given
         let ee = new EventEmitter();
