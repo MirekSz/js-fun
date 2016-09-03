@@ -22,6 +22,6 @@ describe('UserService tests...', function () {
         //then
         users = await service.getUsers();
         var lastSize = users.length;
-        expect(lastSize).to.be.eq(currentSize + 1);
+        expect(lastSize).to.be.eq(currentSize);
     });
 });
