@@ -24,17 +24,10 @@ class TableView {
         this.loading = true;
     }
 
-    setDivID(div) {
-        this.divID = div;
-        return this;
-    }
-
     setUpListeners() {
         let {ee} = this;
-        ee.on(USER_SERVICE_EVENT.USERS_NEW_DATA, (users) => {
-            this.users = users;
+        ee.on(USER_SERVICE_EVENT.USERS_NEW_DATA, () => {
             this.loading = false;
-            this.render();
         });
         ee.on(BUTTON_EVENTS.DELETE_USER, () => {
             this.service.deleteUser(this.users[this.selectedRow].id);
@@ -55,11 +48,15 @@ class TableView {
         });
     }
 
-    render() {
+    render(divID, users) {
+        this.divID = divID;
+        if (users) {
+            this.users = users;
+        }
         this.selectedRow = -1;
-        $(this.divID).html(TableView.prepareTableHtml(this.users, this.loading));
+        $(divID).html(TableView.prepareTableHtml(users, this.loading));
         if (!this.loading) {
-            $(this.divID).find('table tbody tr').on('click', (event) => {
+            $(divID).find('table tbody tr').on('click', (event) => {
                 let rowNumber = parseInt($(event.target.parentElement).attr('data-id'), 10);
                 this.onRowClick(rowNumber);
             });

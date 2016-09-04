@@ -1,10 +1,7 @@
 ----- TO-DO LIST ------
-- Mocha -  http://www.erikschierboom.com/images/posts/publishing-library-part-1-testing/mocha-test-runner-grouped.png
-- Chai
-
-- karma         http://developer.telerik.com/wp-content/uploads/2015/01/04.jpg
-- phantomjs
-
+- testy komponentów
+- testy userService
+- karma - notify with gowl
 - sinon
 ----------
 

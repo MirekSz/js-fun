@@ -14,11 +14,13 @@ function initialize() {
     let service = new UserService(ee, baseUrl, '/users/');
 
     new ButtonView(ee).setDivID('#buttonView').render();
-    new TableView(ee, service).setDivID('#workspace').render();
+    let tableView = new TableView(ee, service);
     new DetailsView(ee).setDivID('#detailsView');
     new FormView(ee, service).setDivID('#workspace');
 
-    service.getUsers();
+    service.getUsers().then((users) => {
+        tableView.render('#workspace', users);
+    });
 }
 
 $(document).ready(initialize);

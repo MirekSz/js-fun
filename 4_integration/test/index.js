@@ -1,7 +1,7 @@
 
 global.ita=function(description, callback) {
     return it(description,
-        async(done) => {
+        async (done) => {
             try {
                 await callback();
                 done();
@@ -10,7 +10,7 @@ global.ita=function(description, callback) {
             }
         }
     )
-}
+};
 let context = require.context('.', true, /.+\.test\.js?$/);
 context.keys().forEach(context);
 module.exports = context;

@@ -29,13 +29,13 @@ class UserService {
 
     /**
      *
-     * @param {User} user
+     * @param {User} newUser
      */
-    addUser(user) {
-        return this.http.post(this.url, user).then((user) => {
+    addUser(newUser) {
+        return this.http.post(this.url, newUser).then((user) => {
             this.getUsers();
             return user;
-        })
+        });
     }
 
     /**

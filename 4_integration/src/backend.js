@@ -20,7 +20,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-let users = [new User(0, 'Jacek', 'Doe', '43', 'Mężczyzna'),
+let users = [new User(10, 'Jacek', 'Doe', '43', 'Mężczyzna'),
     new User(1, 'Marzanna', 'Uss', '54', 'Kobieta'),
     new User(2, 'Julia', 'Dolej', '22', 'Kobieta')];
 

@@ -1,6 +1,6 @@
 module.exports = {
     devtool: 'inline-source-map',
-    entry: ['babel-polyfill','mocha!./test/index.js'],
+    entry: ['babel-polyfill','./test/index.js'],
     output: {
         filename: 'test.build.js',
         path: './test/',

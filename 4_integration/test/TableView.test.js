@@ -1,13 +1,13 @@
 /* eslint-disable */
 
 import EventEmitter from 'event-emitter';
-import TableView from '../src/TableView.js';
+import TableView, {TABLE_EVENTS} from '../src/TableView.js';
 import {USER_SERVICE_EVENT} from '../src/UserService'
 
 describe('TableView tests...', function () {
 
     before(()=> {
-        $(document.body).append('<div id="workspace"></div>')
+        $(document.body).append('<div id="workspace"></div>');
     });
 
     afterEach(()=> {
@@ -17,25 +17,23 @@ describe('TableView tests...', function () {
     it('should render table with header', function () {
         //given
         let tableView = new TableView(new EventEmitter());
-        tableView.setDivID('#workspace');
 
         //when
-        tableView.render();
+        tableView.render('#workspace');
 
         //then
-        expect($('#workspace table thead tr').length).to.be.gt(0)
+        expect($('#workspace table thead tr').length).to.be.gt(0);
     });
 
     it('should render table with empty body', function () {
         //given
         let tableView = new TableView(new EventEmitter());
-        tableView.setDivID('#workspace');
 
         //when
-        tableView.render();
+        tableView.render('#workspace');
 
         //then
-        expect($('#workspace table tbody tr').length).to.be.eq(0)
+        expect(tableView.users.length).to.be.eq(0);
     });
 
 
@@ -43,8 +41,7 @@ describe('TableView tests...', function () {
         //given
         let ee = new EventEmitter();
         let tableView = new TableView(ee);
-        tableView.setDivID('#workspace');
-        tableView.render();
+        tableView.render('#workspace');
 
         var userToAdd = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
 
@@ -52,7 +49,24 @@ describe('TableView tests...', function () {
         ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, [userToAdd]);
 
         //then
-        expect($('#workspace table tbody tr').length).to.be.eq(1)
+        expect(tableView.users.length).to.be.eq(1)
+    });
+
+    it('should emit TABLE_EVENTS.ON_ROW_SELECTION_CHANGE with first user', function () {
+        //given
+        let ee = new EventEmitter();
+        let tableView = new TableView(ee);
+        tableView.render('#workspace', [{id:12, name:'Jurek'}]);
+        let emittedUser = {};
+
+        //when
+        ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, (user) => {
+            this.emittedUser = user;
+        });
+        tableView.onRowClick(0);
+
+        //then
+        expect(emittedUser).to.be.eq(tableView.users[0]);
     });
 
 });

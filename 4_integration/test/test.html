@@ -9,8 +9,19 @@
     <script src="../test-lib/mocha.js"></script>
     <script src="../test-lib/jquery-1.11.2.js"></script>
     <script>window.expect = chai.expect</script>
+    <script>mocha.setup('bdd')</script>
     <script src="./test.build.js"></script>
+    <script>
+        onload = function(){
+            var runner = mocha.run();
+            // runner.globals(['foo', 'bar', 'baz']);
+            // runner.on('test end', function(test){
+            //   console.log(test.fullTitle());
+            // });
+        };
+    </script>
 </head>
 <body>
+<div id="mocha"></div>
 </body>
 </html>
