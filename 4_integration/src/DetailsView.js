@@ -8,23 +8,19 @@ class DetailsView {
     /**
      *
      * @param {EventEmitter} ee
+     * @param divID
      */
-    constructor(ee) {
+    constructor(ee, divID) {
         this.ee = ee;
-        this.setUpListeners();
+        this.divID = divID;
         this.data = {};
-    }
-
-    setDivID(div) {
-        this.divID = div;
-        return this;
     }
 
     setUpListeners() {
         let {ee} = this;
         ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, (user) => {
             this.data = user;
-            this.render(user);
+            this.render(this.divID, user);
         });
         ee.on(TABLE_EVENTS.EDIT_USER, this.hideDetailsView.bind(this));
         ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hideDetailsView.bind(this));
@@ -33,10 +29,12 @@ class DetailsView {
 
     /**
      *
-     * @param {User} user
+     * @param divID
+     * @param user
      */
-    render(user) {
-        $(this.divID).html(DetailsView.prepareDetailsHtml(user));
+    render(divID, user) {
+        this.divID = divID;
+        $(divID).html(DetailsView.prepareDetailsHtml(user));
     }
 
     hideDetailsView() {
