@@ -24,7 +24,7 @@ describe('UserService tests...', function () {
         var lastSize = users.length;
         expect(lastSize).to.be.eq(currentSize + 1);
     });
-    it('should add user', () => {
+    it('should add user with standard promise way', () => {
         //given
         var promise = service.getUsers();
         promise.then((users) => {
@@ -52,12 +52,11 @@ describe('UserService tests...', function () {
         };
 
         //when
-        userService.getUsers().then(()=>{
-        expect(users).to.not.be.empty;
-
+        userService.getUsers().then(()=> {
+            //then
+            expect(users).to.not.be.empty;
         }).then(done).catch(done);
 
-        //thenn
         // expect(users).to.not.be.empty; expect z sinona
 
     });
