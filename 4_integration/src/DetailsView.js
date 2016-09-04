@@ -12,6 +12,7 @@ class DetailsView {
     constructor(ee) {
         this.ee = ee;
         this.setUpListeners();
+        this.data = {};
     }
 
     setDivID(div) {
@@ -22,6 +23,7 @@ class DetailsView {
     setUpListeners() {
         let {ee} = this;
         ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, (user) => {
+            this.data = user;
             this.render(user);
         });
         ee.on(TABLE_EVENTS.EDIT_USER, this.hideDetailsView.bind(this));

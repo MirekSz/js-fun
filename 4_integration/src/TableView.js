@@ -50,8 +50,11 @@ class TableView {
         });
     }
 
-    render(divID, users) {
+    render(divID, users, loading) {
         this.divID = divID;
+        if (typeof loading !== 'undefined') {
+            this.loading = loading;
+        }
         if (typeof users !== 'undefined') {
             this.users = users;
         }
@@ -59,7 +62,7 @@ class TableView {
         $(divID).html(TableView.prepareTableHtml(this.users, this.loading));
         if (!this.loading) {
             $(divID).find('table tbody tr').on('click', (event) => {
-                let rowNumber = parseInt($(event.target.parentElement).attr('data-id'), 10);
+                let rowNumber = $(event.target.parentElement).data('id');
                 this.onRowClick(rowNumber);
             });
         }

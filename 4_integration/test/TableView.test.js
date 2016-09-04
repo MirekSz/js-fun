@@ -2,16 +2,19 @@
 
 import EventEmitter from 'event-emitter';
 import TableView, {TABLE_EVENTS} from '../src/TableView.js';
-import {USER_SERVICE_EVENT} from '../src/UserService'
+import DetailsView from '../src/DetailsView.js';
+import {USER_SERVICE_EVENT} from '../src/UserService';
 
 describe('TableView tests...', function () {
 
     before(()=> {
         $(document.body).append('<div id="workspace"></div>');
+        $(document.body).append('<div id="detailsView"></div>');
     });
 
     afterEach(()=> {
         $('#workspace').empty();
+        $('detailsView').empty();
     });
 
     it('should render table with header', function () {
@@ -55,17 +58,32 @@ describe('TableView tests...', function () {
         //given
         let ee = new EventEmitter();
         let tableView = new TableView(ee);
-        tableView.render('#workspace', [{id:12, name:'Jurek'}]);
+        tableView.render('#workspace', [{id: 1, name: 'Jurek'}]);
         let emittedUser = {};
         ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, (user) => {
             emittedUser = user;
         });
 
         //when
-        tableView.onRowClick(12);
+        tableView.onRowClick(1);
 
         //then
         expect(emittedUser).to.be.eq(tableView.users[0]);
+    });
+
+    it('should render Details with given User', function () {
+        //given
+        let ee = new EventEmitter();
+        let user = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
+        let tableView = new TableView(ee);
+        tableView.render('#workspace', [user], false);
+        let details = new DetailsView(ee).setDivID('#detailsView');
+
+        //when
+        tableView.onRowClick(0);
+
+        //then
+        expect(details.data).to.be.eq(user);
     });
 
 });
