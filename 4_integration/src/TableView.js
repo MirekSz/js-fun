@@ -26,8 +26,10 @@ class TableView {
 
     setUpListeners() {
         let {ee} = this;
-        ee.on(USER_SERVICE_EVENT.USERS_NEW_DATA, () => {
+        ee.on(USER_SERVICE_EVENT.USERS_NEW_DATA, (users) => {
             this.loading = false;
+            this.users = users;
+            this.render(this.divID, users);
         });
         ee.on(BUTTON_EVENTS.DELETE_USER, () => {
             this.service.deleteUser(this.users[this.selectedRow].id);
@@ -50,11 +52,11 @@ class TableView {
 
     render(divID, users) {
         this.divID = divID;
-        if (users) {
+        if (typeof users !== 'undefined') {
             this.users = users;
         }
         this.selectedRow = -1;
-        $(divID).html(TableView.prepareTableHtml(users, this.loading));
+        $(divID).html(TableView.prepareTableHtml(this.users, this.loading));
         if (!this.loading) {
             $(divID).find('table tbody tr').on('click', (event) => {
                 let rowNumber = parseInt($(event.target.parentElement).attr('data-id'), 10);

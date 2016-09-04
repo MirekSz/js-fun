@@ -42,11 +42,10 @@ describe('TableView tests...', function () {
         let ee = new EventEmitter();
         let tableView = new TableView(ee);
         tableView.render('#workspace');
-
-        var userToAdd = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
+        var user = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
 
         //when
-        ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, [userToAdd]);
+        ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, [user]);
 
         //then
         expect(tableView.users.length).to.be.eq(1)
@@ -58,11 +57,11 @@ describe('TableView tests...', function () {
         let tableView = new TableView(ee);
         tableView.render('#workspace', [{id:12, name:'Jurek'}]);
         let emittedUser = {};
-
-        //when
         ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, (user) => {
             this.emittedUser = user;
         });
+
+        //when
         tableView.onRowClick(0);
 
         //then
