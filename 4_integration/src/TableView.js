@@ -77,7 +77,13 @@ class TableView {
         $(`tr[data-id*='${rowNumber}']`).addClass('activeRow', {duration: 500});
         this.selectedRow = rowNumber;
         if (selected !== rowNumber) {
-            this.ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, this.users[rowNumber]);
+            let selectedUser = {};
+            this.users.forEach((element) => {
+                if (element.id === rowNumber) {
+                    selectedUser = element;
+                }
+            });
+            this.ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, selectedUser);
         }
     }
 

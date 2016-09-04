@@ -9,14 +9,14 @@
     </thead>
     <tbody>
     {{#unless loading}}
-    {{#each users}} 
-    <tr data-id="{{@index}}">
+        {{#each users}} 
+        <tr data-id="{{this.id}}">
             <td>{{this.name}}</td>
             <td>{{this.surname}}</td>
             <td>{{this.age}}</td>
             <td>{{this.sex}}</td>
-    </tr>
-    {{/each}}
+        </tr>
+        {{/each}}
     {{/unless}}
     </tbody>
 </table>

@@ -51,18 +51,18 @@ describe('TableView tests...', function () {
         expect(tableView.users.length).to.be.eq(1)
     });
 
-    it('should emit TABLE_EVENTS.ON_ROW_SELECTION_CHANGE with first user', function () {
+    it('should emit TABLE_EVENTS.ON_ROW_SELECTION_CHANGE', function () {
         //given
         let ee = new EventEmitter();
         let tableView = new TableView(ee);
         tableView.render('#workspace', [{id:12, name:'Jurek'}]);
         let emittedUser = {};
         ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, (user) => {
-            this.emittedUser = user;
+            emittedUser = user;
         });
 
         //when
-        tableView.onRowClick(0);
+        tableView.onRowClick(12);
 
         //then
         expect(emittedUser).to.be.eq(tableView.users[0]);
