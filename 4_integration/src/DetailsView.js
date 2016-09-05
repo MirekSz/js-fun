@@ -10,18 +10,13 @@ class DetailsView {
      * @param {EventEmitter} ee
      * @param divID
      */
-    constructor(ee, divID) {
+    constructor(ee) {
         this.ee = ee;
-        this.divID = divID;
         this.data = {};
     }
 
     setUpListeners() {
         let {ee} = this;
-        ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, (user) => {
-            this.data = user;
-            this.render(this.divID, user);
-        });
         ee.on(TABLE_EVENTS.EDIT_USER, this.hideDetailsView.bind(this));
         ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hideDetailsView.bind(this));
         ee.on(BUTTON_EVENTS.DELETE_USER, this.hideDetailsView.bind(this));
