@@ -1,11 +1,5 @@
 /*eslint-disable */
 
-let chai = require('chai');
-let sinonChai = require('sinon-chai');
-chai.use(sinonChai);
-let assert = chai.assert;
-let sinon = require('sinon/pkg/sinon');
-
 import EventEmitter from 'event-emitter';
 import ButtonView from '../src/ButtonView';
 import {TABLE_EVENTS} from '../src/TableView';
@@ -44,6 +38,7 @@ describe('ButtonView tests...', function () {
         ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE);
 
         //then
-        expect(spy.calledOnce && spy.calledWith(false));
+        expect(spy).to.have.been.calledOnce;
+        expect(spy).to.have.been.calledWith(false);
     });
 });
