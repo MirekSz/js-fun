@@ -13,7 +13,7 @@ function initialize() {
     let ee = new EventEmitter();
     let service = new UserService(ee, baseUrl, '/users/');
 
-    new ButtonView(ee).setDivID('#buttonView').render();
+    new ButtonView(ee).render('#buttonView');
     new TableView(ee, service).render('#workspace');
     new DetailsView(ee, '#detailsView').setUpListeners();
     new FormView(ee, service).setDivID('#workspace');

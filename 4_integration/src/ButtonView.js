@@ -18,17 +18,13 @@ class ButtonView {
     constructor(ee) {
         this.ee = ee;
         this.setUpListeners();
-    }
-
-    setDivID(div) {
-        this.divID = div;
-        return this;
+        this.setButtonsDisabled(true);
     }
 
     setUpListeners() {
         let {ee} = this;
         ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, () => {
-            ButtonView.setButtonsDisabled(false);
+            this.setButtonsDisabled(false);
         });
         ee.on(FORM_EVENTS.USER_EDITED, this.render.bind(this));
         ee.on(FORM_EVENTS.USER_ADDED, this.render.bind(this));
@@ -39,12 +35,19 @@ class ButtonView {
      *
      * @param {boolean} val
      */
-    static setButtonsDisabled(val) {
+    setButtonsDisabled(val) {
+        this.disabled = val;
         $('#editBtn').prop('disabled', val);
         $('#deleteBtn').prop('disabled', val);
     }
 
-    render() {
+    /**
+     * @param divID
+     */
+    render(divID) {
+        if (typeof divID !== 'undefined') {
+            this.divID = divID;
+        }
         $(this.divID).html(ButtonView.prepareButtonHtml());
         this.setOnClickForButtons();
     }
