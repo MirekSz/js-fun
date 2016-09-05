@@ -15,7 +15,7 @@ function initialize() {
 
     new ButtonView(ee).setDivID('#buttonView').render();
     new TableView(ee, service).render('#workspace');
-    new DetailsView(ee).setUpListeners();
+    new DetailsView(ee, '#detailsView').setUpListeners();
     new FormView(ee, service).setDivID('#workspace');
 
     service.getUsers();
