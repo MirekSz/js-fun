@@ -28,5 +28,5 @@ describe('ButtonView tests...', function () {
     it('should enable buttons after ON_ROW_SELECTION_CHANGE event', function () {
         ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE);
         expect(btnView.disabled).to.be.eq(false);
-    })
+    });
 });
