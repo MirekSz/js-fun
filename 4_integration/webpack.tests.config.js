@@ -1,6 +1,6 @@
 module.exports = {
     devtool: 'inline-source-map',
-    entry: ['babel-polyfill','./test/index.js'],
+    entry: ['babel-polyfill', './test/index.js'],
     output: {
         filename: 'test.build.js',
         path: './test/',
@@ -11,12 +11,15 @@ module.exports = {
             {
                 test: /\.js$/,
                 loaders: ['babel-loader'],
-                 exclude: /node_modules/
-},
+                exclude: /node_modules/
+            },
             {
                 test: /\.hbs$/,
                 loader: 'handlebars'
             }
+        ],
+        noParse: [
+            /node_modules\/sinon\//
         ]
     },
     devServer: {
@@ -24,3 +27,4 @@ module.exports = {
         port: '8002'
     }
 };
+

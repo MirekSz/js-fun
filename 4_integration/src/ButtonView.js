@@ -65,7 +65,7 @@ class ButtonView {
         $('#deleteBtn').click(() => {
             let answer = confirm('Czy chcesz usunąć tego użytkownika?');
             if (answer) {
-                ButtonView.setButtonsDisabled(true);
+                this.setButtonsDisabled(true);
                 ee.emit(BUTTON_EVENTS.DELETE_USER);
             }
         });

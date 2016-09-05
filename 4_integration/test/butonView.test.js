@@ -1,13 +1,24 @@
 /*eslint-disable */
 
 let chai = require('chai');
+let sinonChai = require('sinon-chai');
+chai.use(sinonChai);
 let assert = chai.assert;
+let sinon = require('sinon/pkg/sinon');
 
 import EventEmitter from 'event-emitter';
 import ButtonView from '../src/ButtonView';
 import {TABLE_EVENTS} from '../src/TableView';
 
+
 describe('ButtonView tests...', function () {
+    beforeEach(function () {
+        this.sinon = sinon.sandbox.create();
+    });
+
+    afterEach(function () {
+        this.sinon.restore();
+    });
 
     let ee = new EventEmitter();
     let btnView = new ButtonView(ee);
@@ -26,7 +37,13 @@ describe('ButtonView tests...', function () {
         expect(btnView.disabled).to.be.eq(true);
     });
     it('should enable buttons after ON_ROW_SELECTION_CHANGE event', function () {
+        //given
+        let spy = sinon.spy(btnView, 'setButtonsDisabled');
+
+        //when
         ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE);
-        expect(btnView.disabled).to.be.eq(false);
+
+        //then
+        expect(spy.calledOnce && spy.calledWith(false));
     });
 });
