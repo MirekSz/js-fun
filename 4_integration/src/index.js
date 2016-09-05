@@ -7,6 +7,7 @@ import TableView from './TableView';
 import DetailsView from './DetailsView';
 import FormView from './FormView';
 import {TABLE_EVENTS} from './TableView';
+import EventRouter from './EventRouter';
 
 /**
  *
@@ -25,14 +26,14 @@ function initialize() {
 
     let ee = new EventEmitter();
     let service = new UserService(ee, baseUrl, '/users/');
-
+    let router = new EventRouter(ee);
     new ButtonView(ee).render('#buttonView');
     new TableView(ee, service).render('#workspace');
     let details = new DetailsView(ee);
     details.setUpListeners();
     new FormView(ee, service).setDivID('#workspace');
-    route(details, ee);
 
+    router.route(details);
     service.getUsers();
 }
 
