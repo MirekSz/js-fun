@@ -45,6 +45,7 @@ describe('ButtonView tests...', function () {
         ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE);
 
         //then
-        expect(spy.calledOnce && spy.calledWith(false));
+        expect(spy).to.have.been.calledOnce;
+        expect(spy).to.have.been.calledWith(false);
     });
 });

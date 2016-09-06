@@ -15,7 +15,7 @@ describe('TableView tests...', function () {
 
     afterEach(()=> {
         $('#workspace').empty();
-        $('detailsView').empty();
+        $('#detailsView').empty();
     });
 
     it('should render table with header', function () {
