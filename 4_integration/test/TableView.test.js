@@ -75,13 +75,16 @@ describe('TableView tests...', function () {
     it('should render Details with given User', function () {
         //given
         let ee = new EventEmitter();
-        let router = new EventRouter(ee);
         let user = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
+
         let tableView = new TableView(ee);
         tableView.render('#workspace', [user], false);
+
         let details = new DetailsView(ee, '#detailsView');
         details.setUpListeners();
-        router.route(details);
+        let router = new EventRouter(ee);
+        router.setDetailsView(details);
+        router.start();
 
         //when
         tableView.onRowClick(0);

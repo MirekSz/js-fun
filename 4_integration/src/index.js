@@ -6,20 +6,7 @@ import ButtonView from './ButtonView';
 import TableView from './TableView';
 import DetailsView from './DetailsView';
 import FormView from './FormView';
-import {TABLE_EVENTS} from './TableView';
 import EventRouter from './EventRouter';
-
-/**
- *
- * @param {DetailsView} details
- * @param {EventEmitter} ee
- */
-function route(details, ee) {
-    ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, (user) => {
-        details.data = user;
-        details.render('#detailsView', user);
-    });
-}
 
 function initialize() {
     let baseUrl = 'http://localhost:3000';
@@ -33,7 +20,12 @@ function initialize() {
     details.setUpListeners();
     new FormView(ee, service).setDivID('#workspace');
 
-    router.route(details);
+    router.setDetailsView(details);
+    // router.setFormView();
+    // router.setButtonView();
+    // router.setTableView();
+    router.start();
+
     service.getUsers();
 }
 

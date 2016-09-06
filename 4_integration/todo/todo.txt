@@ -1,7 +1,5 @@
 ----- TO-DO LIST ------
-- testy komponentów
-- testy userService
-- karma - notify with gowl
+- testy FormView
 
 Read:
 http://martinfowler.com/bliki/TestPyramid.html

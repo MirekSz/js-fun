@@ -5,14 +5,43 @@ class EventRouter {
     constructor(ee) {
         this.ee = ee;
     }
+
     /**
      *
      * @param {DetailsView} details
      */
-    route(details) {
+    setDetailsView(details) {
+        this.details = details;
+    }
+
+    /**
+     *
+     * @param {FormView} form
+     */
+    setFormView(form) {
+        this.form = form;
+    }
+
+    /**
+     *
+     * @param {ButtonView} buttonView
+     */
+    setButtonView(buttonView) {
+        this.buttonView = buttonView;
+    }
+
+    /**
+     *
+     * @param {TableView} table
+     */
+    setTableView(table) {
+        this.table = table;
+    }
+
+    start() {
         this.ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, (user) => {
-            details.data = user;
-            details.render('#detailsView', user);
+            this.details.data = user;
+            this.details.render('#detailsView', user);
         });
     }
 }
