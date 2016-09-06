@@ -1,9 +1,6 @@
 import $ from 'jquery';
 import template from './formView.hbs';
 
-import {TABLE_EVENTS} from './TableView';
-import {BUTTON_EVENTS} from './ButtonView';
-
 export const FORM_EVENTS = {
     USER_EDITED: 'user-edited',
     USER_ADDED: 'userAdded',
@@ -19,50 +16,18 @@ class FormView {
     constructor(ee, service) {
         this.ee = ee;
         this.service = service;
-        this.setUpListeners();
-    }
-
-    setDivID(div) {
-        this.divID = div;
-        return this;
-    }
-
-    setUpListeners() {
-        let {ee} = this;
-        ee.on(TABLE_EVENTS.EDIT_USER, (user) => {
-            this.renderWithMode('Edytuj');
-            let $form = $('#form');
-            this.deserializeForm($form, user);
-
-            $form.on('submit', (e) => {
-                e.preventDefault();
-                let newUserData = this.serializeForm($form, user);
-                this.hideFormView();
-                this.service.editUser(newUserData);
-                ee.emit(FORM_EVENTS.USER_EDITED);
-            });
-        });
-        ee.on(BUTTON_EVENTS.ADD_NEW_USER, () => {
-            this.renderWithMode('Dodaj');
-            let $form = $('#form');
-
-            $form.on('submit', (e) => {
-                e.preventDefault();
-                let user = this.serializeForm($form, {});
-                this.hideFormView();
-                this.service.addUser(user);
-                ee.emit(FORM_EVENTS.USER_ADDED);
-            });
-        });
     }
 
     /**
      *
+     * @param {string} divID
      * @param {string} mode
      */
-    renderWithMode(mode) {
+    render(divID, mode) {
+        this.divID = divID;
+        this.mode = mode;
         let {ee} = this;
-        $(this.divID).html(FormView.prepareFormHtml(mode));
+        $(this.divID).html(FormView.prepareFormHtml(this.mode));
         $('#cancelBtn').click(() => {
             this.hideFormView();
             ee.emit(FORM_EVENTS.FORM_CANCELED);
@@ -70,6 +35,7 @@ class FormView {
     }
 
     hideFormView() {
+        this.mode = 'Hidden';
         $(this.divID).html('');
     }
 

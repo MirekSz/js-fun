@@ -32,21 +32,21 @@ class TableView {
             this.render(this.divID, users);
         });
         ee.on(BUTTON_EVENTS.DELETE_USER, () => {
-            this.service.deleteUser(this.users[this.selectedRow].id);
+            this.service.deleteUser(this.selectedRow);
         });
         ee.on(BUTTON_EVENTS.EDIT_BUTTON_CLICK, () => {
             this.hideTableView();
-            ee.emit(TABLE_EVENTS.EDIT_USER, this.users[this.selectedRow]);
+            ee.emit(TABLE_EVENTS.EDIT_USER, this.findUserById(this.selectedRow));
         });
         ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hideTableView.bind(this));
-        ee.on(FORM_EVENTS.FORM_CANCELED, this.render.bind(this));
+        ee.on(FORM_EVENTS.FORM_CANCELED, () => {
+            this.render(this.divID, this.users, false);
+        });
         ee.on(FORM_EVENTS.USER_EDITED, () => {
-            this.loading = true;
-            this.render();
+            this.render(this.divID, true);
         });
         ee.on(FORM_EVENTS.USER_ADDED, () => {
-            this.loading = true;
-            this.render();
+            this.render(this.divID, true);
         });
     }
 
@@ -80,13 +80,7 @@ class TableView {
         $(`tr[data-id='${rowNumber}']`).addClass('activeRow', {duration: 500});
         this.selectedRow = rowNumber;
         if (selected !== rowNumber) {
-            let selectedUser = {};
-            this.users.forEach((element) => {
-                if (element.id === rowNumber) {
-                    selectedUser = element;
-                }
-            });
-            this.ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, selectedUser);
+            this.ee.emit(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, this.findUserById(rowNumber));
         }
     }
 
@@ -102,6 +96,16 @@ class TableView {
      */
     static prepareTableHtml(users, loading) {
         return template({users, loading});
+    }
+
+    findUserById(id) {
+        let user = {};
+        this.users.forEach((element) => {
+            if (element.id === id) {
+                user = element;
+            }
+        });
+        return user;
     }
 }
 

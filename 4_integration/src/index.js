@@ -18,10 +18,10 @@ function initialize() {
     new TableView(ee, service).render('#workspace');
     let details = new DetailsView(ee);
     details.setUpListeners();
-    new FormView(ee, service).setDivID('#workspace');
+    let form = new FormView(ee, service);
 
     router.setDetailsView(details);
-    // router.setFormView();
+    router.setFormView(form);
     // router.setButtonView();
     // router.setTableView();
     router.start();
