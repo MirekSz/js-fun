@@ -2,7 +2,12 @@
 - testy komponentów
 - testy userService
 - karma - notify with gowl
-- sinon
+
+Read:
+http://martinfowler.com/bliki/TestPyramid.html
+TDD
+https://medium.com/javascript-scene/what-every-unit-test-needs-f6cd34d9836d#.aba4ooqo7
+https://www.smashingmagazine.com/2012/06/introduction-to-javascript-unit-testing/
 ----------
 
 ----- Notes -----

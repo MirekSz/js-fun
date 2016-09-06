@@ -12,7 +12,7 @@ import UserService, {USER_SERVICE_EVENT} from '../src/UserService';
 describe('UserService tests...', function () {
 
     let ee = new EventEmitter();
-    let userService = new UserService(ee);
+    let userService = new UserService(ee, 'localhost:3000', '/users/');
     let spy;
 
     beforeEach(function () {
@@ -54,7 +54,8 @@ describe('UserService tests...', function () {
 
         //then
         expect(newUser.id).to.be.eq(12);
-        expect(stub.calledWith({id:12}), spy.calledOnce);
+        expect(stub).to.have.been.calledWith('/users/', {id:12});
+        expect(spy).to.have.been.calledOnce;
     });
     ita('Should edit user and then call getUsers', async() => {
 
@@ -67,7 +68,8 @@ describe('UserService tests...', function () {
         await userService.editUser({id:12});
 
         //then
-        expect(stub.calledWith({id:12}) && spy.calledOnce);
+        expect(stub).to.have.been.calledWith('/users/', {id:12});
+        expect(spy).to.have.been.calledOnce;
     });
     ita('Should delete user and then call getUsers', async() => {
 
@@ -80,6 +82,7 @@ describe('UserService tests...', function () {
         await userService.deleteUser(12);
 
         //then
-        expect(stub.calledOnce && spy.calledOnce);
+        expect(stub).to.have.been.calledWith('/users/12', 12);
+        expect(spy).to.have.been.calledOnce;
     });
 });
