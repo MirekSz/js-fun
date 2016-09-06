@@ -31,12 +31,16 @@ describe('FormView Tests...', function () {
         expect(spy).to.have.been.calledWith('#workspace', 'Dodaj');
     });
     it('should serialize and deserialize', ()=> {
+        //given
         formView.render('#workspace', 'Dodaj');
-        let $form = $('#form');
         let user = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
+        let $form = $('#form');
+
+        //when
         formView.deserializeForm($form, user);
         let serializedUser = formView.serializeForm($form, user);
 
+        //then
         expect(serializedUser).to.be.eq(user);
     });
 
