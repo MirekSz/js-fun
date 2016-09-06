@@ -49,6 +49,7 @@ class EventRouter {
             this.form.render('#workspace', 'Dodaj');
             let $form = $('#form');
             $form.on('submit', (e) => {
+                // TODO this.form.onSubmit();
                 e.preventDefault();
                 let user = this.form.serializeForm($form, {});
                 this.form.hideFormView();
@@ -62,6 +63,7 @@ class EventRouter {
             this.form.deserializeForm($form, user);
 
             $form.on('submit', (e) => {
+                // TODO this.form.onSubmit();
                 e.preventDefault();
                 let newUserData = this.form.serializeForm($form, user);
                 this.form.hideFormView();
