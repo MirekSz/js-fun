@@ -5,7 +5,7 @@ var webpack = require('webpack');
 module.exports = function (config) {
     config.set({
         basePath: '',
-        frameworks:['mocha', 'chai', 'sinon','sinon-chai', 'jquery-2.1.0'],
+        frameworks:['mocha', 'chai', 'sinon', 'sinon-chai', 'jquery-2.1.0'],
         files: [
             './node_modules/babel-polyfill/dist/polyfill.js',
             'test/index.js'
@@ -29,7 +29,7 @@ module.exports = function (config) {
                 ]
             }
         },
-        reporters: ['progress', 'spec'],
+        reporters: ['progress', 'spec', 'notify'],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
@@ -47,6 +47,7 @@ module.exports = function (config) {
             require('karma-phantomjs-launcher'),
             require('karma-jquery'),
             require('karma-spec-reporter'),
+            require('karma-notify-reporter')
         ]
     });
 };

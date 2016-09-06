@@ -1,11 +1,5 @@
 /*eslint-disable */
 
-let chai = require('chai');
-let sinonChai = require('sinon-chai');
-let sinon = require('sinon/pkg/sinon');
-
-chai.use(sinonChai);
-
 import EventEmitter from 'event-emitter';
 import UserService, {USER_SERVICE_EVENT} from '../src/UserService';
 

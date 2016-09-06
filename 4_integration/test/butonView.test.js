@@ -1,12 +1,5 @@
 /*eslint-disable */
 
-let chai = require('chai');
-let sinonChai = require('sinon-chai');
-chai.use(sinonChai);
-let assert = chai.assert;
-let expect = chai.expect;
-let sinon = require('sinon/pkg/sinon');
-
 import EventEmitter from 'event-emitter';
 import ButtonView from '../src/ButtonView';
 import {TABLE_EVENTS} from '../src/TableView';
