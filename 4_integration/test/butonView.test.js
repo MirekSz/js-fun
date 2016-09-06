@@ -4,6 +4,7 @@ let chai = require('chai');
 let sinonChai = require('sinon-chai');
 chai.use(sinonChai);
 let assert = chai.assert;
+let expect = chai.expect;
 let sinon = require('sinon/pkg/sinon');
 
 import EventEmitter from 'event-emitter';
@@ -34,7 +35,7 @@ describe('ButtonView tests...', function () {
         btnView.setButtonsDisabled(true);
 
         //then
-        expect(btnView.disabled).to.be.eq(true);
+        expect(btnView.disabled);
     });
     it('should enable buttons after ON_ROW_SELECTION_CHANGE event', function () {
         //given
