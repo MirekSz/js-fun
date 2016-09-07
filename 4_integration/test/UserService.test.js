@@ -91,7 +91,7 @@ describe('UserService + HttpManager + backend tests...', function () {
     ita('should add user', async() => {
         //given
         let users = await service.getUsers();
-        let currentCount = users.lenssgth;
+        let currentCount = users.length;
 
         //when
         await service.addUser({id: 14, name: 'K', surname: 'S', age: '34', sex: 'Mężczyzna'});
