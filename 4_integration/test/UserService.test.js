@@ -87,18 +87,55 @@ describe('UserService tests...', function () {
 describe('UserService + HttpManager + backend tests...', function () {
     let ee = new EventEmitter();
     let service = new UserService(ee, 'http://localhost:3000', '/users/');
+    let user = {id: 14, name: 'K', surname: 'S', age: '34', sex: 'Mężczyzna'};
 
     ita('should add user', async() => {
         //given
+        let user = {id: 14, name: 'K', surname: 'S', age: '34', sex: 'Mężczyzna'};
         let users = await service.getUsers();
         let currentCount = users.length;
 
         //when
-        await service.addUser({id: 14, name: 'K', surname: 'S', age: '34', sex: 'Mężczyzna'});
+        await service.addUser(user);
         let newUsers = await service.getUsers();
         let newCount = newUsers.length;
 
         //then
         expect(newCount).to.be.eq(currentCount + 1);
+    });
+    ita('should edit user', async() => {
+        //given
+        let users = await service.getUsers();
+        let currentCount = users.length;
+        user.name = 'M';
+
+        //when
+        let newUsers = await service.editUser({id: 14, name: 'M', surname: 'S', age: '34', sex: 'Mężczyzna'});
+        let newUser = {};
+        newUsers.forEach((element) => {
+            if (element.id === 14) {
+                newUser = element;
+            }
+        });
+
+        //then
+        expect(newUser).to.be.eql(user);
+    });
+    ita('should delete user', async() => {
+        //given
+        let users = await service.getUsers();
+        console.log(users.length);
+        let currentCount = users.length;
+
+        if(!currentCount) {
+            throw 'Received 0 users from backend!';
+        }
+
+        //when
+        let newUsers = await service.deleteUser(users[currentCount-1].id);
+        let newCount = newUsers.length;
+
+        //then
+        expect(newCount).to.be.eq(currentCount - 1);
     });
 });
