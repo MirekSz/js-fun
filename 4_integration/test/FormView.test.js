@@ -13,7 +13,7 @@ describe('FormView Tests...', function () {
     let service = new UserService(ee);
     let formView = new FormView(ee, service);
     let router = new EventRouter(ee);
-    let user = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
+    let user = {id: 0, name: 'Jacek', surname: 'Doe', age: '43', sex: 'Mężczyzna'};
 
     before(()=> {
         $(document.body).append('<div id="workspace"></div>');

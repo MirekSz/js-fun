@@ -6,7 +6,7 @@ import UserService, {USER_SERVICE_EVENT} from '../src/UserService';
 describe('UserService tests...', function () {
 
     let ee = new EventEmitter();
-    let userService = new UserService(ee, 'localhost:3000', '/users/');
+    let userService = new UserService(ee, 'http://localhost:3000', '/users/');
     let spy;
 
     beforeEach(function () {
@@ -15,7 +15,7 @@ describe('UserService tests...', function () {
     });
 
     afterEach(function () {
-        userService.getUsers.restore();
+        spy.restore();
         this.sinon.restore();
     });
 
@@ -26,7 +26,7 @@ describe('UserService tests...', function () {
         ee.on(USER_SERVICE_EVENT.USERS_NEW_DATA, (data)=> {
             users = data;
         });
-        sinon.stub(userService.http, 'getData', () => {
+        let stub = sinon.stub(userService.http, 'getData', () => {
             return Promise.resolve({data: [{}, {}]});
         });
 
@@ -35,6 +35,7 @@ describe('UserService tests...', function () {
 
         //then
         expect(users.length).to.be.eq(2);
+        stub.restore();
     });
     ita('Should add user and then call getUsers', async() => {
 
@@ -50,6 +51,7 @@ describe('UserService tests...', function () {
         expect(newUser.id).to.be.eq(12);
         expect(stub).to.have.been.calledWith('/users/', {id:12});
         expect(spy).to.have.been.calledOnce;
+        stub.restore();
     });
     ita('Should edit user and then call getUsers', async() => {
 
@@ -64,6 +66,7 @@ describe('UserService tests...', function () {
         //then
         expect(stub).to.have.been.calledWith('/users/', {id:12});
         expect(spy).to.have.been.calledOnce;
+        stub.restore();
     });
     ita('Should delete user and then call getUsers', async() => {
 
@@ -78,5 +81,24 @@ describe('UserService tests...', function () {
         //then
         expect(stub).to.have.been.calledWith('/users/12', 12);
         expect(spy).to.have.been.calledOnce;
+        stub.restore();
+    });
+});
+describe('UserService + HttpManager + backend tests...', function () {
+    let ee = new EventEmitter();
+    let service = new UserService(ee, 'http://localhost:3000', '/users/');
+
+    ita('should add user', async() => {
+        //given
+        let users = await service.getUsers();
+        let currentCount = users.lenght;
+
+        //when
+        await service.addUser({id: 14, name: 'K', surname: 'S', age: '34', sex: 'Mężczyzna'});
+        let newUsers = await service.getUsers();
+        let newCount = newUsers.lenght;
+
+        //then
+        expect(newCount).to.be.eq(currentCount + 1);
     });
 });
