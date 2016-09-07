@@ -17,8 +17,6 @@ class ButtonView {
      */
     constructor(ee) {
         this.ee = ee;
-        this.setUpListeners();
-        this.setButtonsDisabled(true);
     }
 
     setUpListeners() {
@@ -37,8 +35,8 @@ class ButtonView {
      */
     setButtonsDisabled(val) {
         this.disabled = val;
-        $('#editBtn').prop('disabled', val);
-        $('#deleteBtn').prop('disabled', val);
+        this.$editBtn.prop('disabled', val);
+        this.$deleteBtn.prop('disabled', val);
     }
 
     /**
@@ -49,20 +47,27 @@ class ButtonView {
             this.divID = divID;
         }
         $(this.divID).html(ButtonView.prepareButtonHtml());
+
+        this.$addBtn = $('#addBtn');
+        this.$editBtn = $('#editBtn');
+        this.$deleteBtn = $('#deleteBtn');
+
+        this.setUpListeners();
+        this.setButtonsDisabled(true);
         this.setOnClickForButtons();
     }
 
     setOnClickForButtons() {
-        let {ee} = this;
-        $('#addBtn').click(() => {
+        let {ee, $addBtn, $editBtn, $deleteBtn} = this;
+        $addBtn.click(() => {
+            this.hideButtonView();
             ee.emit(BUTTON_EVENTS.ADD_NEW_USER);
-            this.hideButtonView();
         });
-        $('#editBtn').click(() => {
+        $editBtn.click(() => {
+            this.hideButtonView();
             ee.emit(BUTTON_EVENTS.EDIT_BUTTON_CLICK);
-            this.hideButtonView();
         });
-        $('#deleteBtn').click(() => {
+        $deleteBtn.click(() => {
             let answer = confirm('Czy chcesz usunąć tego użytkownika?');
             if (answer) {
                 this.setButtonsDisabled(true);
