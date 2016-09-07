@@ -1,7 +1,5 @@
 import {TABLE_EVENTS} from './TableView';
 import {BUTTON_EVENTS} from './ButtonView';
-import {FORM_EVENTS} from './FormView';
-import $ from 'jquery';
 
 class EventRouter {
     constructor(ee) {
