@@ -21,24 +21,27 @@ describe('FormView Tests...', function () {
 
     it('should deserialize', () => {
         //given
-        formView.render('#workspace', 'Dodaj');
         let user = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
-        let $form = $('#form');
+        let spy = sinon.spy(formView, 'deserializeForm');
 
         //when
-        formView.deserializeForm($form, user);
+        formView.render('#workspace', 'Edytuj', user);
+        let $form = $('#form');
         let name = $form.find(`input[name='name']`).val();
         let sex = $form.find(`select[name='sex']`).val();
 
         //then
+        expect(spy).have.been.called;
         expect(name).to.equal('Jacek');
         expect(sex).to.equal('Mężczyzna');
+
+        spy.restore();
     });
 
     it('should serialize', () => {
         //given
-        formView.render('#workspace', 'Dodaj');
         let user = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
+        formView.render('#workspace', 'Dodaj', user);
         let $form = $('#form');
         formView.deserializeForm($form, user);
 
@@ -60,6 +63,7 @@ describe('FormView Tests...', function () {
 
         //then
         expect(spy).to.have.been.calledWith('#workspace', 'Dodaj');
+
         spy.restore();
     });
 
@@ -78,6 +82,7 @@ describe('FormView Tests...', function () {
         //then
         expect(spy).to.have.been.calledWith('#workspace', 'Edytuj');
         expect(serializedUser).eql(user);
+
         spy.restore();
     });
 });

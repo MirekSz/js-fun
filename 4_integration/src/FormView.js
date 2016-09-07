@@ -22,16 +22,45 @@ class FormView {
      *
      * @param {string} divID
      * @param {string} mode
+     * @param {User} user
      */
-    render(divID, mode) {
+    render(divID, mode, user) {
         this.divID = divID;
         this.mode = mode;
         let {ee} = this;
-        $(this.divID).html(FormView.prepareFormHtml(this.mode));
+        $(divID).html(FormView.prepareFormHtml(mode));
+
+        let $form = $('#form');
+        this.deserializeForm($form, user);
+
         $('#cancelBtn').click(() => {
             this.hideFormView();
             ee.emit(FORM_EVENTS.FORM_CANCELED);
         });
+        $form.on('submit', (e) => {
+            this.onSubmit($form, user, e);
+        });
+    }
+
+    /**
+     *
+     * @param $form
+     * @param {User} user
+     * @param event
+     */
+    onSubmit($form, user, event) {
+        event.preventDefault();
+        let {ee, service, mode} = this;
+        let newUserData = this.serializeForm($form, user);
+        this.hideFormView();
+
+        if (mode === 'Edytuj') {
+            service.editUser(newUserData);
+            ee.emit(FORM_EVENTS.USER_EDITED);
+        } else if (mode === 'Dodaj') {
+            service.addUser(newUserData);
+            ee.emit(FORM_EVENTS.USER_ADDED);
+        }
     }
 
     hideFormView() {
