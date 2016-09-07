@@ -1,6 +1,6 @@
 module.exports = {
-    devtool: 'inline-source-map',
-    entry: ['babel-polyfill', './test/index.js'],
+    devtool: 'source-map',
+    entry: ['babel-polyfill', 'stack-source-map/register','./test/index.js'],
     output: {
         filename: 'test.build.js',
         path: './test/',

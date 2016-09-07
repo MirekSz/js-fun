@@ -51,6 +51,7 @@
     "precss": "^1.4.0",
     "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0",
+    "stack-source-map": "^1.0.5",
     "style-loader": "^0.13.1",
     "through2": "^2.0.1",
     "webpack": "^1.13.1",
