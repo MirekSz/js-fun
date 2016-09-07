@@ -38,7 +38,8 @@ class FormView {
             ee.emit(FORM_EVENTS.FORM_CANCELED);
         });
         $form.on('submit', (e) => {
-            this.onSubmit($form, user, e);
+            e.preventDefault();
+            this.onSubmit($form, user);
         });
     }
 
@@ -46,13 +47,10 @@ class FormView {
      *
      * @param $form
      * @param {User} user
-     * @param event
      */
-    onSubmit($form, user, event) {
-        event.preventDefault();
+    onSubmit($form, user) {
         let {ee, service, mode} = this;
         let newUserData = this.serializeForm($form, user);
-        this.hideFormView();
 
         if (mode === 'Edytuj') {
             service.editUser(newUserData);
@@ -61,6 +59,7 @@ class FormView {
             service.addUser(newUserData);
             ee.emit(FORM_EVENTS.USER_ADDED);
         }
+        this.hideFormView();
     }
 
     hideFormView() {
