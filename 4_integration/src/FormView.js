@@ -33,7 +33,8 @@ class FormView {
         let $form = $('#form');
         this.deserializeForm($form, user);
 
-        $('#cancelBtn').click(() => {
+        this.$cancel = $('#cancelBtn');
+        this.$cancel.click(() => {
             this.hideFormView();
             ee.emit(FORM_EVENTS.FORM_CANCELED);
         });

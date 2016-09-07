@@ -134,4 +134,25 @@ describe('FormView Tests...', function () {
 
         stub.restore();
     });
+    it('should emit FORM_CANCELED and hide on cancel', () => {
+        //given
+        router.setFormView(formView);
+        router.start();
+
+        let eventEmitted = false;
+        ee.on(FORM_EVENTS.FORM_CANCELED, () => {
+            eventEmitted = true;
+        });
+
+        let spy = sinon.spy(formView, 'hideFormView');
+
+        //when
+        formView.render('#workspace', 'Dodaj', {});
+        formView.$cancel.click();
+
+        //then
+        expect(eventEmitted).to.be.true;
+        expect(spy).to.be.called;
+    });
+
 });
