@@ -91,12 +91,12 @@ describe('UserService + HttpManager + backend tests...', function () {
     ita('should add user', async() => {
         //given
         let users = await service.getUsers();
-        let currentCount = users.lenght;
+        let currentCount = users.length;
 
         //when
         await service.addUser({id: 14, name: 'K', surname: 'S', age: '34', sex: 'Mężczyzna'});
         let newUsers = await service.getUsers();
-        let newCount = newUsers.lenght;
+        let newCount = newUsers.length;
 
         //then
         expect(newCount).to.be.eq(currentCount + 1);
