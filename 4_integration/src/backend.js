@@ -48,7 +48,9 @@ app.post('/users', function (request, response) {
 app.put('/users', function (request, response) {
     let editedUser = request.body;
     let found = users.find(user => user.id === editedUser.id);
-    Object.assign(found, editedUser);
+    if (found) {
+        Object.assign(found, editedUser);
+    }
     response.end();
 });
 

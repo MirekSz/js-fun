@@ -35,7 +35,7 @@ class FormView {
 
         this.$cancel = $('#cancelBtn');
         this.$cancel.click(() => {
-            this.hideFormView();
+            this.hide();
             ee.emit(FORM_EVENTS.FORM_CANCELED);
         });
         $form.on('submit', (e) => {
@@ -60,12 +60,12 @@ class FormView {
             service.addUser(newUserData);
             ee.emit(FORM_EVENTS.USER_ADDED);
         }
-        this.hideFormView();
+        this.hide();
     }
 
-    hideFormView() {
+    hide() {
         this.mode = 'Hidden';
-        $(this.divID).html('');
+        $(this.divID).empty();
     }
 
     /**

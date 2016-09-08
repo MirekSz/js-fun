@@ -1,2 +1,6 @@
-http://www.w3schools.com/js/js_hoisting.asp
-https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Details_of_the_Object_Model
+1. serwisy user service korzysta z $resoure]ce
+2. tableview ,formview,button view jako dyrektywy, details view jako children table view
+3. Routing / master template
+4. Wyszukiwanie w tabelce filtrami/pipe
+5. Update users in background setTimeout
+6. Animation

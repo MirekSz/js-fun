@@ -7,12 +7,19 @@ import UserService from '../src/UserService';
 import {BUTTON_EVENTS} from '../src/ButtonView';
 import {TABLE_EVENTS} from '../src/TableView';
 import {FORM_EVENTS} from "../src/FormView";
+import TableView from "../src/TableView";
+import ButtonView from '../src/ButtonView';
 
 describe('FormView Tests...', function () {
     let ee = new EventEmitter();
     let service = new UserService(ee);
-    let formView = new FormView(ee, service);
     let router = new EventRouter(ee);
+
+    let formView = new FormView(ee, service);
+    let tableView = new TableView(ee);
+    let buttonView = new ButtonView(ee);
+    router.setTableView(tableView);
+    router.setButtonView(buttonView);
     let user = {id: 0, name: 'Jacek', surname: 'Doe', age: '43', sex: 'Mężczyzna'};
 
     before(()=> {
@@ -51,7 +58,7 @@ describe('FormView Tests...', function () {
         let serializedUser = formView.serializeForm($form, {id: 0});
 
         //then
-        expect(serializedUser).eql(user);
+        expect(serializedUser).to.be.eql(user);
     });
 
     it('should render on ADD_NEW_USER', () => {
@@ -144,7 +151,7 @@ describe('FormView Tests...', function () {
             eventEmitted = true;
         });
 
-        let spy = sinon.spy(formView, 'hideFormView');
+        let spy = sinon.spy(formView, 'hide');
 
         //when
         formView.render('#workspace', 'Dodaj', {});

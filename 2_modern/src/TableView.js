@@ -40,10 +40,10 @@ class TableView {
             this.service.deleteUser(this.users[this.selectedRow].id);
         });
         ee.on(BUTTON_EVENTS.EDIT_BUTTON_CLICK, () => {
-            this.hideTableView();
+            this.hide();
             ee.emit(TABLE_EVENTS.EDIT_USER, this.users[this.selectedRow]);
         });
-        ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hideTableView.bind(this));
+        ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hide.bind(this));
         ee.on(FORM_EVENTS.FORM_CANCELED, this.render.bind(this));
         ee.on(FORM_EVENTS.USER_EDITED, () => {
             this.loading = true;
@@ -82,7 +82,7 @@ class TableView {
         }
     }
 
-    hideTableView() {
+    hide() {
         $(this.divID).html('');
     }
 

@@ -2,22 +2,38 @@
 
 import EventEmitter from 'event-emitter';
 import ButtonView, {BUTTON_EVENTS} from '../src/ButtonView';
+import TableView from '../src/TableView.js';
+import FormView from '../src/FormView';
 import {TABLE_EVENTS} from '../src/TableView';
-
+import EventRouter from "../src/EventRouter";
+import DetailsView from '../src/DetailsView.js';
 
 describe('ButtonView tests...', function () {
+    let ee = new EventEmitter();
+    let btnView = new ButtonView(ee);
+    let details = new DetailsView(ee);
+    let table = new TableView(ee);
+    let form = new FormView(ee);
+    let router = new EventRouter(ee);
+
+    router.setDetailsView(details);
+    router.setButtonView(btnView);
+    router.setTableView(table);
+    router.setFormView(form);
+    router.start();
+
+    let sandbox;
     beforeEach(function () {
         $(document.body).append('<div id="buttonView"></div>');
-        this.sinon = sinon.sandbox.create();
+        sandbox = sinon.sandbox.create();
     });
 
     afterEach(function () {
-        this.sinon.restore();
+        sandbox.restore();
+        router.emptyAll();
         $('#buttonView').empty();
     });
 
-    let ee = new EventEmitter();
-    let btnView = new ButtonView(ee);
     it('should set correct divID', function () {
         //when
         btnView.render('#buttonView');
@@ -46,7 +62,7 @@ describe('ButtonView tests...', function () {
     });
     it('should emit event and hide after editBtn.click', function () {
 
-        let spy = sinon.spy(btnView, 'hideButtonView');
+        let spy = sandbox.spy(btnView, 'hide');
         let eventEmitted = false;
         ee.on(BUTTON_EVENTS.EDIT_BUTTON_CLICK, () => {
             eventEmitted = true;
@@ -58,12 +74,10 @@ describe('ButtonView tests...', function () {
         //then
         expect(eventEmitted).to.be.true;
         expect(spy).to.be.called;
-
-        spy.restore();
     });
     it('should emit event and hide after addBtn.click', function () {
 
-        let spy = sinon.spy(btnView, 'hideButtonView');
+        let spy = sandbox.spy(btnView, 'hide');
         let eventEmitted = false;
         ee.on(BUTTON_EVENTS.ADD_NEW_USER, () => {
             eventEmitted = true;
@@ -75,7 +89,5 @@ describe('ButtonView tests...', function () {
         //then
         expect(eventEmitted).to.be.true;
         expect(spy).to.be.called;
-
-        spy.restore();
     });
 });

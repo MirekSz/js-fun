@@ -3,7 +3,13 @@
 import EventEmitter from 'event-emitter';
 import UserService, {USER_SERVICE_EVENT} from '../src/UserService';
 
+
+
 describe('UserService tests...', function () {
+
+    function stubPromise(data) {
+        return () => Promise.resolve(data);
+    }
 
     let ee = new EventEmitter();
     let userService = new UserService(ee, 'http://localhost:3000', '/users/');
@@ -26,9 +32,7 @@ describe('UserService tests...', function () {
         ee.on(USER_SERVICE_EVENT.USERS_NEW_DATA, (data)=> {
             users = data;
         });
-        let stub = sinon.stub(userService.http, 'getData', () => {
-            return Promise.resolve({data: [{}, {}]});
-        });
+        let stub = sinon.stub(userService.http, 'getData', stubPromise({data:[{}, {}]}));
 
         //when
         await userService.getUsers();
@@ -91,7 +95,6 @@ describe('UserService + HttpManager + backend tests...', function () {
 
     ita('should add user', async() => {
         //given
-        let user = {id: 14, name: 'K', surname: 'S', age: '34', sex: 'Mężczyzna'};
         let users = await service.getUsers();
         let currentCount = users.length;
 
@@ -106,20 +109,20 @@ describe('UserService + HttpManager + backend tests...', function () {
     ita('should edit user', async() => {
         //given
         let users = await service.getUsers();
-        let currentCount = users.length;
-        user.name = 'M';
+        let id = users[0].id;
+        users[0].name = 'M'
 
         //when
-        let newUsers = await service.editUser({id: 14, name: 'M', surname: 'S', age: '34', sex: 'Mężczyzna'});
+        let newUsers = await service.editUser(users[0]);
         let newUser = {};
         newUsers.forEach((element) => {
-            if (element.id === 14) {
+            if (element.id === id) {
                 newUser = element;
             }
         });
 
         //then
-        expect(newUser).to.be.eql(user);
+        expect(newUser).to.be.eql(users[0]);
     });
     ita('should delete user', async() => {
         //given

@@ -3,7 +3,6 @@ import template from './tableView.hbs';
 
 import {BUTTON_EVENTS} from './ButtonView';
 import {FORM_EVENTS} from './FormView';
-import {USER_SERVICE_EVENT} from './UserService';
 
 export const TABLE_EVENTS = {
     ON_ROW_SELECTION_CHANGE: 'onRowSelectionChange',
@@ -26,27 +25,22 @@ class TableView {
 
     setUpListeners() {
         let {ee} = this;
-        ee.on(USER_SERVICE_EVENT.USERS_NEW_DATA, (users) => {
-            this.loading = false;
-            this.users = users;
-            this.render(this.divID, users);
-        });
         ee.on(BUTTON_EVENTS.DELETE_USER, () => {
             this.service.deleteUser(this.selectedRow);
         });
         ee.on(BUTTON_EVENTS.EDIT_BUTTON_CLICK, () => {
-            this.hideTableView();
+            this.hide();
             ee.emit(TABLE_EVENTS.EDIT_USER, this.findUserById(this.selectedRow));
         });
-        ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hideTableView.bind(this));
+        ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hide.bind(this));
         ee.on(FORM_EVENTS.FORM_CANCELED, () => {
             this.render(this.divID, this.users, false);
         });
         ee.on(FORM_EVENTS.USER_EDITED, () => {
-            this.render(this.divID, true);
+            this.render(this.divID, {}, true);
         });
         ee.on(FORM_EVENTS.USER_ADDED, () => {
-            this.render(this.divID, true);
+            this.render(this.divID, {}, true);
         });
     }
 
@@ -84,8 +78,8 @@ class TableView {
         }
     }
 
-    hideTableView() {
-        $(this.divID).html('');
+    hide() {
+        $(this.divID).empty();
     }
 
     /**

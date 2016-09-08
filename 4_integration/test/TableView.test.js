@@ -5,8 +5,17 @@ import TableView, {TABLE_EVENTS} from '../src/TableView.js';
 import DetailsView from '../src/DetailsView.js';
 import {USER_SERVICE_EVENT} from '../src/UserService';
 import EventRouter from "../src/EventRouter";
+import ButtonView from "../src/ButtonView";
 
 describe('TableView tests...', function () {
+
+    let ee = new EventEmitter();
+    let router = new EventRouter(ee);
+    let btnView = new ButtonView(ee);
+    let details = new DetailsView(ee);
+    details.setUpListeners(); //TODO
+    router.setButtonView(btnView);
+    router.setDetailsView(details);
 
     before(()=> {
         $(document.body).append('<div id="workspace"></div>');
@@ -20,7 +29,7 @@ describe('TableView tests...', function () {
 
     it('should render table with header', function () {
         //given
-        let tableView = new TableView(new EventEmitter());
+        let tableView = new TableView(ee);
 
         //when
         tableView.render('#workspace');
@@ -31,7 +40,7 @@ describe('TableView tests...', function () {
 
     it('should render table with empty body', function () {
         //given
-        let tableView = new TableView(new EventEmitter());
+        let tableView = new TableView(ee);
 
         //when
         tableView.render('#workspace');
@@ -43,9 +52,9 @@ describe('TableView tests...', function () {
 
     it('should render table rows after USERS_NEW_DATA event', function () {
         //given
-        let ee = new EventEmitter();
         let tableView = new TableView(ee);
-        tableView.render('#workspace');
+        router.setTableView(tableView);
+        router.start();
         var user = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
 
         //when
@@ -57,7 +66,6 @@ describe('TableView tests...', function () {
 
     it('should emit TABLE_EVENTS.ON_ROW_SELECTION_CHANGE', function () {
         //given
-        let ee = new EventEmitter();
         let tableView = new TableView(ee);
         tableView.render('#workspace', [{id: 1, name: 'Jurek'}]);
         let emittedUser = {};
@@ -74,15 +82,12 @@ describe('TableView tests...', function () {
 
     it('should render Details with given User', function () {
         //given
-        let ee = new EventEmitter();
         let user = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
-
         let tableView = new TableView(ee);
         tableView.render('#workspace', [user], false);
 
-        let details = new DetailsView(ee, '#detailsView');
+        let details = new DetailsView(ee);
         details.setUpListeners();
-        let router = new EventRouter(ee);
         router.setDetailsView(details);
         router.start();
 

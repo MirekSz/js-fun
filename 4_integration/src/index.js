@@ -14,16 +14,17 @@ function initialize() {
     let ee = new EventEmitter();
     let service = new UserService(ee, baseUrl, '/users/');
     let router = new EventRouter(ee);
-    new ButtonView(ee).render('#buttonView');
-    new TableView(ee, service).render('#workspace');
+
+    let buttonView = new ButtonView(ee);
+    let tableView = new TableView(ee, service);
     let details = new DetailsView(ee);
     details.setUpListeners();
     let form = new FormView(ee, service);
 
     router.setDetailsView(details);
     router.setFormView(form);
-    // router.setButtonView();
-    // router.setTableView();
+    router.setButtonView(buttonView);
+    router.setTableView(tableView);
     router.start();
 
     service.getUsers();

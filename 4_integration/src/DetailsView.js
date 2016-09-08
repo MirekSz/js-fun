@@ -8,7 +8,6 @@ class DetailsView {
     /**
      *
      * @param {EventEmitter} ee
-     * @param divID
      */
     constructor(ee) {
         this.ee = ee;
@@ -17,9 +16,9 @@ class DetailsView {
 
     setUpListeners() {
         let {ee} = this;
-        ee.on(TABLE_EVENTS.EDIT_USER, this.hideDetailsView.bind(this));
-        ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hideDetailsView.bind(this));
-        ee.on(BUTTON_EVENTS.DELETE_USER, this.hideDetailsView.bind(this));
+        ee.on(TABLE_EVENTS.EDIT_USER, this.hide.bind(this));
+        ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hide.bind(this));
+        ee.on(BUTTON_EVENTS.DELETE_USER, this.hide.bind(this));
     }
 
     /**
@@ -32,8 +31,8 @@ class DetailsView {
         $(divID).html(DetailsView.prepareDetailsHtml(user));
     }
 
-    hideDetailsView() {
-        $(this.divID).html('');
+    hide() {
+        $(this.divID).empty();
     }
 
     /**

@@ -1,9 +1,6 @@
 import $ from 'jquery';
 import template from './buttonView.hbs';
 
-import {TABLE_EVENTS} from './TableView';
-import {FORM_EVENTS} from './FormView';
-
 export const BUTTON_EVENTS = {
     ADD_NEW_USER: 'add-new-user',
     EDIT_BUTTON_CLICK: 'edit-button-click',
@@ -17,16 +14,6 @@ class ButtonView {
      */
     constructor(ee) {
         this.ee = ee;
-    }
-
-    setUpListeners() {
-        let {ee} = this;
-        ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, () => {
-            this.setButtonsDisabled(false);
-        });
-        ee.on(FORM_EVENTS.USER_EDITED, this.render.bind(this));
-        ee.on(FORM_EVENTS.USER_ADDED, this.render.bind(this));
-        ee.on(FORM_EVENTS.FORM_CANCELED, this.render.bind(this));
     }
 
     /**
@@ -52,7 +39,6 @@ class ButtonView {
         this.$editBtn = $('#editBtn');
         this.$deleteBtn = $('#deleteBtn');
 
-        this.setUpListeners();
         this.setButtonsDisabled(true);
         this.setOnClickForButtons();
     }
@@ -60,11 +46,11 @@ class ButtonView {
     setOnClickForButtons() {
         let {ee, $addBtn, $editBtn, $deleteBtn} = this;
         $addBtn.click(() => {
-            this.hideButtonView();
+            this.hide();
             ee.emit(BUTTON_EVENTS.ADD_NEW_USER);
         });
         $editBtn.click(() => {
-            this.hideButtonView();
+            this.hide();
             ee.emit(BUTTON_EVENTS.EDIT_BUTTON_CLICK);
         });
         $deleteBtn.click(() => {
@@ -76,8 +62,8 @@ class ButtonView {
         });
     }
 
-    hideButtonView() {
-        $(this.divID).html('');
+    hide() {
+        $(this.divID).empty();
     }
 
     /**
