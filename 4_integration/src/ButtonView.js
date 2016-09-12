@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import template from './buttonView.hbs';
+import {TABLE_EVENTS} from './TableView';
 
 export const BUTTON_EVENTS = {
     ADD_NEW_USER: 'add-new-user',
@@ -38,6 +39,10 @@ class ButtonView {
         this.$addBtn = $('#addBtn');
         this.$editBtn = $('#editBtn');
         this.$deleteBtn = $('#deleteBtn');
+
+        this.ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, () => {
+            this.setButtonsDisabled(false);
+        });
 
         this.setButtonsDisabled(true);
         this.setOnClickForButtons();

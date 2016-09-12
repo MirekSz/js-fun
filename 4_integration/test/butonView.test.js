@@ -11,16 +11,6 @@ import DetailsView from '../src/DetailsView.js';
 describe('ButtonView tests...', function () {
     let ee = new EventEmitter();
     let btnView = new ButtonView(ee);
-    let details = new DetailsView(ee);
-    let table = new TableView(ee);
-    let form = new FormView(ee);
-    let router = new EventRouter(ee);
-
-    router.setDetailsView(details);
-    router.setButtonView(btnView);
-    router.setTableView(table);
-    router.setFormView(form);
-    router.start();
 
     let sandbox;
     beforeEach(function () {
@@ -30,7 +20,6 @@ describe('ButtonView tests...', function () {
 
     afterEach(function () {
         sandbox.restore();
-        router.emptyAll();
         $('#buttonView').empty();
     });
 
@@ -75,13 +64,14 @@ describe('ButtonView tests...', function () {
         expect(eventEmitted).to.be.true;
         expect(spy).to.be.called;
     });
-    it('should emit event and hide after addBtn.click', function () {
-
+    it('should hide after addBtn.click', function () {
+        //given
         let spy = sandbox.spy(btnView, 'hide');
         let eventEmitted = false;
         ee.on(BUTTON_EVENTS.ADD_NEW_USER, () => {
             eventEmitted = true;
         });
+
         //when
         btnView.render('#buttonView');
         btnView.$addBtn.click();
