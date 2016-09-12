@@ -12,14 +12,8 @@ import ButtonView from '../src/ButtonView';
 
 describe('FormView Tests...', function () {
     let ee = new EventEmitter();
-    let service = new UserService(ee);
-    let router = new EventRouter(ee);
 
-    let formView = new FormView(ee, service);
-    let tableView = new TableView(ee);
-    let buttonView = new ButtonView(ee);
-    router.setTableView(tableView);
-    router.setButtonView(buttonView);
+    let formView = new FormView(ee, new UserService(ee));
     let user = {id: 0, name: 'Jacek', surname: 'Doe', age: '43', sex: 'Mężczyzna'};
 
     before(()=> {
@@ -61,42 +55,9 @@ describe('FormView Tests...', function () {
         expect(serializedUser).to.be.eql(user);
     });
 
-    it('should render on ADD_NEW_USER', () => {
-        //given
-        router.setFormView(formView);
-        let spy = sinon.spy(formView, 'render');
-        router.start();
-
-        //when
-        ee.emit(BUTTON_EVENTS.ADD_NEW_USER);
-
-        //then
-        expect(spy).to.have.been.calledWith('#workspace', 'Dodaj', {});
-
-        spy.restore();
-    });
-
-    it('should render on EDIT_USER and deserialize', () => {
-        //given
-        router.setFormView(formView);
-        let spy = sinon.spy(formView, 'render');
-        router.start();
-
-        //when
-        ee.emit(TABLE_EVENTS.EDIT_USER, user);
-        let $form = $('#form');
-        let serializedUser = formView.serializeForm($form, {id: 0});
-
-        //then
-        expect(spy).to.have.been.calledWith('#workspace', 'Edytuj', user);
-        expect(serializedUser).eql(user);
-
-        spy.restore();
-    });
     it('should editUser and emit USER_EDITED on submit', () => {
         //given
-        router.setFormView(formView);
-        router.start();
+
         let stub = sinon.stub(formView.service, 'editUser', (user) => {
             return Promise.resolve(user);
         });
@@ -107,7 +68,7 @@ describe('FormView Tests...', function () {
         });
 
         //when
-        ee.emit(TABLE_EVENTS.EDIT_USER, user);
+        formView.render('#workspace', 'Edytuj', user);
         let $form = $('#form');
         formView.onSubmit($form, {id: 0});
 
@@ -119,8 +80,6 @@ describe('FormView Tests...', function () {
     });
     it('should addUser and emit USER_ADDED on submit', () => {
         //given
-        router.setFormView(formView);
-        router.start();
         let stub = sinon.stub(formView.service, 'addUser', () => {
             return Promise.resolve();
         });
@@ -131,7 +90,7 @@ describe('FormView Tests...', function () {
         });
 
         //when
-        ee.emit(BUTTON_EVENTS.ADD_NEW_USER);
+        formView.render('#workspace', 'Dodaj', {});
         let $form = $('#form');
         formView.onSubmit($form, user);
 
@@ -143,8 +102,6 @@ describe('FormView Tests...', function () {
     });
     it('should emit FORM_CANCELED and hide on cancel', () => {
         //given
-        router.setFormView(formView);
-        router.start();
 
         let eventEmitted = false;
         ee.on(FORM_EVENTS.FORM_CANCELED, () => {
