@@ -2,20 +2,10 @@
 
 import EventEmitter from 'event-emitter';
 import TableView, {TABLE_EVENTS} from '../src/TableView.js';
-import DetailsView from '../src/DetailsView.js';
-import {USER_SERVICE_EVENT} from '../src/UserService';
-import EventRouter from "../src/EventRouter";
-import ButtonView from "../src/ButtonView";
 
 describe('TableView tests...', function () {
 
     let ee = new EventEmitter();
-    let router = new EventRouter(ee);
-    let btnView = new ButtonView(ee);
-    let details = new DetailsView(ee);
-    details.setUpListeners(); //TODO
-    router.setButtonView(btnView);
-    router.setDetailsView(details);
 
     before(()=> {
         $(document.body).append('<div id="workspace"></div>');
@@ -49,21 +39,6 @@ describe('TableView tests...', function () {
         expect(tableView.users.length).to.be.eq(0);
     });
 
-
-    it('should render table rows after USERS_NEW_DATA event', function () {
-        //given
-        let tableView = new TableView(ee);
-        router.setTableView(tableView);
-        router.start();
-        var user = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
-
-        //when
-        ee.emit(USER_SERVICE_EVENT.USERS_NEW_DATA, [user]);
-
-        //then
-        expect(tableView.users.length).to.be.eq(1)
-    });
-
     it('should emit TABLE_EVENTS.ON_ROW_SELECTION_CHANGE', function () {
         //given
         let tableView = new TableView(ee);
@@ -78,24 +53,6 @@ describe('TableView tests...', function () {
 
         //then
         expect(emittedUser).to.be.eq(tableView.users[0]);
-    });
-
-    it('should render Details with given User', function () {
-        //given
-        let user = {id: 0, name: "Jacek", surname: "Doe", age: "43", sex: "Mężczyzna"};
-        let tableView = new TableView(ee);
-        tableView.render('#workspace', [user], false);
-
-        let details = new DetailsView(ee);
-        details.setUpListeners();
-        router.setDetailsView(details);
-        router.start();
-
-        //when
-        tableView.onRowClick(0);
-
-        //then
-        expect(details.data).to.be.eq(user);
     });
 
 });
