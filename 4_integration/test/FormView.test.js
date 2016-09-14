@@ -95,7 +95,7 @@ describe('FormView Tests...', function () {
 
         stub.restore();
     });
-    it('should emit FORM_CANCELED and hide on cancel', () => {
+    it('should emit FORM_CANCELED on cancel', () => {
         //given
 
         let eventEmitted = false;
@@ -103,15 +103,12 @@ describe('FormView Tests...', function () {
             eventEmitted = true;
         });
 
-        let spy = sinon.spy(formView, 'hide');
-
         //when
         formView.render('#workspace', 'Dodaj', {});
         formView.$cancel.click();
 
         //then
         expect(eventEmitted).to.be.true;
-        expect(spy).to.be.called;
     });
 
 });

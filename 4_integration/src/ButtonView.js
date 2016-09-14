@@ -32,12 +32,9 @@ class ButtonView {
      * @param divID
      * @param disabled
      */
-    render(divID, disabled) {
+    render(divID, disabled = true) {
         if (typeof divID !== 'undefined') {
             this.divID = divID;
-        }
-        if (typeof disabled !== 'undefined') {
-            this.setButtonsDisabled(disabled);
         }
         $(this.divID).html(ButtonView.prepareButtonHtml());
 
@@ -49,18 +46,16 @@ class ButtonView {
             this.setButtonsDisabled(false);
         });
 
-        this.setButtonsDisabled(true);
+        this.setButtonsDisabled(disabled);
         this.setOnClickForButtons();
     }
 
     setOnClickForButtons() {
         let {ee, $addBtn, $editBtn, $deleteBtn} = this;
         $addBtn.click(() => {
-            this.hide();
             ee.emit(BUTTON_EVENTS.ADD_NEW_USER);
         });
         $editBtn.click(() => {
-            this.hide();
             ee.emit(BUTTON_EVENTS.EDIT_BUTTON_CLICK);
         });
         $deleteBtn.click(() => {

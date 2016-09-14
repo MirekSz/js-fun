@@ -58,6 +58,7 @@ class EventRouter {
             details.render('#detailsView', user);
         });
         ee.on(BUTTON_EVENTS.ADD_NEW_USER, () => {
+            buttonView.hide();
             table.hide();
             details.hide();
             form.render('#workspace', 'Dodaj', {});
@@ -66,16 +67,24 @@ class EventRouter {
             details.hide();
         });
         ee.on(TABLE_EVENTS.EDIT_USER, (user) => {
+            table.hide();
             details.hide();
+            buttonView.hide();
             form.render('#workspace', 'Edytuj', user);
         });
         ee.on(FORM_EVENTS.USER_EDITED, () => {
+            form.hide();
+            table.render(this.divID, {}, true);
             buttonView.render('#buttonView');
         });
         ee.on(FORM_EVENTS.USER_ADDED, () => {
+            form.hide();
+            table.render(this.divID, {}, true);
             buttonView.render('#buttonView');
         });
         ee.on(FORM_EVENTS.FORM_CANCELED, () => {
+            form.hide();
+            table.render(this.divID, table.data, false);
             buttonView.render('#buttonView');
         });
     }

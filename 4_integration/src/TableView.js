@@ -3,7 +3,6 @@ import $ from 'jquery';
 import template from './tableView.hbs';
 
 import {BUTTON_EVENTS} from './ButtonView';
-import {FORM_EVENTS} from './FormView';
 
 export const TABLE_EVENTS = {
     ON_ROW_SELECTION_CHANGE: 'onRowSelectionChange',
@@ -30,18 +29,7 @@ class TableView {
             this.service.deleteUser(this.selectedRow);
         });
         ee.on(BUTTON_EVENTS.EDIT_BUTTON_CLICK, () => {
-            this.hide();
             ee.emit(TABLE_EVENTS.EDIT_USER, this.findUserById(this.selectedRow));
-        });
-        ee.on(BUTTON_EVENTS.ADD_NEW_USER, this.hide.bind(this));
-        ee.on(FORM_EVENTS.FORM_CANCELED, () => {
-            this.render(this.divID, this.users, false);
-        });
-        ee.on(FORM_EVENTS.USER_EDITED, () => {
-            this.render(this.divID, {}, true);
-        });
-        ee.on(FORM_EVENTS.USER_ADDED, () => {
-            this.render(this.divID, {}, true);
         });
     }
 

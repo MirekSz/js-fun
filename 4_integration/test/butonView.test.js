@@ -45,9 +45,8 @@ describe('ButtonView tests...', function () {
         expect(spy).to.have.been.calledWith(false);
         spy.restore();
     });
-    it('should emit event and hide after editBtn.click', function () {
+    it('should emit event EDIT_BUTTON_CLICK editBtn.click', function () {
 
-        let spy = sandbox.spy(btnView, 'hide');
         let eventEmitted = false;
         ee.on(BUTTON_EVENTS.EDIT_BUTTON_CLICK, () => {
             eventEmitted = true;
@@ -58,11 +57,9 @@ describe('ButtonView tests...', function () {
 
         //then
         expect(eventEmitted).to.be.true;
-        expect(spy).to.be.called;
     });
-    it('should hide after addBtn.click', function () {
+    it('should emit event ADD_NEW_USER after addBtn.click', function () {
         //given
-        let spy = sandbox.spy(btnView, 'hide');
         let eventEmitted = false;
         ee.on(BUTTON_EVENTS.ADD_NEW_USER, () => {
             eventEmitted = true;
@@ -74,6 +71,5 @@ describe('ButtonView tests...', function () {
 
         //then
         expect(eventEmitted).to.be.true;
-        expect(spy).to.be.called;
     });
 });
