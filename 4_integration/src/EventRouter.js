@@ -84,8 +84,8 @@ class EventRouter {
         });
         ee.on(FORM_EVENTS.FORM_CANCELED, () => {
             form.hide();
-            table.render(this.divID, table.data, false);
             buttonView.render('#buttonView');
+            table.render('#workspace', table.users, false);
         });
     }
 }

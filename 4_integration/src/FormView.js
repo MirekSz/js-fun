@@ -32,8 +32,9 @@ class FormView {
         $(divID).html(FormView.prepareFormHtml(mode));
 
         let $form = $('#form');
-        this.deserializeForm($form, user);
-
+        if (mode === 'Edytuj') {
+            this.deserializeForm($form, user);
+        }
         this.$cancel = $('#cancelBtn');
         this.$cancel.click(() => {
             ee.emit(FORM_EVENTS.FORM_CANCELED);
