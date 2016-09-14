@@ -1,4 +1,5 @@
 import $ from 'jquery';
+//noinspection JSUnresolvedVariable
 import template from './buttonView.hbs';
 import {TABLE_EVENTS} from './TableView';
 
@@ -29,10 +30,14 @@ class ButtonView {
 
     /**
      * @param divID
+     * @param disabled
      */
-    render(divID) {
+    render(divID, disabled) {
         if (typeof divID !== 'undefined') {
             this.divID = divID;
+        }
+        if (typeof disabled !== 'undefined') {
+            this.setButtonsDisabled(disabled);
         }
         $(this.divID).html(ButtonView.prepareButtonHtml());
 

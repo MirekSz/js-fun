@@ -51,18 +51,22 @@ class EventRouter {
         }
 
         ee.on(USER_SERVICE_EVENT.USERS_NEW_DATA, (users) => {
-            this.table.render('#workspace', users, false);
+            table.render('#workspace', users, false);
         });
         ee.on(TABLE_EVENTS.ON_ROW_SELECTION_CHANGE, (user) => {
-            buttonView.setButtonsDisabled(false);
-            details.data = user;
+            buttonView.render('#buttonView', false);
             details.render('#detailsView', user);
         });
         ee.on(BUTTON_EVENTS.ADD_NEW_USER, () => {
             table.hide();
+            details.hide();
             form.render('#workspace', 'Dodaj', {});
         });
+        ee.on(BUTTON_EVENTS.DELETE_USER, () => {
+            details.hide();
+        });
         ee.on(TABLE_EVENTS.EDIT_USER, (user) => {
+            details.hide();
             form.render('#workspace', 'Edytuj', user);
         });
         ee.on(FORM_EVENTS.USER_EDITED, () => {
@@ -74,14 +78,6 @@ class EventRouter {
         ee.on(FORM_EVENTS.FORM_CANCELED, () => {
             buttonView.render('#buttonView');
         });
-    }
-
-    emptyAll() {
-        let {table, form, details, buttonView} = this;
-        table.hide();
-        form.hide();
-        details.hide();
-        buttonView.hide();
     }
 }
 

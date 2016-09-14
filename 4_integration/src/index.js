@@ -17,8 +17,7 @@ function initialize() {
 
     let buttonView = new ButtonView(ee);
     let tableView = new TableView(ee, service);
-    let details = new DetailsView(ee);
-    details.setUpListeners();
+    let details = new DetailsView();
     let form = new FormView(ee, service);
 
     router.setDetailsView(details);

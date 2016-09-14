@@ -3,8 +3,6 @@
 import EventEmitter from 'event-emitter';
 import UserService, {USER_SERVICE_EVENT} from '../src/UserService';
 
-
-
 describe('UserService tests...', function () {
 
     function stubPromise(data) {

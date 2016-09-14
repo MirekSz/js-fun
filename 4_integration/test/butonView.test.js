@@ -2,11 +2,7 @@
 
 import EventEmitter from 'event-emitter';
 import ButtonView, {BUTTON_EVENTS} from '../src/ButtonView';
-import TableView from '../src/TableView.js';
-import FormView from '../src/FormView';
 import {TABLE_EVENTS} from '../src/TableView';
-import EventRouter from "../src/EventRouter";
-import DetailsView from '../src/DetailsView.js';
 
 describe('ButtonView tests...', function () {
     let ee = new EventEmitter();

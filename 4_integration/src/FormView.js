@@ -1,4 +1,5 @@
 import $ from 'jquery';
+//noinspection JSUnresolvedVariable
 import template from './formView.hbs';
 
 export const FORM_EVENTS = {

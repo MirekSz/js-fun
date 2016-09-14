@@ -1,4 +1,5 @@
 import $ from 'jquery';
+//noinspection JSUnresolvedVariable
 import template from './tableView.hbs';
 
 import {BUTTON_EVENTS} from './ButtonView';
