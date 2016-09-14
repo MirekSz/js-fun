@@ -2,6 +2,7 @@
 
 import EventEmitter from 'event-emitter';
 import TableView, {TABLE_EVENTS} from '../src/TableView.js';
+import DetailsView from "../src/DetailsView";
 
 describe('TableView tests...', function () {
 
@@ -55,4 +56,18 @@ describe('TableView tests...', function () {
         expect(emittedUser).to.be.eq(tableView.users[0]);
     });
 
+    describe('DetailsView tests...', function () {
+        it('should render with given user', function () {
+            //given
+            let user = {id: 13};
+            let details = new DetailsView();
+
+            //when
+            details.render('#detailsView', user);
+
+            //then
+            expect(details.data).to.be.eql(user);
+        });
+    });
 });
+
