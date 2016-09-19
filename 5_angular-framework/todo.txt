@@ -4,3 +4,12 @@
 4. Wyszukiwanie w tabelce filtrami/pipe
 5. Update users in background setTimeout
 6. Animation
+7. Controller controllerAs
+8. Two way dirty checking, observers
+9. DI minimalization
+10. Service vs factory vs provider
+11. error current digest loop in progress
+12. Dyrektywy element, clasa , atrybut
+13. Cotrollers data pass through
+14. http://www.yearofmoo.com/
+15. Nested router views UI-Router
