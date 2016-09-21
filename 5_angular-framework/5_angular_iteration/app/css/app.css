@@ -4,6 +4,10 @@
   color: #444444;
 }
 
+label {
+  font-size: 20px;
+}
+
 h3, h4 {
   text-align: center;
   font-weight: bold;
