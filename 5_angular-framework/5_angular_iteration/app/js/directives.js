@@ -7,7 +7,7 @@ var appDirectives = angular.module('appDirectives', []);
 appDirectives.directive('tableView', function() {
     return {
         templateUrl: '/app/templates/tableView.html',
-        restrict: 'AE',
+        restrict: 'E',
         transclude: true,
         link: function ($scope) {
             $scope.rowClicked = function(user) {
@@ -21,6 +21,12 @@ appDirectives.directive('tableView', function() {
 appDirectives.directive('detailsView', function() {
     return {
         templateUrl: '/app/templates/detailsView.html',
-        restrict: 'AE'
+        restrict: 'E'
+    };
+});
+appDirectives.directive('buttonView', function() {
+    return {
+        templateUrl: '/app/templates/buttonView.html',
+        restrict: 'E'
     };
 });
