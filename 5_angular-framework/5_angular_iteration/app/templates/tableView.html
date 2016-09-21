@@ -1,0 +1,19 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th class="col-md-3">Imię</th>
+        <th class="col-md-5">Nazwisko</th>
+        <th class="col-md-2">Wiek</th>
+        <th class="col-md-2">Płeć</th>
+    </tr>
+    </thead>
+    <tbody ng-if="!loading">
+        <tr ng-repeat="user in users" ng-click="this.rowClicked(user)" ng-class="{selected: user.id === selectedUser.id}">
+            <td>{{user.name}}</td>
+            <td>{{user.surname}}</td>
+            <td>{{user.age}}</td>
+            <td>{{user.sex}}</td>
+        </tr>
+    </tbody>
+    <h3 ng-if="loading">Loading...</h3>
+</table>
