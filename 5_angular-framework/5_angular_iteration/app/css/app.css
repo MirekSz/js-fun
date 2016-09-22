@@ -1,60 +1,60 @@
 .page-header {
-  text-align: center;
-  border-color: #444444;
-  color: #444444;
+    text-align: center;
+    border-color: #444444;
+    color: #444444;
 }
 
 label {
-  font-size: 20px;
+    font-size: 20px;
 }
 
 h3, h4 {
-  text-align: center;
-  font-weight: bold;
-  user-select: none;
+    text-align: center;
+    font-weight: bold;
+    user-select: none;
 }
 
 :fullscreen a {
-  display: flex
+    display: flex
 }
 
 .selected {
-  background-color: dodgerblue;
+    background-color: dodgerblue;
 }
 
 thead {
-  background-color: #cccccc;
-  font-size: 18px;
+    background-color: #cccccc;
+    font-size: 18px;
 }
 
 tbody {
-  font-size: 16px;
+    font-size: 16px;
 }
 
 tr {
-  transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
 #detailsView {
-  margin-top: 70px;
-  font-size: 18px;
+    margin-top: 70px;
+    font-size: 18px;
 }
 
 #buttonView {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .evLabel {
-  text-align: center;
-  font-weight: bold;
+    text-align: center;
+    font-weight: bold;
 }
 
 .evValue {
-  text-align: center;
+    text-align: center;
 
 }
 
 #cancelBtn {
-  alignment: right;
-  margin-left: 15px;
+    alignment: right;
+    margin-left: 15px;
 }

@@ -21,7 +21,11 @@ appDirectives.directive('tableView', function() {
 appDirectives.directive('detailsView', function() {
     return {
         templateUrl: '/app/templates/detailsView.html',
-        restrict: 'E'
+        restrict: 'E',
+        scope: {
+            user: '=',
+            visible: '='
+        }
     };
 });
 appDirectives.directive('buttonView', function() {
