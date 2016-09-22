@@ -16,10 +16,9 @@ appControllers.controller('UsersTableCtrl', ['$scope', 'UserService',
         };
 
         $scope.deleteBtnClick = function () {
-            console.log('deleteBtn clicked');
             if (confirm('Czy chcesz usunąć tego użytkownika?')) {
-                UserService.remove($scope.selectedUser.id);
-                this.loadUsers();
+                console.log('deleting user: ' + $scope.selectedUser.id);
+                UserService.remove($scope.selectedUser, this.loadUsers.bind(this));
             }
         }.bind(this);
 

@@ -11,6 +11,7 @@ appDirectives.directive('tableView', function() {
         transclude: true,
         link: function ($scope) {
             $scope.rowClicked = function(user) {
+                console.log('User Selected:' + user.name + user.surname + user.id);
                 $scope.selectedUser = user;
                 $scope.isUserSelected = true;
             }

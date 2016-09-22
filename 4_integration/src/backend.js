@@ -20,9 +20,9 @@ app.use(function (req, res, next) {
     next();
 });
 
-let users = [new User(10, 'Jacek', 'Doe', '43', 'Mężczyzna'),
-    new User(1, 'Marzanna', 'Uss', '54', 'Kobieta'),
-    new User(2, 'Julia', 'Dolej', '22', 'Kobieta')];
+let users = [new User(1, 'Jacek', 'Doe', '43', 'Mężczyzna'),
+    new User(2, 'Marzanna', 'Uss', '54', 'Kobieta'),
+    new User(3, 'Julia', 'Dolej', '22', 'Kobieta')];
 
 function generateID() {
     let maxID = 0;
