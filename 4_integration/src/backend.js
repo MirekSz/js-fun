@@ -55,7 +55,8 @@ app.put('/users', function (request, response) {
 });
 
 app.delete('/users/:id', function (request, response) {
-    let found = users.findIndex(user => user.id === request.params.id);
+    let found = users.findIndex(user => user.id == request.params.id);
+    console.log(request.params.id);
     users.splice(found, 1);
     response.end();
 });
