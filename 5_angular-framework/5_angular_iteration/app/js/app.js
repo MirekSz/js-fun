@@ -15,7 +15,7 @@ phonecatApp.config(['$routeProvider',
     function ($routeProvider) {
         $routeProvider.when('/users', {
             templateUrl: 'partials/users-table.html',
-            controller: 'UsersTableCtrl'
+            controller: 'UsersTableCtrl as ctrl'
         }).when('form/:mode/:userId', {
             templateUrl: 'partials/phone-detail.html',
             controller: 'FormCtrl'

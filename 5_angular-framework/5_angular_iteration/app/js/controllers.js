@@ -4,20 +4,26 @@
 
 var appControllers = angular.module('appControllers', []);
 
-appControllers.controller('UsersTableCtrl', ['$scope', 'UserService', 'UserServiceHttp',
-    function ($scope, UserService, UserServiceHttp) {
+appControllers.controller('UsersTableCtrl', ['$scope', 'UserService',
+    function ($scope, UserService) {
+        this.loadUsers = function () {
+            $scope.loading = true;
+            $scope.isUserSelected = false;
+            $scope.selectedUser = {};
+            $scope.users = UserService.query(function () {
+                $scope.loading = false;
+            });
+        };
 
-        $scope.loading = true;
-        // var User = UserService.getUser();
-        // $scope.users = User.query(function () {
-        //     $scope.loading = false;
-        // });
-        UserServiceHttp.getUsers().then(function (response) {
-            $scope.users = response.data;
-            $scope.loading = false;
-        });
-        $scope.isUserSelected = false;
-        $scope.query = '';
+        $scope.deleteBtnClick = function () {
+            console.log('deleteBtn clicked');
+            if (confirm('Czy chcesz usunąć tego użytkownika?')) {
+                UserService.remove($scope.selectedUser.id);
+                this.loadUsers();
+            }
+        }.bind(this);
+
+        this.loadUsers();
     }]);
 appControllers.controller('FormCtrl', ['$scope', '$routeParams',
     function ($scope, $routeParams) {

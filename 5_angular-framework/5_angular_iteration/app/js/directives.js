@@ -31,6 +31,10 @@ appDirectives.directive('detailsView', function() {
 appDirectives.directive('buttonView', function() {
     return {
         templateUrl: '/app/templates/buttonView.html',
-        restrict: 'E'
+        restrict: 'E',
+        scope: {
+            isUserSelected: '=',
+            deleteBtnClick: '='
+        }
     };
 });
