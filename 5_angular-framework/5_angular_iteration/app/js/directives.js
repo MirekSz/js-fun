@@ -47,7 +47,8 @@ appDirectives.directive('formView', function() {
         restrict: 'E',
         scope: {
             mode: '=',
-            user: '='
+            user: '=',
+            saveUser: '='
         }
     };
 });

@@ -20,9 +20,9 @@ app.use(function (req, res, next) {
     next();
 });
 
-let users = [new User(1, 'Jacek', 'Doe', '43', 'Mężczyzna'),
-    new User(2, 'Marzanna', 'Uss', '54', 'Kobieta'),
-    new User(3, 'Julia', 'Dolej', '22', 'Kobieta')];
+let users = [new User(1, 'Jacek', 'Doe', 43, 'Mężczyzna'),
+    new User(2, 'Marzanna', 'Uss', 54, 'Kobieta'),
+    new User(3, 'Julia', 'Dolej', 22, 'Kobieta')];
 
 function generateID() {
     let maxID = 0;
@@ -34,13 +34,13 @@ function generateID() {
     return (maxID + 1);
 }
 
-app.get('/users', function (request, response) {
-    response.send(users);
-});
-
 app.get('/users/:id', function (request, response) {
     let found = users.findIndex(user => user.id == request.params.id);
     response.send(users[found]);
+});
+
+app.get('/users', function (request, response) {
+    response.send(users);
 });
 
 app.post('/users', function (request, response) {
@@ -50,11 +50,10 @@ app.post('/users', function (request, response) {
     response.send({id: user.id});
 });
 
-app.put('/users', function (request, response) {
-    let editedUser = request.body;
-    let found = users.find(user => user.id === editedUser.id);
+app.put('/users/:id', function (request, response) {
+    let found = users.find(user => user.id === request.body.id);
     if (found) {
-        Object.assign(found, editedUser);
+        Object.assign(found, request.body);
     }
     response.end();
 });

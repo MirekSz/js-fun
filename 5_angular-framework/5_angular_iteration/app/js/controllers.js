@@ -4,8 +4,8 @@
 
 var appControllers = angular.module('appControllers', []);
 
-appControllers.controller('UsersTableCtrl', ['$scope', 'UserService', '$location',
-    function ($scope, UserService, $location) {
+appControllers.controller('UsersTableCtrl', ['$scope', 'UserService', '$location', '$timeout',
+    function ($scope, UserService, $location, $timeout) {
         this.loadUsers = function () {
             $scope.loading = true;
             $scope.isUserSelected = false;
@@ -13,6 +13,17 @@ appControllers.controller('UsersTableCtrl', ['$scope', 'UserService', '$location
             $scope.users = UserService.query(function () {
                 $scope.loading = false;
             });
+            $scope.checkForUsers();
+        };
+
+        $scope.checkForUsers = function () {
+            $timeout(function () {
+                $scope.loading = true;
+                $scope.users = UserService.query(function () {
+                    $scope.loading = false;
+                    $scope.checkForUsers();
+                });
+            }, 10000);
         };
 
         $scope.editBtnClick = function () {
@@ -27,7 +38,7 @@ appControllers.controller('UsersTableCtrl', ['$scope', 'UserService', '$location
 
         this.loadUsers();
     }]);
-appControllers.controller('FormCtrl', ['$scope', '$routeParams', 'UserService', '$location',
+appControllers.controller('FormCtrl', ['$scope', 'UserService', '$routeParams', '$location',
     function ($scope, UserService, $routeParams, $location) {
 
         console.log($routeParams.id + $routeParams.mode);
@@ -35,19 +46,21 @@ appControllers.controller('FormCtrl', ['$scope', '$routeParams', 'UserService', 
         $scope.mode = $routeParams.mode;
 
         if ($scope.mode === 'Edytuj') {
-            $scope.userId = $routeParams.id;
-            $scope.user = UserService.get($scope.userId);
+            $scope.user = UserService.get({id: $routeParams.id});
         } else {
             $scope.user = {};
         }
 
         $scope.saveUser = function (user) {
             if ($scope.mode === 'Edytuj') {
-                UserService.editUser(user);
+                UserService.editUser(user).$promise.then(function () {
+                    $location.path('/users');
+                });
             } else {
-                UserService.save(user);
+                UserService.save(user).$promise.then(function () {
+                    $location.path('/users');
+                });
             }
-            $location.path('/users');
         };
 
         $scope.cancelForm = function () {
