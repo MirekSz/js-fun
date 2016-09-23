@@ -13,10 +13,7 @@ var phonecatApp = angular.module('phonecatApp', [
 
 phonecatApp.config(['$routeProvider',
     function ($routeProvider) {
-        $routeProvider.when('/form/:mode/:id', {
-            templateUrl: 'partials/form-view.html',
-            controller: 'FormCtrl'
-        }).when('/form/:mode/', {
+        $routeProvider.when('/form/:mode/:id?', {
             templateUrl: 'partials/form-view.html',
             controller: 'FormCtrl'
         }).when('/users', {

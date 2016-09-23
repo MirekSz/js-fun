@@ -36,7 +36,6 @@ appDirectives.directive('buttonView', function() {
         scope: {
             isUserSelected: '=',
             deleteBtnClick: '=',
-            addBtnClick: '=',
             editBtnClick: '='
         }
     };

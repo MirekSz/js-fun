@@ -4,8 +4,8 @@
 
 var appControllers = angular.module('appControllers', []);
 
-appControllers.controller('UsersTableCtrl', ['$scope', 'UserService', '$window',
-    function ($scope, UserService, $window) {
+appControllers.controller('UsersTableCtrl', ['$scope', 'UserService', '$location',
+    function ($scope, UserService, $location) {
         this.loadUsers = function () {
             $scope.loading = true;
             $scope.isUserSelected = false;
@@ -15,12 +15,8 @@ appControllers.controller('UsersTableCtrl', ['$scope', 'UserService', '$window',
             });
         };
 
-        $scope.addBtnClick = function () {
-            $window.location.assign('app/#/form/Dodaj');
-        };
-
         $scope.editBtnClick = function () {
-            $window.location.assign('app/#/form/Edytuj/' + $scope.selectedUser.id);
+            $location.path('/form/Edytuj/' + $scope.selectedUser.id);
         };
 
         $scope.deleteBtnClick = function () {
@@ -31,28 +27,30 @@ appControllers.controller('UsersTableCtrl', ['$scope', 'UserService', '$window',
 
         this.loadUsers();
     }]);
-appControllers.controller('FormCtrl', ['$scope', '$routeParams', 'UserService', '$window',
-    function ($scope, UserService, $routeParams, $window) {
-        var User = UserService();
+appControllers.controller('FormCtrl', ['$scope', '$routeParams', 'UserService', '$location',
+    function ($scope, UserService, $routeParams, $location) {
+
+        console.log($routeParams.id + $routeParams.mode);
 
         $scope.mode = $routeParams.mode;
+
         if ($scope.mode === 'Edytuj') {
             $scope.userId = $routeParams.id;
-            $scope.user = User.get($scope.userId);
+            $scope.user = UserService.get($scope.userId);
         } else {
             $scope.user = {};
         }
 
         $scope.saveUser = function (user) {
             if ($scope.mode === 'Edytuj') {
-                User.editUser(user);
+                UserService.editUser(user);
             } else {
-                User.save(user);
+                UserService.save(user);
             }
-            $window.location.assign('/app/#/users');
+            $location.path('/users');
         };
 
         $scope.cancelForm = function () {
-            $window.location.assign('/app/#/users');
+            $location.path('/users');
         };
     }]);
