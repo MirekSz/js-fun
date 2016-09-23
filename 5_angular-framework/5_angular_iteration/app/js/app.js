@@ -13,12 +13,15 @@ var phonecatApp = angular.module('phonecatApp', [
 
 phonecatApp.config(['$routeProvider',
     function ($routeProvider) {
-        $routeProvider.when('/users', {
+        $routeProvider.when('/form/:mode/:id', {
+            templateUrl: 'partials/form-view.html',
+            controller: 'FormCtrl'
+        }).when('/form/:mode/', {
+            templateUrl: 'partials/form-view.html',
+            controller: 'FormCtrl'
+        }).when('/users', {
             templateUrl: 'partials/users-table.html',
             controller: 'UsersTableCtrl as ctrl'
-        }).when('form/:mode/:userId', {
-            templateUrl: 'partials/phone-detail.html',
-            controller: 'FormCtrl'
         }).otherwise({
             redirectTo: '/users'
         });

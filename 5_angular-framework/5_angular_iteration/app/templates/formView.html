@@ -1,0 +1,28 @@
+<h3>{{mode}} Użytkownika</h3>
+<form name="form" id="form">
+    <div class="form-group">
+        <label for="name">Imie:</label>
+        <input id="name" name="name" class="form-control" type="text" ng-model="user.name" required>
+    </div>
+    <div class="form-group">
+        <label for="surname">Nazwisko:</label>
+        <input id="surname" name="surname" class="form-control" ng-model="user.surname" type="text"
+               required>
+    </div>
+    <div class="form-group">
+        <label for="age">Wiek:</label>
+        <input id="age" name="age" class="form-control" type="number" ng-model="user.age"
+               min="18" max="99" required>
+    </div>
+    <div class="form-group">
+        <label for="sex">Płeć:</label>
+        <select class="form-control" name="sex" id="sex" ng-model="user.sex">
+            <option>Mężczyzna</option>
+            <option>Kobieta</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary" ng-click="saveUser(user)">{{mode}}</button>
+        <button type="button" id="cancelBtn" ng-click="cancelForm()" class="btn btn-warning">Cofnij</button>
+    </div>
+</form>

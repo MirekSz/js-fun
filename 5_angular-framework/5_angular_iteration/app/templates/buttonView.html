@@ -1,4 +1,6 @@
-<button type="button" class="btn btn-primary" id="addBtn">Dodaj</button>
-<button type="button" class="btn btn-primary" id="editBtn" ng-disabled="!isUserSelected">Popraw</button>
+<button type="button" class="btn btn-primary" ng-click="this.addBtnClick()"
+        id="addBtn">Dodaj</button>
+<button type="button" class="btn btn-primary" ng-click="this.editBtnClick()"
+        id="editBtn" ng-disabled="!isUserSelected">Popraw</button>
 <button type="button" class="btn btn-primary" id="deleteBtn"
         ng-click="this.deleteBtnClick()" ng-disabled="!isUserSelected">Usuń</button>

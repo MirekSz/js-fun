@@ -38,6 +38,11 @@ app.get('/users', function (request, response) {
     response.send(users);
 });
 
+app.get('/users/:id', function (request, response) {
+    let found = users.findIndex(user => user.id == request.params.id);
+    response.send(users[found]);
+});
+
 app.post('/users', function (request, response) {
     let user = request.body;
     user.id = generateID();
@@ -56,7 +61,6 @@ app.put('/users', function (request, response) {
 
 app.delete('/users/:id', function (request, response) {
     let found = users.findIndex(user => user.id == request.params.id);
-    console.log(request.params.id);
     users.splice(found, 1);
     response.end();
 });

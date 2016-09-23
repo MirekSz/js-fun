@@ -6,7 +6,10 @@ var appServices = angular.module('appServices', []);
 
 appServices.service('UserService', ['$resource',
     function ($resource) {
-        return $resource('http://localhost:3000/users/:id', {id: '@id'} );
+        return $resource('http://localhost:3000/users/:id', {id: '@id'}, {
+            editUser: {
+                method: 'PUT'
+            }});
     }]);
 
 
